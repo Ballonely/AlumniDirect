@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USC Alumni Directory - Register</title>
+<link rel="stylesheet" href="AlumniDirectoryLogEdits.css">
+<style>
+ 
+  .register-box { width: 380px; padding: 36px 35px 28px; }
+  .toggle-eye:hover { color: gold; }
+  .input-box.invalid { border-bottom: 2px solid #ff6b6b; }
+  .input-box.valid { border-bottom: 2px solid #7CFC9A; }
+  .input-box label {
+    max-width: calc(100% - 38px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .field-hint {
+    display: block;
+    min-height: 14px;
+    font-size: 0.72em;
+    color: #ffb3b3;
+    margin: -22px 0 14px;
+    letter-spacing: 0.2px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <img src="uscImage.jpg" alt="University of San Carlos Campus" class="campus-photo">
+    <div class="green-overlay"></div>
+    <div class="logo-pattern"></div>
+
+    <div class="left-content">
+      <span class="usc-label">University of San Carlos</span>
+      <h1>Join the <span>Alumni</span> Community</h1>
+      <div class="left-divider"></div>
+      <p>Create your account to reconnect with fellow Carolinians, discover alumni events, and stay in the loop with everything happening at USC.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="logo-pattern"></div>
+
+    <div class="right-content">
+      <div class="login-box register-box">
+        <h2>Create Account</h2>
+        <p class="login-subtitle">Register as a USC Alumni</p>
+
+        <form id="registerForm" action="#" method="POST" novalidate>
+
+          <div class="input-box">
+            <input type="text" id="fullname" name="fullname" placeholder=" " required>
+            <label for="fullname">Full Name</label>
+            <span class="icon">&#128100;</span>
+          </div>
+
+          <div class="input-box" id="emailBox">
+            <input type="email" id="email" name="email" placeholder=" " required>
+            <label for="email">Email Address</label>
+            <span class="icon">&#9993;</span>
+          </div>
+          <span class="field-hint" id="emailHint"></span>
+
+          <div class="input-box" id="schoolIdBox">
+            <input type="text" id="schoolid" name="schoolid" placeholder=" " inputmode="numeric" maxlength="8" required>
+            <label for="schoolid">School ID</label>
+            <span class="icon">&#127891;</span>
+          </div>
+          <span class="field-hint" id="schoolIdHint"></span>
+
+          <div class="input-box" id="passwordBox">
+            <input type="password" id="password" name="password" placeholder=" " inputmode="numeric" maxlength="8" required>
+            <label for="password">Password</label>
+            <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+          </div>
+          <span class="field-hint" id="passwordHint"></span>
+
+          <div class="input-box" id="confirmBox">
+            <input type="password" id="confirmpassword" name="confirmpassword" placeholder=" " inputmode="numeric" maxlength="8" required>
+            <label for="confirmpassword">Confirm Password</label>
+            <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+          </div>
+          <span class="field-hint" id="confirmHint"></span>
+
+          <button type="submit">Register</button>
+        </form>
+
+        <div class="register-link">
+          <p>Already have an account? <a href="AlumniDirectoryLog.html">Sign in</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>&copy; 2026 University of San Carlos Alumni Directory. All rights reserved.</footer>
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <script>
+    // ── Validation helpers ──
+    function setState(box, hint, valid, message) {
+      box.classList.remove('valid', 'invalid');
+      if (valid === null) { hint.textContent = ''; return; }
+      box.classList.add(valid ? 'valid' : 'invalid');
+      hint.textContent = valid ? '' : message;
+    }
+
+    const emailInput = document.getElementById('email');
+    const emailBox = document.getElementById('emailBox');
+    const emailHint = document.getElementById('emailHint');
+    emailInput.addEventListener('input', () => {
+      if (emailInput.value === '') return setState(emailBox, emailHint, null);
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+      setState(emailBox, emailHint, ok, 'Please enter a valid email address.');
+    });
+
+    const schoolIdInput = document.getElementById('schoolid');
+    const schoolIdBox = document.getElementById('schoolIdBox');
+    const schoolIdHint = document.getElementById('schoolIdHint');
+    schoolIdInput.addEventListener('input', () => {
+      schoolIdInput.value = schoolIdInput.value.replace(/\D/g, '').slice(0, 8);
+      if (schoolIdInput.value === '') return setState(schoolIdBox, schoolIdHint, null);
+      const ok = /^\d{8}$/.test(schoolIdInput.value);
+      setState(schoolIdBox, schoolIdHint, ok, 'School ID must be exactly 8 digits.');
+    });
+
+    const passwordInput = document.getElementById('password');
+    const passwordBox = document.getElementById('passwordBox');
+    const passwordHint = document.getElementById('passwordHint');
+    const confirmInput = document.getElementById('confirmpassword');
+    const confirmBox = document.getElementById('confirmBox');
+    const confirmHint = document.getElementById('confirmHint');
+
+    function checkPassword() {
+      passwordInput.value = passwordInput.value.replace(/\D/g, '').slice(0, 8);
+      if (passwordInput.value === '') return setState(passwordBox, passwordHint, null);
+      const ok = /^\d{8}$/.test(passwordInput.value);
+      setState(passwordBox, passwordHint, ok, 'Password must be exactly 8 digits.');
+      checkConfirm();
+    }
+
+    function checkConfirm() {
+      confirmInput.value = confirmInput.value.replace(/\D/g, '').slice(0, 8);
+      if (confirmInput.value === '') return setState(confirmBox, confirmHint, null);
+      const ok = confirmInput.value === passwordInput.value && /^\d{8}$/.test(confirmInput.value);
+      setState(confirmBox, confirmHint, ok, 'Passwords do not match.');
+    }
+
+    passwordInput.addEventListener('input', checkPassword);
+    confirmInput.addEventListener('input', checkConfirm);
+
+    // ── Submit guard (UI only, no backend yet) ──
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const schoolIdOk = /^\d{8}$/.test(schoolIdInput.value);
+      const passwordOk = /^\d{8}$/.test(passwordInput.value);
+      const confirmOk = confirmInput.value === passwordInput.value && passwordOk;
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+
+      if (!emailOk) { setState(emailBox, emailHint, false, 'Please enter a valid email address.'); }
+      if (!schoolIdOk) { setState(schoolIdBox, schoolIdHint, false, 'School ID must be exactly 8 digits.'); }
+      if (!passwordOk) { setState(passwordBox, passwordHint, false, 'Password must be exactly 8 digits.'); }
+      if (!confirmOk) { setState(confirmBox, confirmHint, false, 'Passwords do not match.'); }
+
+      if (emailOk && schoolIdOk && passwordOk && confirmOk) {
+      
+        alert('Account details look good! (No backend connected yet.)');
+      }
+    });
+  </script>
+
+</body>
+</html>
