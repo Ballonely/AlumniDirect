@@ -13,7 +13,6 @@
   .input-box.valid { border-bottom: 2px solid #7CFC9A; }
   .input-box label {
     max-width: calc(100% - 38px);
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -25,16 +24,15 @@
     margin: -22px 0 14px;
     letter-spacing: 0.2px;
   }
+  
 </style>
 </head>
 <body>
 
-  <!-- LEFT PANEL -->
+  
   <div class="left-panel">
-    <img src="uscImage.jpg" alt="University of San Carlos Campus" class="campus-photo">
+    <img src="images/uscImage.jpg" alt="University of San Carlos Campus" class="campus-photo">
     <div class="green-overlay"></div>
-    <div class="logo-pattern"></div>
-
     <div class="left-content">
       <span class="usc-label">University of San Carlos</span>
       <h1>Join the <span>Alumni</span> Community</h1>
@@ -43,20 +41,24 @@
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
-  <div class="right-panel">
-    <div class="logo-pattern"></div>
 
+  <div class="right-panel">
     <div class="right-content">
       <div class="login-box register-box">
         <h2>Create Account</h2>
         <p class="login-subtitle">Register as a USC Alumni</p>
 
-        <form id="registerForm" action="#" method="POST" novalidate>
+        <form id="registerForm" action="api/register.php" method="POST" novalidate>
 
           <div class="input-box">
-            <input type="text" id="fullname" name="fullname" placeholder=" " required>
-            <label for="fullname">Full Name</label>
+            <input type="text" id="firstname" name="firstname" placeholder=" " required>
+            <label for="firstname">First Name</label>
+            <span class="icon">&#128100;</span>
+          </div>
+
+          <div class="input-box">
+            <input type="text" id="lastname" name="lastname" placeholder=" " required>
+            <label for="lastname">Last Name</label>
             <span class="icon">&#128100;</span>
           </div>
 
@@ -75,14 +77,14 @@
           <span class="field-hint" id="schoolIdHint"></span>
 
           <div class="input-box" id="passwordBox">
-            <input type="password" id="password" name="password" placeholder=" " inputmode="numeric" maxlength="8" required>
+            <input type="password" id="password" name="password" placeholder=" " required>
             <label for="password">Password</label>
             <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
           </div>
           <span class="field-hint" id="passwordHint"></span>
 
           <div class="input-box" id="confirmBox">
-            <input type="password" id="confirmpassword" name="confirmpassword" placeholder=" " inputmode="numeric" maxlength="8" required>
+            <input type="password" id="confirmpassword" name="confirmpassword" placeholder=" " required>
             <label for="confirmpassword">Confirm Password</label>
             <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
           </div>
@@ -92,7 +94,7 @@
         </form>
 
         <div class="register-link">
-          <p>Already have an account? <a href="index.html">Sign in</a></p>
+          <p>Already have an account? <a href="AlumniDirectoryLog.html">Sign in</a></p>
         </div>
       </div>
     </div>
@@ -104,6 +106,14 @@
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const serverError = urlParams.get('error');
+    if (serverError === 'emailtaken') {
+      alert('That email is already registered. Please sign in instead.');
+    } else if (serverError) {
+      alert('Please check the form: some fields were invalid (' + serverError + ').');
+    }
+
     // ── Validation helpers ──
     function setState(box, hint, valid, message) {
       box.classList.remove('valid', 'invalid');
@@ -139,40 +149,37 @@
     const confirmHint = document.getElementById('confirmHint');
 
     function checkPassword() {
-      passwordInput.value = passwordInput.value.replace(/\D/g, '').slice(0, 8);
       if (passwordInput.value === '') return setState(passwordBox, passwordHint, null);
-      const ok = /^\d{8}$/.test(passwordInput.value);
-      setState(passwordBox, passwordHint, ok, 'Password must be exactly 8 digits.');
+      const ok = passwordInput.value.length >= 8;
+      setState(passwordBox, passwordHint, ok, 'Password must be at least 8 characters.');
       checkConfirm();
     }
 
     function checkConfirm() {
-      confirmInput.value = confirmInput.value.replace(/\D/g, '').slice(0, 8);
       if (confirmInput.value === '') return setState(confirmBox, confirmHint, null);
-      const ok = confirmInput.value === passwordInput.value && /^\d{8}$/.test(confirmInput.value);
+      const ok = confirmInput.value === passwordInput.value && passwordInput.value.length >= 8;
       setState(confirmBox, confirmHint, ok, 'Passwords do not match.');
     }
 
     passwordInput.addEventListener('input', checkPassword);
     confirmInput.addEventListener('input', checkConfirm);
 
-    // ── Submit guard (UI only, no backend yet) ──
+
     document.getElementById('registerForm').addEventListener('submit', (e) => {
-      e.preventDefault();
       const schoolIdOk = /^\d{8}$/.test(schoolIdInput.value);
-      const passwordOk = /^\d{8}$/.test(passwordInput.value);
+      const passwordOk = passwordInput.value.length >= 8;
       const confirmOk = confirmInput.value === passwordInput.value && passwordOk;
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
 
       if (!emailOk) { setState(emailBox, emailHint, false, 'Please enter a valid email address.'); }
       if (!schoolIdOk) { setState(schoolIdBox, schoolIdHint, false, 'School ID must be exactly 8 digits.'); }
-      if (!passwordOk) { setState(passwordBox, passwordHint, false, 'Password must be exactly 8 digits.'); }
+      if (!passwordOk) { setState(passwordBox, passwordHint, false, 'Password must be at least 8 characters.'); }
       if (!confirmOk) { setState(confirmBox, confirmHint, false, 'Passwords do not match.'); }
 
-      if (emailOk && schoolIdOk && passwordOk && confirmOk) {
-      
-        alert('Account details look good! (No backend connected yet.)');
+      if (!(emailOk && schoolIdOk && passwordOk && confirmOk)) {
+        e.preventDefault();
       }
+      // If everything is valid, the form submits normally to register.php — no preventDefault.
     });
   </script>
 

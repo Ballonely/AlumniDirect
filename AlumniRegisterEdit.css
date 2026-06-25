@@ -10,7 +10,6 @@
     body {
       display: flex;
       min-height: 100vh;
-      overflow: hidden;
       animation: fadeIn 0.4s ease forwards;
     }
 
@@ -19,12 +18,11 @@
       to { opacity: 1; }
     }
 
-    /* ── LEFT PANEL 60% ── */
+    
     .left-panel {
       position: relative;
       width: 60%;
       min-height: 100vh;
-      overflow: hidden;
       flex-shrink: 0;
     }
 
@@ -55,7 +53,7 @@
       background-size: 110px 110px;
     }
 
-    /* Left panel text content */
+   
     .left-content {
       position: relative;
       z-index: 3;
@@ -116,7 +114,6 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
       padding-bottom: 60px;
     }
 
@@ -139,7 +136,7 @@
       padding: 40px 30px;
     }
 
-    /* ── LOGIN BOX ── */
+
     .login-box {
       position: relative;
       width: 360px;
@@ -355,7 +352,7 @@
       display: block;
     }
 
-    /* Validation feedback */
+   
     .input-box.invalid {
       border-bottom: 2px solid #ff6b6b;
     }
