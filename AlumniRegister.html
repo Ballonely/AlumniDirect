@@ -4,34 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>USC Alumni Directory - Register</title>
-<link rel="stylesheet" href="AlumniDirectoryLogEdits.css">
-<style>
- 
-  .register-box { width: 380px; padding: 36px 35px 28px; }
-  .toggle-eye:hover { color: gold; }
-  .input-box.invalid { border-bottom: 2px solid #ff6b6b; }
-  .input-box.valid { border-bottom: 2px solid #7CFC9A; }
-  .input-box label {
-    max-width: calc(100% - 38px);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .field-hint {
-    display: block;
-    min-height: 14px;
-    font-size: 0.72em;
-    color: #ffb3b3;
-    margin: -22px 0 14px;
-    letter-spacing: 0.2px;
-  }
-  
-</style>
+<link rel="stylesheet" href="AlumniRegisterEdit.css">
+
 </head>
 <body>
 
-  
   <div class="left-panel">
-    <img src="images/uscImage.jpg" alt="University of San Carlos Campus" class="campus-photo">
+    <div class="bg-slide slide1"></div>
+    <div class="bg-slide slide2"></div>
+    <div class="bg-slide slide3"></div>
+    <div class="bg-slide slide4"></div>
+    
     <div class="green-overlay"></div>
     <div class="left-content">
       <span class="usc-label">University of San Carlos</span>
@@ -57,9 +40,35 @@
           </div>
 
           <div class="input-box">
+            <input type="text" id="middlename" name="middlename" placeholder=" " required>
+            <label for="lastname">Middle Name</label>
+            <span class="icon">&#128100;</span>
+          </div>
+
+          <div class="input-box">
             <input type="text" id="lastname" name="lastname" placeholder=" " required>
             <label for="lastname">Last Name</label>
             <span class="icon">&#128100;</span>
+          </div>
+
+          <div class="suffix-box">
+            <label class="suffix-label" for="suffix">Suffix <span class="suffix-optional">(Optional)</span></label>
+            <div class="suffix-select-wrap">
+              <select id="suffix" name="suffix">
+                <option value="">- None -</option>
+                <optgroup label="Generational">
+                  <option value="Jr.">Jr. - Junior</option>
+                  <option value="Sr.">Sr. - Senior</option>
+                  <option value="II">II - The Second</option>
+                  <option value="III">III - The Third</option>
+                  <option value="IV">IV - The Fourth</option>
+                  <option value="V">V - The Fifth</option>
+                  <option value="VI">VI - The Sixth</option>
+                  <option value="VII">VII - The Seventh</option>
+                </optgroup>
+              </select>
+              <span class="suffix-chevron">&#8964;</span>
+            </div>
           </div>
 
           <div class="input-box" id="emailBox">
