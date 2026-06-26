@@ -1,5 +1,5 @@
 /* Use this if you want to test the db and api endpoints */
-CREATE alumnidirectorydb;
+CREATE DATABASE alumnidirectorydb;
 USE alumnidirectorydb;
 
 CREATE TABLE account (
@@ -8,7 +8,7 @@ CREATE TABLE account (
     last_Name varchar(255) NOT NULL,
     middle_Name varchar(255),
     suffix varchar(20),
-    school_ID varhcar(8) NOT NULL UNIQUE, 
+    school_ID varchar(8) NOT NULL UNIQUE, 
     title varchar(10),
     email varchar(50) NOT NULL UNIQUE,
     password varchar(255) NOT NULL

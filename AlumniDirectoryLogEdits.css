@@ -38,7 +38,7 @@
       background-size: cover;
       background-position: center;
       opacity: 0;
-      animation: slideShow 15s linear infinite;
+      animation: slideShow 20s linear infinite;
     }
     
     .slide1 {

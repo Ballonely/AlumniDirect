@@ -33,73 +33,94 @@
 
         <form id="registerForm" action="api/register.php" method="POST" novalidate>
 
-          <div class="input-box">
-            <input type="text" id="firstname" name="firstname" placeholder=" " required>
-            <label for="firstname">First Name</label>
-            <span class="icon">&#128100;</span>
+          <div class="step-progress">
+            <span class="step-dot active" id="dot1"></span>
+            <span class="step-dot" id="dot2"></span>
           </div>
 
-          <div class="input-box">
-            <input type="text" id="middlename" name="middlename" placeholder=" " required>
-            <label for="lastname">Middle Name</label>
-            <span class="icon">&#128100;</span>
+          <!-- STEP 1: Personal Info -->
+          <div class="form-step" id="step1">
+
+            <div class="input-box" id="firstnameBox">
+              <input type="text" id="firstname" name="firstname" placeholder=" " required>
+              <label for="firstname">First Name</label>
+              <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+            </div>
+            <span class="field-hint" id="firstnameHint"></span>
+
+            <div class="input-box" id="middlenameBox">
+              <input type="text" id="middlename" name="middlename" placeholder=" ">
+              <label for="middlename">Middle Name <span class="field-optional">(Optional)</span></label>
+              <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+            </div>
+
+            <div class="input-box" id="lastnameBox">
+              <input type="text" id="lastname" name="lastname" placeholder=" " required>
+              <label for="lastname">Last Name</label>
+              <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+            </div>
+            <span class="field-hint" id="lastnameHint"></span>
+
+            <div class="suffix-box">
+              <label class="suffix-label" for="suffix">Suffix <span class="suffix-optional">(Optional)</span></label>
+              <div class="suffix-select-wrap">
+                <select id="suffix" name="suffix">
+                  <option value="">- None -</option>
+                  <optgroup label="Generational">
+                    <option value="Jr.">Jr. - Junior</option>
+                    <option value="Sr.">Sr. - Senior</option>
+                    <option value="II">II - The Second</option>
+                    <option value="III">III - The Third</option>
+                    <option value="IV">IV - The Fourth</option>
+                    <option value="V">V - The Fifth</option>
+                    <option value="VI">VI - The Sixth</option>
+                    <option value="VII">VII - The Seventh</option>
+                  </optgroup>
+                </select>
+                <span class="suffix-chevron">&#8964;</span>
+              </div>
+            </div>
+
+            <button type="button" id="nextBtn" class="step-btn">Next</button>
           </div>
 
-          <div class="input-box">
-            <input type="text" id="lastname" name="lastname" placeholder=" " required>
-            <label for="lastname">Last Name</label>
-            <span class="icon">&#128100;</span>
-          </div>
+          <!-- STEP 2: Account Info -->
+          <div class="form-step" id="step2" style="display:none;">
 
-          <div class="suffix-box">
-            <label class="suffix-label" for="suffix">Suffix <span class="suffix-optional">(Optional)</span></label>
-            <div class="suffix-select-wrap">
-              <select id="suffix" name="suffix">
-                <option value="">- None -</option>
-                <optgroup label="Generational">
-                  <option value="Jr.">Jr. - Junior</option>
-                  <option value="Sr.">Sr. - Senior</option>
-                  <option value="II">II - The Second</option>
-                  <option value="III">III - The Third</option>
-                  <option value="IV">IV - The Fourth</option>
-                  <option value="V">V - The Fifth</option>
-                  <option value="VI">VI - The Sixth</option>
-                  <option value="VII">VII - The Seventh</option>
-                </optgroup>
-              </select>
-              <span class="suffix-chevron">&#8964;</span>
+            <div class="input-box" id="emailBox">
+              <input type="email" id="email" name="email" placeholder=" " required>
+              <label for="email">Email Address</label>
+              <span class="icon">&#9993;</span>
+            </div>
+            <span class="field-hint" id="emailHint"></span>
+
+            <div class="input-box" id="schoolIdBox">
+              <input type="text" id="schoolid" name="schoolid" placeholder=" " inputmode="numeric" maxlength="8" required>
+              <label for="schoolid">School ID</label>
+              <span class="icon"><ion-icon name="id-card-outline"></ion-icon></span>
+            </div>
+            <span class="field-hint" id="schoolIdHint"></span>
+
+            <div class="input-box" id="passwordBox">
+              <input type="password" id="password" name="password" placeholder=" " required>
+              <label for="password">Password</label>
+              <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+            </div>
+            <span class="field-hint" id="passwordHint"></span>
+
+            <div class="input-box" id="confirmBox">
+              <input type="password" id="confirmpassword" name="confirmpassword" placeholder=" " required>
+              <label for="confirmpassword">Confirm Password</label>
+              <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+            </div>
+            <span class="field-hint" id="confirmHint"></span>
+
+            <div class="step-buttons">
+              <button type="button" id="backBtn" class="step-btn back-btn">Back</button>
+              <button type="submit" class="step-btn">Register</button>
             </div>
           </div>
 
-          <div class="input-box" id="emailBox">
-            <input type="email" id="email" name="email" placeholder=" " required>
-            <label for="email">Email Address</label>
-            <span class="icon">&#9993;</span>
-          </div>
-          <span class="field-hint" id="emailHint"></span>
-
-          <div class="input-box" id="schoolIdBox">
-            <input type="text" id="schoolid" name="schoolid" placeholder=" " inputmode="numeric" maxlength="8" required>
-            <label for="schoolid">School ID</label>
-            <span class="icon">&#127891;</span>
-          </div>
-          <span class="field-hint" id="schoolIdHint"></span>
-
-          <div class="input-box" id="passwordBox">
-            <input type="password" id="password" name="password" placeholder=" " required>
-            <label for="password">Password</label>
-            <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-          </div>
-          <span class="field-hint" id="passwordHint"></span>
-
-          <div class="input-box" id="confirmBox">
-            <input type="password" id="confirmpassword" name="confirmpassword" placeholder=" " required>
-            <label for="confirmpassword">Confirm Password</label>
-            <span class="icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-          </div>
-          <span class="field-hint" id="confirmHint"></span>
-
-          <button type="submit">Register</button>
         </form>
 
         <div class="register-link">
@@ -130,6 +151,22 @@
       box.classList.add(valid ? 'valid' : 'invalid');
       hint.textContent = valid ? '' : message;
     }
+
+    const firstnameInput = document.getElementById('firstname');
+    const firstnameBox = document.getElementById('firstnameBox');
+    const firstnameHint = document.getElementById('firstnameHint');
+    firstnameInput.addEventListener('input', () => {
+      if (firstnameInput.value.trim() === '') return setState(firstnameBox, firstnameHint, null);
+      setState(firstnameBox, firstnameHint, true, '');
+    });
+
+    const lastnameInput = document.getElementById('lastname');
+    const lastnameBox = document.getElementById('lastnameBox');
+    const lastnameHint = document.getElementById('lastnameHint');
+    lastnameInput.addEventListener('input', () => {
+      if (lastnameInput.value.trim() === '') return setState(lastnameBox, lastnameHint, null);
+      setState(lastnameBox, lastnameHint, true, '');
+    });
 
     const emailInput = document.getElementById('email');
     const emailBox = document.getElementById('emailBox');
@@ -173,6 +210,35 @@
     passwordInput.addEventListener('input', checkPassword);
     confirmInput.addEventListener('input', checkConfirm);
 
+    // ── Step navigation (Step 1: name fields, Step 2: account fields) ──
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const dot1 = document.getElementById('dot1');
+    const dot2 = document.getElementById('dot2');
+    const nextBtn = document.getElementById('nextBtn');
+    const backBtn = document.getElementById('backBtn');
+
+    nextBtn.addEventListener('click', () => {
+      const firstOk = firstnameInput.value.trim() !== '';
+      const lastOk = lastnameInput.value.trim() !== '';
+
+      setState(firstnameBox, firstnameHint, firstOk, 'First name is required.');
+      setState(lastnameBox, lastnameHint, lastOk, 'Last name is required.');
+
+      if (firstOk && lastOk) {
+        step1.style.display = 'none';
+        step2.style.display = 'block';
+        dot1.classList.remove('active');
+        dot2.classList.add('active');
+      }
+    });
+
+    backBtn.addEventListener('click', () => {
+      step2.style.display = 'none';
+      step1.style.display = 'block';
+      dot2.classList.remove('active');
+      dot1.classList.add('active');
+    });
 
     document.getElementById('registerForm').addEventListener('submit', (e) => {
       const schoolIdOk = /^\d{8}$/.test(schoolIdInput.value);

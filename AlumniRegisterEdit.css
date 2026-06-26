@@ -8,6 +8,11 @@
       user-select: none;
     }
 
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
     body {
       display: flex;
       min-height: 100vh;
@@ -38,7 +43,7 @@
   background-size: cover;
   background-position: center;
   opacity: 0;
-  animation: slideShow 15s linear infinite;
+  animation: slideShow 20s linear infinite;
 }
 
 .slide1 {
@@ -150,6 +155,7 @@
       justify-content: center;
       align-items: center;
       padding-bottom: 60px;
+      overflow: hidden;
 
     }
 
@@ -212,7 +218,7 @@
     .input-box {
       position: relative;
       width: 100%;
-      margin: 28px 0;
+      margin: 22px 0;
       border-bottom: 2px solid rgba(255,255,255,0.6);
     }
 
@@ -257,7 +263,7 @@
       line-height: 57px;
       color: rgba(255,255,255,0.7);
     }
-
+    
     .remember-forgot {
       margin: -10px 0 20px;
       font-size: .85em;
@@ -400,8 +406,11 @@
       min-height: 14px;
       font-size: 0.72em;
       color: #ffb3b3;
-      margin: -22px 0 14px;
-      letter-spacing: 0.2px;
+      margin: -14px 0px;
+    }
+
+    .field-hint:not(:empty) {
+      margin-bottom: 6px;
     }
 
  
@@ -414,19 +423,11 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    .field-hint {
-      display: block;
-      min-height: 14px;
-      font-size: 0.72em;
-      color: #ffb3b3;
-      margin: -22px 0 14px;
-      letter-spacing: 0.2px;
-    }
   
   
     .suffix-box {
       width: 100%;
-      margin: 8px 0 22px;
+      margin: 16px 0 22px;
     }
   
     .suffix-label {
@@ -494,3 +495,80 @@
       color: gold;
     }
     
+
+    /* ── Optional field label (matches suffix "(Optional)" styling) ── */
+    .field-optional {
+      color: rgba(255,255,255,0.5);
+      font-weight: 400;
+      font-size: 0.95em;
+    }
+
+    /* ── Multi-step register form ── */
+    .form-step {
+      animation: fadeSlideIn 0.4s ease forwards;
+    }
+
+    .step-progress {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .step-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .step-dot.active {
+      background: gold;
+      transform: scale(1.15);
+    }
+
+    .step-btn {
+      width: 100%;
+      height: 44px;
+      background: gold;
+      border: none;
+      outline: none;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 1em;
+      color: rgb(41, 158, 41);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: background 0.2s, color 0.2s, transform 0.1s;
+      margin-top: 5px;
+    }
+
+    .step-btn:hover {
+      background: #fff;
+      color: rgb(41, 158, 41);
+      transform: translateY(-1px);
+    }
+
+    .step-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 5px;
+    }
+
+    .step-buttons .step-btn {
+      margin-top: 0;
+    }
+
+    .back-btn {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.6);
+      color: #ffffff;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.15);
+      color: #ffffff;
+      border-color: gold;
+    }
+
