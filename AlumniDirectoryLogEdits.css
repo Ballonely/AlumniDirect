@@ -1,10 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url(https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap);
+  
+  :root {
+    --priColor: #015e2f;
+    --secColor: #fcbf16;
+    --terColor: #00763a;
+    --fourthColor: #22944d;
+    
+    --priFont: 'Inter', sans-serif;
+    --secFont: 'Libre Baskerville', sans-serif;
+    --thirdFont: 'Montserrat', sans-serif;
+
+    --xsmallFont: 16px;
+    --smallFont: 20px;
+    --medFont: 30px;
+    --largeFont: 55px;
+    --xlargeFont: 65px;
+  }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
+      font-family: var(--priFont);
       user-select: none;
     }
 
@@ -77,16 +96,6 @@
       z-index: 1;
     }
 
-    
-    .logo-pattern {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      background-image: url('USC_StandAloneSeal_white.png');
-      background-repeat: repeat;
-      background-size: 110px 110px;
-    }
-
     .left-content {
       position: relative;
       z-index: 3;
@@ -100,17 +109,24 @@
     }
 
     .left-content .usc-label {
-      font-size: 0.85em;
-      font-weight: 600;
+      font-family: var(--secFont);
+      font-size: var(--smallFont);
+      font-weight: 300;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: rgba(255,255,255,0.85);
       margin-bottom: 16px;
     }
 
+    .left-content .usc-label span {
+      font-family: var(--secFont);
+      text-transform: lowercase;
+      font-style: italic;
+    }
+
     .left-content h1 {
-      font-size: 2.6em;
-      font-weight: 700;
+      font-family: var(--secFont);
+      font-size: var(--xlargeFont);
       line-height: 1.2;
       color: #ffffff;
       margin-bottom: 18px;
@@ -118,7 +134,8 @@
     }
 
     .left-content h1 span {
-      color: gold;
+      font-family: var(--secFont);
+      color: var(--secColor);
     }
 
     .left-content p {
@@ -132,32 +149,22 @@
     .left-divider {
       width: 60px;
       height: 3px;
-      background: gold;
+      background: var(--secColor);
       border-radius: 2px;
       margin: 22px 0;
     }
 
-   
     .right-panel {
       position: relative;
       width: 40%;
       min-height: 100vh;
-      background: rgb(41, 158, 41);
+      background: var(--priColor);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       overflow: hidden;
       padding-bottom: 60px;
-    }
-
-    
-    .right-panel .logo-pattern {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background-repeat: repeat;
-      background-size: 110px 110px;
     }
 
     .right-content {
@@ -185,10 +192,11 @@
     }
 
   .field-hint {
+    font-family: var(--thirdFont);
     display: block;
     min-height: 14px;
     font-size: 0.72em;
-    color: #ffb3b3;
+    color: var(--secColor);
     margin: -22px 0 14px;
     letter-spacing: 0.2px;
   }
@@ -205,6 +213,7 @@
     }
 
     h2 {
+      font-family: var(--thirdFont);
       font-size: 1.6em;
       color: #ffffff;
       text-align: center;
@@ -242,7 +251,7 @@
       top: -15px;
       font-size: 0.75em;
       transform: translateY(0);
-      color: gold;
+      color: var(--secColor);
     }
 
     .input-box input {
@@ -269,21 +278,23 @@
     }
 
     .remember-forgot {
+      font-family: var(--thirdFont);
       margin: -10px 0 20px;
       font-size: .85em;
       color: rgba(255,255,255,0.85);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      font-weight: 600;
     }
 
     .remember-forgot label input {
       margin-right: 4px;
-      accent-color: gold;
+      accent-color: var(--secColor);
     }
 
     .remember-forgot a {
-      color: gold;
+      color: var(--secColor);
       text-decoration: none;
     }
 
@@ -294,13 +305,14 @@
     button {
       width: 100%;
       height: 44px;
-      background: gold;
+      background: var(--secColor);
       border: none;
       outline: none;
       border-radius: 40px;
       cursor: pointer;
+      font-family: var(--thirdFont);
       font-size: 1em;
-      color: rgb(41, 158, 41);
+      color: var(--priColor);
       font-weight: 700;
       letter-spacing: 0.5px;
       transition: background 0.2s, color 0.2s, transform 0.1s;
@@ -314,6 +326,7 @@
     }
 
     .register-link {
+      font-family: --var(--thirdFont);
       font-size: .88em;
       color: rgba(255,255,255,0.8);
       text-align: center;
@@ -321,7 +334,7 @@
     }
 
     .register-link p a {
-      color: gold;
+      color: var(--secColor);
       text-decoration: none;
       font-weight: 600;
     }
