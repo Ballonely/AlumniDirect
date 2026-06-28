@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Alumni Network</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+
+  @import url(https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap);
+  @import url(https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap);
+  @import url(https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap);
+  
+  :root {
+    --priColor: #015e2f;
+    --secColor: #fcbf16;
+    --terColor: #00763a;
+    --fourthColor: #22944d;
+    
+    --priFont: 'Inter', sans-serif;
+    --secFont: 'Libre Baskerville', sans-serif;
+    --thirdFont: 'Montserrat', sans-serif;
+
+    --xsmallFont: 16px;
+    --smallFont: 20px;
+    --medFont: 30px;
+    --largeFont: 55px;
+    --xlargeFont: 65px;
+
+    --green:       #1A4A2E; 
+    --green-light: #2D6B43;
+    --gold:        #C8993A;
+    --gold-light:  #F5E8C8;
+    --cream:       #F9F6EF;
+    --dark:        #111A14;
+    --muted:       #6B7A6E;
+    --border:      rgba(200,153,58,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: var(--priFont); background: var(--cream); color: var(--dark); overflow-x: hidden; }
+
+  a { text-decoration: none; color: inherit; }
+
+
+  .nav {
+    background: var(--cream);
+    padding: 0 5rem;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .nav-logo {
+    width: 70px; height: 70px;
+  }
+  
+  .nav-name {
+    font-family: var(--secFont);
+    font-size: var(--smallFont); font-weight: 600;
+    color: var(--priColor);
+    line-height: 1.1;
+  }
+
+  .nav-sub { font-size: var(--xsmallFont); color: black; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    text-transform: uppercase;
+    font-size: var(--smallFont);
+    color: black;
+    letter-spacing: 0.3px;
+    transition: color .18s;
+    cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-links a.active { border-bottom: 1.5px solid var(--gold); padding-bottom: 2px; }
+
+  /* ── PAGES ───────────────────────────────────────── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── HOME HERO ───────────────────────────────────── */
+  .hero {
+    background: linear-gradient(140deg, var(--priColor) 0%, #0F3320 55%, #1A4A2E 100%);
+    padding: 90px 2.5rem 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(200,153,58,.12);
+    border: 1px solid var(--secColor);
+    color: var(--secColor);
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 16px; border-radius: 20px;
+    margin-bottom: 22px;
+  }
+  .hero-main {
+    font-family: var(--secFont);
+    font-size: var(--xlargeFont);
+    color: #fff; font-weight: 400; line-height: 1.15;
+    margin: 0 auto 18px;
+    max-width: 800px;
+  }
+  .hero-main span {
+    color: var(--secColor);
+  }
+  .hero-main-sub {
+    font-family: var(--priFont);
+    font-size: var(--smallFont);
+    color: #fff; font-weight: 400; line-height: 1.15;
+    margin: 0 auto 18px;
+  }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 52px; }
+  .btn-gold {
+    background: var(--gold); color: var(--dark);
+    font-size: 13px; font-weight: 600;
+    padding: 11px 24px; border-radius: 5px;
+    border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: opacity .18s;
+  }
+  .btn-gold:hover { opacity: .88; }
+  .btn-outline-white {
+    background: transparent;
+    color: rgba(255,255,255,.85);
+    border: 1.5px solid rgba(255,255,255,.3);
+    font-size: 13px; font-weight: 500;
+    padding: 11px 24px; border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: border-color .18s;
+  }
+  .btn-outline-white:hover { border-color: rgba(255,255,255,.7); }
+
+  /* avatar trio */
+  .hero-avatars { display: flex; justify-content: center; gap: -8px; margin-bottom: 40px; }
+  .hero-avatar {
+    width: 56px; height: 56px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,.2);
+    background: var(--green-light);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; color: var(--gold);
+    margin-left: -10px;
+  }
+  .hero-avatar:first-child { margin-left: 0; }
+
+  .hero-stats { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--gold); font-weight: 600; }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,.48); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  /* ── HOME FEATURED STRIP ─────────────────────────── */
+  .section { padding: 64px 2.5rem; max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--dark); }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+  .gold-bar { width: 44px; height: 3px; background: var(--gold); margin: 8px 0 0; }
+  .link-arrow { font-size: 13px; color: var(--green); font-weight: 500; border-bottom: 1px solid var(--gold); padding-bottom: 1px; cursor: pointer; }
+  .link-arrow:hover { color: var(--gold); }
+
+  /* cards row */
+  .cards-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .profile-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .profile-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(26,74,46,.11); }
+  .card-banner {
+    height: 120px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .card-initials {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(200,153,58,.18);
+    border: 1.5px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; color: var(--gold);
+  }
+  .card-sector {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0,0,0,.38); color: rgba(255,255,255,.9);
+    font-size: 10px; padding: 2px 8px; border-radius: 10px;
+  }
+  .card-body { padding: 16px 18px; }
+  .card-program { font-size: 10.5px; color: var(--muted); margin-bottom: 4px; }
+  .card-name { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .card-tagline { font-size: 12.5px; color: var(--muted); line-height: 1.55; margin-bottom: 12px; }
+  .card-footer { border-top: 1px solid var(--border); padding: 10px 18px; }
+  .read-more { font-size: 12px; color: var(--green); font-weight: 500; }
+  .read-more::after { content: ' →'; }
+
+  /* CTA band */
+  .cta-band {
+    background: var(--green);
+    padding: 48px 2.5rem;
+    text-align: center;
+  }
+  .cta-band h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; color: #fff; margin-bottom: 10px;
+  }
+  .cta-band p { font-size: 14px; color: rgba(255,255,255,.6); margin-bottom: 24px; }
+
+  /* ── DIRECTORY PAGE ──────────────────────────────── */
+  .dir-header {
+    background: linear-gradient(140deg, var(--green) 0%, #0F3320 100%);
+    padding: 60px 2.5rem 50px;
+    text-align: center;
+  }
+  .dir-eyebrow { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .dir-header h1 { font-family: 'Playfair Display', serif; font-size: 38px; color: #fff; font-weight: 600; margin-bottom: 12px; }
+  .dir-header p { font-size: 14px; color: rgba(255,255,255,.6); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+  .filter-bar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 2.5rem;
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    position: sticky; top: 66px; z-index: 100;
+  }
+  .filter-label { font-size: 11px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-weight: 500; margin-right: 4px; }
+  .filter-btn {
+    font-size: 12.5px; color: var(--muted);
+    background: var(--cream); border: 1px solid var(--border);
+    border-radius: 20px; padding: 5px 14px;
+    cursor: pointer; transition: all .15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .filter-btn:hover:not(.on) { border-color: var(--gold); color: var(--green); }
+  .filter-btn.on { background: var(--green); color: #fff; border-color: var(--green); }
+  .filter-select {
+    font-size: 12.5px; color: var(--muted);
+    border: 1px solid var(--border); background: var(--cream);
+    border-radius: 4px; padding: 5px 10px;
+    font-family: 'Inter', sans-serif; cursor: pointer;
+  }
+
+  .dir-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 40px 2.5rem; max-width: 1100px; margin: 0 auto; }
+
+  .pagination { display: flex; justify-content: center; gap: 6px; padding: 0 2.5rem 48px; }
+  .page-btn {
+    width: 34px; height: 34px; border-radius: 5px;
+    border: 1px solid var(--border); background: #fff;
+    font-size: 13px; color: var(--muted);
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+  }
+  .page-btn:hover { border-color: var(--gold); color: var(--green); }
+  .page-btn.on { background: var(--green); color: #fff; border-color: var(--green); }
+
+  /* ── PROFILE DETAIL PAGE ─────────────────────────── */
+  .profile-page { max-width: 1000px; margin: 48px auto; padding: 0 2.5rem 64px; }
+  .back-link { font-size: 13px; color: var(--green); cursor: pointer; margin-bottom: 28px; display: inline-flex; align-items: center; gap: 4px; }
+  .back-link::before { content: '←'; }
+  .back-link:hover { color: var(--gold); }
+
+  .profile-shell {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    display: grid; grid-template-columns: 280px 1fr;
+  }
+  .profile-sidebar {
+    background: var(--green);
+    padding: 36px 24px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .sidebar-avatar {
+    width: 96px; height: 96px; border-radius: 50%;
+    border: 3px solid var(--gold);
+    background: rgba(200,153,58,.15);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 30px; color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .sidebar-name { font-family: 'Playfair Display', serif; font-size: 19px; color: #fff; text-align: center; margin-bottom: 4px; }
+  .sidebar-class { font-size: 12px; color: rgba(255,255,255,.5); text-align: center; margin-bottom: 22px; }
+  .sidebar-row {
+    width: 100%;
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding: 10px 0;
+  }
+  .sidebar-row-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 600; margin-bottom: 2px; }
+  .sidebar-row-val { font-size: 13px; color: rgba(255,255,255,.82); }
+
+  .profile-body { padding: 36px 40px; }
+  .detail-section { margin-bottom: 28px; }
+  .detail-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px; color: var(--dark);
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--gold-light);
+    margin-bottom: 12px;
+  }
+  .detail-section p { font-size: 14px; color: #4A5550; line-height: 1.75; }
+  .detail-quote {
+    font-style: italic;
+    border-left: 3px solid var(--gold);
+    padding-left: 14px;
+    color: #4A5550; font-size: 14px; line-height: 1.7;
+    margin-bottom: 20px;
+  }
+  .award-item { display: flex; align-items: center; gap: 10px; font-size: 13px; margin-bottom: 7px; }
+  .award-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+  .award-year { font-size: 11px; color: var(--muted); margin-left: auto; }
+  .badge-college {
+    display: inline-block;
+    background: var(--gold-light); color: var(--green);
+    font-size: 10.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 3px; margin-bottom: 16px;
+  }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .btn-green {
+    background: var(--green); color: #fff;
+    border: none; padding: 9px 18px; border-radius: 5px;
+    font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: opacity .18s;
+  }
+  .btn-green:hover { opacity: .85; }
+  .btn-outline-green {
+    background: transparent; color: var(--green);
+    border: 1.5px solid var(--green);
+    padding: 9px 18px; border-radius: 5px;
+    font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: all .18s;
+  }
+  .btn-outline-green:hover { background: var(--gold-light); }
+
+  /* ── ABOUT PAGE ──────────────────────────────────── */
+  .about-hero {
+    background: linear-gradient(140deg, var(--green) 0%, #0F3320 100%);
+    padding: 70px 2.5rem 60px; text-align: center;
+  }
+  .about-hero h1 { font-family: 'Playfair Display', serif; font-size: 38px; color: #fff; font-weight: 600; margin-bottom: 14px; }
+  .about-hero p { font-size: 15px; color: rgba(255,255,255,.62); max-width: 520px; margin: 0 auto; line-height: 1.75; }
+  .about-body { max-width: 780px; margin: 60px auto; padding: 0 2.5rem; }
+  .about-body h2 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 14px; margin-top: 36px; }
+  .about-body p { font-size: 15px; color: #4A5550; line-height: 1.8; margin-bottom: 12px; }
+
+  /* ── CONTACT PAGE ────────────────────────────────── */
+  .contact-hero {
+    background: linear-gradient(140deg, var(--green) 0%, #0F3320 100%);
+    padding: 70px 2.5rem 60px; text-align: center;
+  }
+  .contact-hero h1 { font-family: 'Playfair Display', serif; font-size: 38px; color: #fff; font-weight: 600; margin-bottom: 14px; }
+  .contact-hero p { font-size: 15px; color: rgba(255,255,255,.62); max-width: 480px; margin: 0 auto; line-height: 1.75; }
+  .contact-body { max-width: 680px; margin: 60px auto; padding: 0 2.5rem 64px; }
+  .contact-form label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted); font-weight: 500; margin-bottom: 6px; margin-top: 20px; }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%; padding: 10px 14px;
+    border: 1px solid var(--border); border-radius: 5px;
+    font-size: 14px; font-family: 'Inter', sans-serif;
+    background: #fff; color: var(--dark);
+    outline: none; transition: border-color .18s;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: var(--gold); }
+  .contact-form textarea { min-height: 120px; resize: vertical; }
+  .contact-form button {
+    margin-top: 22px;
+    background: var(--green); color: #fff;
+    border: none; padding: 11px 28px; border-radius: 5px;
+    font-size: 13px; font-weight: 600;
+    font-family: 'Inter', sans-serif; cursor: pointer;
+    transition: opacity .18s;
+  }
+  .contact-form button:hover { opacity: .85; }
+
+  /* ── FOOTER ──────────────────────────────────────── */
+  footer {
+    background: var(--dark);
+    padding: 48px 2.5rem 24px;
+  }
+  .footer-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 2.5rem; margin-bottom: 36px;
+  }
+  .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--gold); margin-bottom: 8px; }
+  .footer-brand p { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.75; }
+  .footer-col h4 { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 14px; font-weight: 600; }
+  .footer-col a { display: block; font-size: 12.5px; color: rgba(255,255,255,.48); margin-bottom: 9px; cursor: pointer; transition: color .15s; }
+  .footer-col a:hover { color: rgba(255,255,255,.88); }
+  .footer-bottom {
+    max-width: 1100px; margin: 0 auto;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding-top: 18px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 11px; color: rgba(255,255,255,.28); }
+
+  /* ── SCROLL REVEAL ───────────────────────────────── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .s1 { transition-delay: .07s; }
+  .s2 { transition-delay: .14s; }
+  .s3 { transition-delay: .21s; }
+
+  /* ── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 768px) {
+    .cards-row, .dir-grid { grid-template-columns: 1fr; }
+    .profile-shell { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ════════════════════════════════════════════ -->
+<nav class="nav">
+  
+  <div class="nav-brand" onclick="goTo('home')">
+    <img src="usc_logo.png" alt="USC Logo" class="nav-logo">
+    <div>
+      <div class="nav-name">Alumni Network</div>
+      <div class="nav-sub">Profiles &amp; Stories</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a id="nav-home"    onclick="goTo('home')">Home</a>
+    <a id="nav-alumni"  onclick="goTo('alumni')">Alumni Profiles</a>
+    <a id="nav-about"   onclick="goTo('about')">About</a>
+    <a id="nav-contact" onclick="goTo('contact')">Contact</a>
+  </div>
+</nav>
+
+<!-- ══ PAGE: HOME ══════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <div class="hero">
+    <div class="hero-eyebrow">Class of Every Year</div>
+    <h1 class="hero-main">University <i>of</i> San Carlos<br/><span>Alumni Network</span></h1>
+    <h1 class="hero-main-sub">Lives shaped here.<br/><em>Stories told everywhere.</em></h1>
+    <div class="hero-avatars">
+      <div class="hero-avatar">AB</div>
+      <div class="hero-avatar">CD</div>
+      <div class="hero-avatar">EF</div>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-gold" onclick="goTo('alumni')">Browse Profiles</button>
+      <button class="btn-outline-white" onclick="goTo('about')">About the Network</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">120k+</div>
+        <div class="stat-label">Alumni worldwide</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">80+</div>
+        <div class="stat-label">Countries</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">40+</div>
+        <div class="stat-label">Programs</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100</div>
+        <div class="stat-label">Years of legacy</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-eyebrow">Featured</div>
+        <div class="section-title">Recent Profiles</div>
+        <div class="gold-bar"></div>
+      </div>
+      <span class="link-arrow" onclick="goTo('alumni')">View all profiles →</span>
+    </div>
+    <div class="cards-row" id="home-cards"></div>
+  </div>
+
+  <div class="cta-band">
+    <h3>Are you an alumnus?</h3>
+    <p>[Submit your story or update your profile.]</p>
+    <button class="btn-gold" onclick="goTo('contact')">Share your story</button>
+  </div>
+
+</div><!-- /home -->
+
+<!-- ══ PAGE: ALUMNI DIRECTORY ══════════════════════════ -->
+<div class="page" id="page-alumni">
+
+  <div class="dir-header">
+    <div class="dir-eyebrow">Directory</div>
+    <h1>Alumni Profiles</h1>
+    <p>[Intro paragraph]</p>
+  </div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Program:</span>
+    <button class="filter-btn on" onclick="setFilter('program','all',this)">All Programs</button>
+    <button class="filter-btn" onclick="setFilter('program','Business',this)">Business</button>
+    <button class="filter-btn" onclick="setFilter('program','Engineering',this)">Engineering</button>
+    <button class="filter-btn" onclick="setFilter('program','Arts &amp; Sciences',this)">Arts &amp; Sciences</button>
+    <button class="filter-btn" onclick="setFilter('program','Law and Governance',this)">Law and Governance</button>
+    <button class="filter-btn" onclick="setFilter('program','Health Care Professions',this)">Health Care Professions</button>
+    <span style="flex:1"></span>
+    <select class="filter-select" onchange="setFilter('year',this.value,this)">
+      <option value="all">All Years</option>
+      <option>2020s</option><option>2010s</option><option>2000s</option><option>1990s</option><option>Earlier</option>
+    </select>
+    <select class="filter-select" onchange="setFilter('industry',this.value,this)">
+      <option value="all">All Industries</option>
+      <option>Technology</option><option>Finance</option><option>Healthcare</option>
+      <option>Public Service</option><option>Arts &amp; Media</option><option>Education</option>
+    </select>
+  </div>
+
+  <div class="dir-grid" id="dir-cards"></div>
+
+  <div class="pagination">
+    <button class="page-btn">‹</button>
+    <button class="page-btn on">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <button class="page-btn">4</button>
+    <button class="page-btn">›</button>
+  </div>
+
+</div><!-- /alumni -->
+
+<!-- ══ PAGE: PROFILE DETAIL ════════════════════════════ -->
+<div class="page" id="page-profile">
+  <div class="profile-page">
+    <div class="back-link" onclick="goTo('alumni')">Back to profiles</div>
+    <div class="profile-shell" id="profile-shell"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: ABOUT ══════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <h1>About the Network</h1>
+    <p>[Mission statement placeholder meow.]</p>
+  </div>
+  <div class="about-body reveal">
+    <h2>Who we are</h2>
+    <p>[Description of the alumni network organization, its founding, and its mission. This section introduces the institution and what binds its graduates together.]</p>
+    <p>[Additional paragraph describing the community, geographic reach, and the kinds of alumni represented in this directory.]</p>
+    <h2>What we do</h2>
+    <p>[Explain the purpose of the profiles directory — storytelling, mentorship, inspiration, and connection. Describe how alumni are selected or can submit their own profiles.]</p>
+    <h2>Join us</h2>
+    <p>[Call to action for alumni who want to connect, mentor, or share their story. Link to the contact page or submission form.]</p>
+  </div>
+</div>
+
+<!-- ══ PAGE: CONTACT ════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-hero">
+    <h1>Get in Touch</h1>
+    <p>[Address, phone, and email. Reach out to submit your alumni story or update your profile.]</p>
+  </div>
+  <div class="contact-body">
+    <form class="contact-form reveal" onsubmit="return false;">
+      <label>Full Name</label>
+      <input type="text" placeholder="[Your full name]"/>
+      <label>Email Address</label>
+      <input type="email" placeholder="[your@email.com]"/>
+      <label>Graduation Year</label>
+      <input type="text" placeholder="[Year]"/>
+      <label>Program / College</label>
+      <input type="text" placeholder="[Your program]"/>
+      <label>Your Story</label>
+      <textarea placeholder="[Tell us about your career journey, achievements, and how USC shaped you…]"></textarea>
+      <button type="submit">Submit Your Story</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ FOOTER (shared) ════════════════════════════════ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Alumni Network</div>
+      <p>[One-sentence mission statement about connecting alumni across generations.]</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <a onclick="goTo('alumni')">Profiles</a>
+      <a onclick="goTo('about')">About</a>
+      <a onclick="goTo('contact')">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a>[Address line 1]</a>
+      <a>[Address line 2]</a>
+      <a>[Phone] · [Email]</a>
+    </div>
+    <div class="footer-col">
+      <h4>Follow</h4>
+      <a>Facebook</a>
+      <a>Instagram</a>
+      <a>LinkedIn</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© [Year] Alumni Network. Wireframe mockup.</p>
+    <p>Privacy Policy · Terms of Use</p>
+  </div>
+</footer>
+
+<script>
+/* ── DATA ─────────────────────────────────────────────── */
+const BANNERS = [
+  'linear-gradient(160deg,#1A4A2E 0%,#0F3320 100%)',
+  'linear-gradient(160deg,#1A3A5C 0%,#0D2240 100%)',
+  'linear-gradient(160deg,#5C3A1A 0%,#402010 100%)',
+  'linear-gradient(160deg,#3A1A5C 0%,#250D40 100%)',
+  'linear-gradient(160deg,#1A4A45 0%,#0D302D 100%)',
+  'linear-gradient(160deg,#4A3A1A 0%,#2D2410 100%)',
+  'linear-gradient(160deg,#2A4A1A 0%,#182D0E 100%)',
+  'linear-gradient(160deg,#4A1A3A 0%,#2D0E24 100%)',
+  'linear-gradient(160deg,#1A2A4A 0%,#0E1A2D 100%)',
+];
+
+const ALUMNI = [
+  { id:1,  initials:'AB', name:'[Alumnus Name — AB]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Technology',    sector:'Tech',    tagline:'[One-line tagline describing impact or current role.]' },
+  { id:2,  initials:'CD', name:'[Alumnus Name — CD]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Finance',       sector:'Finance', tagline:'[One-line tagline describing impact or current role.]' },
+  { id:3,  initials:'EF', name:'[Alumnus Name — EF]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Healthcare',    sector:'Health',  tagline:'[One-line tagline describing impact or current role.]' },
+  { id:4,  initials:'GH', name:'[Alumnus Name — GH]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Public Service', sector:'Gov',     tagline:'[One-line tagline describing impact or current role.]' },
+  { id:5,  initials:'IJ', name:'[Alumnus Name — IJ]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Arts & Media',  sector:'Arts',    tagline:'[One-line tagline describing impact or current role.]' },
+  { id:6,  initials:'KL', name:'[Alumnus Name — KL]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Education',     sector:'Edu',     tagline:'[One-line tagline describing impact or current role.]' },
+  { id:7,  initials:'MN', name:'[Alumnus Name — MN]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Technology',    sector:'Tech',    tagline:'[One-line tagline describing impact or current role.]' },
+  { id:8,  initials:'OP', name:'[Alumnus Name — OP]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Finance',       sector:'Finance', tagline:'[One-line tagline describing impact or current role.]' },
+  { id:9,  initials:'QR', name:'[Alumnus Name — QR]', program:'[Program]', grad:'[Grad Year]', college:'[College Name]', role:'[Job Title]', org:'[Organization]', industry:'Healthcare',    sector:'Health',  tagline:'[One-line tagline describing impact or current role.]' },
+];
+
+/* ── ROUTING ─────────────────────────────────────────── */
+let currentPage = 'home';
+
+function goTo(page, id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+  if (page === 'profile' && id) {
+    renderProfile(id);
+    document.getElementById('page-profile').classList.add('active');
+    document.getElementById('nav-alumni').classList.add('active');
+  } else {
+    document.getElementById('page-' + page).classList.add('active');
+    const navEl = document.getElementById('nav-' + page);
+    if (navEl) navEl.classList.add('active');
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  currentPage = page;
+  observeReveal();
+}
+
+/* ── CARD BUILDER ────────────────────────────────────── */
+function buildCard(a, i) {
+  const banner = BANNERS[i % BANNERS.length];
+  return `
+    <div class="profile-card reveal s${(i%3)+1}" onclick="goTo('profile',${a.id})">
+      <div class="card-banner" style="background:${banner}">
+        <div class="card-initials">${a.initials}</div>
+        <span class="card-sector">${a.sector}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-program">${a.program} · ${a.grad}</div>
+        <div class="card-name">${a.name}</div>
+        <div class="card-tagline">${a.tagline}</div>
+      </div>
+      <div class="card-footer">
+        <span class="read-more">Read profile</span>
+      </div>
+    </div>`;
+}
+
+/* ── RENDER HOME CARDS ───────────────────────────────── */
+document.getElementById('home-cards').innerHTML = ALUMNI.slice(0,3).map(buildCard).join('');
+
+/* ── RENDER DIRECTORY ────────────────────────────────── */
+let activeFilters = { program:'all', year:'all', industry:'all' };
+
+function renderDir() {
+  const list = ALUMNI.filter(a => {
+    if (activeFilters.industry !== 'all' && a.industry !== activeFilters.industry) return false;
+    return true;
+  });
+  document.getElementById('dir-cards').innerHTML = list.length
+    ? list.map(buildCard).join('')
+    : '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;">No profiles match the selected filters.</p>';
+  observeReveal();
+}
+
+function setFilter(type, val, el) {
+  activeFilters[type] = val;
+  if (el && el.classList && el.classList.contains('filter-btn')) {
+    el.closest('.filter-bar').querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+    el.classList.add('on');
+  }
+  renderDir();
+}
+
+renderDir();
+
+/* ── RENDER PROFILE DETAIL ───────────────────────────── */
+function renderProfile(id) {
+  const a = ALUMNI.find(x => x.id === id);
+  if (!a) return;
+  const banner = BANNERS[(id-1) % BANNERS.length];
+  document.getElementById('profile-shell').innerHTML = `
+    <div class="profile-sidebar">
+      <div class="sidebar-avatar">${a.initials}</div>
+      <div class="sidebar-name">${a.name}</div>
+      <div class="sidebar-class">Class of ${a.grad}</div>
+      <div class="sidebar-row">
+        <div class="sidebar-row-label">Program</div>
+        <div class="sidebar-row-val">${a.program}</div>
+      </div>
+      <div class="sidebar-row">
+        <div class="sidebar-row-label">College</div>
+        <div class="sidebar-row-val">${a.college}</div>
+      </div>
+      <div class="sidebar-row">
+        <div class="sidebar-row-label">Graduation Year</div>
+        <div class="sidebar-row-val">${a.grad}</div>
+      </div>
+      <div class="sidebar-row">
+        <div class="sidebar-row-label">Current Role</div>
+        <div class="sidebar-row-val">${a.role}</div>
+      </div>
+      <div class="sidebar-row">
+        <div class="sidebar-row-label">Industry</div>
+        <div class="sidebar-row-val">${a.industry}</div>
+      </div>
+    </div>
+    <div class="profile-body">
+      <span class="badge-college">${a.college}</span>
+      <div class="detail-quote">"${a.tagline}"</div>
+      <div class="detail-section">
+        <h3>Career Story</h3>
+        <p>[A short biography describing the alumnus's career journey, notable achievements, and what they have been working on since graduating.</p>
+      </div>
+      <div class="detail-section">
+        <h3>Employment</h3>
+        <p style="font-size:13px;color:var(--muted);">${a.role} · ${a.org} · ${a.industry}</p>
+      </div>
+      <div class="detail-section">
+        <h3>Awards &amp; Recognition</h3>
+        <div class="award-item"><div class="award-dot"></div><span>[Award Title]</span><span class="award-year">[Year]</span></div>
+        <div class="award-item"><div class="award-dot"></div><span>[Award Title]</span><span class="award-year">[Year]</span></div>
+      </div>
+      <div class="detail-section">
+        <h3>Academic Background</h3>
+        <p style="font-size:13px;color:var(--muted);">${a.program} — ${a.college}, ${a.grad}</p>
+      </div>
+      <div class="btn-row">
+        <button class="btn-green">Request Record Modification</button>
+        <button class="btn-outline-green">Contact Alumni</button>
+      </div>
+    </div>`;
+}
+
+/* ── SCROLL REVEAL ───────────────────────────────────── */
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+function observeReveal() {
+  setTimeout(() => {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+  }, 50);
+}
+
+observeReveal();
+</script>
+</body>
+</html>

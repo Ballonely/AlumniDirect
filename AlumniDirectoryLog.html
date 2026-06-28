@@ -1,0 +1,128 @@
+<!-- Formerly named AlumniDirectoryLog.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | USC Alumni Network</title>
+    <link rel="stylesheet" href="AlumniDirectoryLogEdits.css" />
+  </head>
+  <body>
+    <div class="left-panel">
+      <div class="bg-slide slide1"></div>
+      <div class="bg-slide slide2"></div>
+      <div class="bg-slide slide3"></div>
+      <div class="bg-slide slide4"></div>
+
+      <div class="green-overlay"></div>
+      <div class="left-content">
+        <span class="usc-label">
+          University
+          <span>of</span>
+          San Carlos
+        </span>
+        <h1>
+          Alumni
+          <span>Network</span>
+          <br />
+        </h1>
+        <div class="left-divider"></div>
+        <p>
+          Welcome back, Carolinian. Connect with your alma mater and fellow
+          alumni through the USC Academic Alumni Journal Directory.
+        </p>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="right-content">
+        <div class="login-box">
+          <p
+            class="field-hint"
+            id="loginMsg"
+            style="
+              min-height: 14px;
+              font-size: 0.78em;
+              color: #fcbf16;
+              margin-bottom: 10px;
+              text-align: center;
+            "
+          ></p>
+          <form action="api/login.php" method="POST">
+            <h2>Sign In</h2>
+            <p class="login-subtitle">Access your alumni account</p>
+
+            <div class="input-box">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder=" "
+                required
+              />
+              <label>Email</label>
+              <span class="icon">
+                <ion-icon name="mail-outline"></ion-icon>
+              </span>
+            </div>
+            <div class="input-box">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder=" "
+                required
+              />
+              <label>Password</label>
+              <span class="icon">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+              </span>
+            </div>
+
+            <div class="remember-forgot">
+              <label>
+                <input type="checkbox" />
+                Remember me
+              </label>
+              <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit">Sign In</button>
+
+            <div class="register-link">
+              <p>
+                Don't have an account?
+                <a href="AlumniRegister.html">Register</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@8.0.13/dist/ionicons/ionicons.js"
+    ></script>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const msgEl = document.getElementById("loginMsg");
+      if (params.get("error") === "invalid") {
+        msgEl.textContent = "Incorrect email or password.";
+      } else if (params.get("error") === "missing") {
+        msgEl.textContent = "Please fill in both fields.";
+      }
+    </script>
+
+    <footer>
+      &copy; 2026 University of San Carlos Alumni Directory. All rights
+      reserved.
+    </footer>
+  </body>
+</html>
