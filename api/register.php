@@ -11,7 +11,7 @@ session_start();
 require __DIR__ . '/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../AlumniRegister.html');
+    header('Location: ../pages/pb_register.html');
     exit;
 }
 
@@ -33,7 +33,7 @@ if (strlen($password) < 8)                        $errors[] = 'password';
 if ($password !== $confirm)                        $errors[] = 'confirm';
 
 if (!empty($errors)) {
-    header('Location: ../AlumniRegister.html?error=' . implode(',', $errors));
+    header('Location: ../pages/pb_register.html?error=' . implode(',', $errors));
     exit;
 }
 
@@ -41,7 +41,7 @@ if (!empty($errors)) {
 $check = $pdo->prepare('SELECT account_ID FROM account WHERE email = ?');
 $check->execute([$email]);
 if ($check->fetch()) {
-    header('Location: ../AlumniRegister.html?error=emailtaken');
+    header('Location: ../pages/pb_register.html?error=emailtaken');
     exit;
 }
 
@@ -61,5 +61,5 @@ $stmt->execute([$firstname, $middlenameValue, $lastname, $suffixValue, $schoolid
 // Auto-login: treat a fresh registration as an authenticated session
 $_SESSION['account_ID'] = $pdo->lastInsertId();
 
-header('Location: ../AlumniProfile.html');
+header('Location: ../pages/pv_main.html');
 exit;

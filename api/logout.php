@@ -4,5 +4,5 @@
 session_start();
 session_unset();
 session_destroy();
-header('Location: ../AlumniDirectoryLog.html');
+header('Location: ../pages/pb_login.html');
 exit;
