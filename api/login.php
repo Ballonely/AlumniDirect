@@ -9,7 +9,7 @@ session_start();
 require __DIR__ . '/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../AlumniDirectoryLog.html');
+    header('Location: ../pages/pb_login.html');
     exit;
 }
 
@@ -17,7 +17,7 @@ $email    = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 
 if ($email === '' || $password === '') {
-    header('Location: ../AlumniDirectoryLog.html?error=missing');
+    header('Location: ../pages/pb_login.html?error=missing');
     exit;
 }
 
@@ -28,9 +28,9 @@ $user = $stmt->fetch();
 if ($user && password_verify($password, $user['password'])) {
     // Login successful
     $_SESSION['account_ID'] = $user['account_ID'];
-    header('Location: ../AlumniProfile.html');
+    header('Location: ../pages/pv_main.html');
     exit;
 } else {
-    header('Location: ../AlumniDirectoryLog.html?error=invalid');
+    header('Location: ../pages/pb_login.html?error=invalid');
     exit;
 }
