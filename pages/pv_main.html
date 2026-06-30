@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../styles/pv_main.css" /> 
+    <link rel="stylesheet" href="../styles/pv_main.css" />
   </head>
   <body>
     <!-- ══ NAV ════════════════════════════════════════════ -->
@@ -18,14 +18,15 @@
       <div class="nav-brand" onclick="goTo('home')">
         <img src="../images/usc_logo.png" alt="USC Logo" class="nav-logo" />
         <div>
-          <div class="nav-name">Alumni Network</div>
-          <div class="nav-sub">Profiles &amp; Stories</div>
+          <div class="nav-name">University <i>of</i> San Carlos</div>
+          <div class="nav-sub">Dugtong Carolinian</div>
         </div>
       </div>
       <div class="nav-links">
         <a id="nav-home" onclick="goTo('home')">Home</a>
         <a id="nav-alumni" onclick="goTo('alumni')">Alumni Profiles</a>
         <a id="nav-account" onclick="goTo('account')">My Account</a>
+        <span class="nav-divider">|</span>
         <a href="pb_login.html">Sign Out</a>
       </div>
     </nav>
@@ -39,7 +40,7 @@
           <i>of</i>
           San Carlos
           <br />
-          <span>Alumni Network</span>
+          <span>Dugtong Carolinian</span>
         </h1>
         <h1 class="hero-main-sub">
           Lives shaped here.
@@ -85,14 +86,6 @@
         <div class="cards-row" id="home-cards"></div>
       </div>
 
-      <div class="cta-band">
-        <h3>Are you an alumnus?</h3>
-        <p>[Submit your story or update your profile.]</p>
-        <button class="btn-gold" onclick="goTo('account')">
-          Update your profile
-        </button>
-      </div>
-    </div>
     <!-- /home -->
 
     <!-- ══ PAGE: ALUMNI DIRECTORY ══════════════════════════ -->
@@ -201,15 +194,21 @@
       </div>
     </div>
 
-    <!-- ══ PAGE: ABOUT ══════════════════════════════════════ Removed Entirely-->     
-    
+    <!-- ══ PAGE: ABOUT ══════════════════════════════════════ Removed Entirely-->
+
     <!-- ══ PAGE: MY ACCOUNT (Edit Profile) ══════════════════ -->
     <div class="page" id="page-account">
-
       <div class="unsaved-banner" id="unsaved-banner">
-        <span><span class="unsaved-pulse"></span>You have unsaved changes.</span>
-        <button class="unsaved-btn save-now"   onclick="doSave()">Save Now</button>
-        <button class="unsaved-btn discard-btn" onclick="doDiscard()">Discard</button>
+        <span>
+          <span class="unsaved-pulse"></span>
+          You have unsaved changes.
+        </span>
+        <button class="unsaved-btn save-now" onclick="doSave()">
+          Save Now
+        </button>
+        <button class="unsaved-btn discard-btn" onclick="doDiscard()">
+          Discard
+        </button>
       </div>
 
       <div class="page-header">
@@ -219,39 +218,63 @@
         <div class="particle p4"></div>
         <div class="particle p5"></div>
         <div class="header-inner">
-          <div class="page-eyebrow"><span class="eyebrow-dot"></span> My Account</div>
-          <h1>Edit Your <em>Profile</em></h1>
-          <p>Keep your alumni record up to date. Changes are saved securely to your record.</p>
+          <div class="page-eyebrow">
+            <span class="eyebrow-dot"></span>
+            My Account
+          </div>
+          <h1>
+            Edit Your
+            <em>Profile</em>
+          </h1>
+          <p>
+            Keep your alumni record up to date. Changes are saved securely to
+            your record.
+          </p>
         </div>
       </div>
 
       <div class="edit-wrapper">
-
         <div class="edit-shell">
-
           <aside class="edit-sidebar">
             <div class="sidebar-content">
-
-              <div class="avatar-wrap" onclick="document.getElementById('avatar-file-input').click()">
+              <div
+                class="avatar-wrap"
+                onclick="document.getElementById('avatar-file-input').click()"
+              >
                 <div class="avatar-ring"></div>
                 <div class="avatar-ring-inner"></div>
                 <div class="avatar-circle" id="avatar-circle">
                   <span id="avatar-initials">AB</span>
                 </div>
                 <div class="avatar-overlay">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                    <circle cx="12" cy="13" r="4"/>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                    />
+                    <circle cx="12" cy="13" r="4" />
                   </svg>
                   Upload Photo
                 </div>
               </div>
-              <input type="file" id="avatar-file-input" accept="image/*"/>
+              <input type="file" id="avatar-file-input" accept="image/*" />
 
-              <div class="sidebar-name"  id="sidebar-name-preview">[Alumnus Name]</div>
-              <div class="sidebar-class" id="sidebar-class-preview">Class of [Year]</div>
-              <div class="badge-college" id="sidebar-badge-preview">[College]</div>
+              <div class="sidebar-name" id="sidebar-name-preview">
+                [Alumnus Name]
+              </div>
+              <div class="sidebar-class" id="sidebar-class-preview">
+                Class of [Year]
+              </div>
+              <div class="badge-college" id="sidebar-badge-preview">
+                [College]
+              </div>
 
               <div class="sidebar-divider"></div>
               <div class="sidebar-toggle-heading">Visibility Settings</div>
@@ -259,30 +282,28 @@
               <div class="toggle-row">
                 <span class="toggle-label">Show email publicly</span>
                 <label class="switch">
-                  <input type="checkbox" id="toggle-email" checked/>
+                  <input type="checkbox" id="toggle-email" checked />
                   <span class="switch-track"></span>
                 </label>
               </div>
               <div class="toggle-row">
                 <span class="toggle-label">Show phone publicly</span>
                 <label class="switch">
-                  <input type="checkbox" id="toggle-phone"/>
+                  <input type="checkbox" id="toggle-phone" />
                   <span class="switch-track"></span>
                 </label>
               </div>
               <div class="toggle-row">
                 <span class="toggle-label">Show employment publicly</span>
                 <label class="switch">
-                  <input type="checkbox" id="toggle-employment" checked/>
+                  <input type="checkbox" id="toggle-employment" checked />
                   <span class="switch-track"></span>
                 </label>
               </div>
-
             </div>
           </aside>
 
           <div class="edit-body">
-
             <div class="edit-section" id="acc-sec-1">
               <div class="section-header-row">
                 <div class="section-num">1</div>
@@ -292,15 +313,32 @@
               <div class="field-grid-3">
                 <div>
                   <label class="form-label" for="first-name">First Name</label>
-                  <input type="text" id="first-name" placeholder="First name" data-original=""/>
+                  <input
+                    type="text"
+                    id="first-name"
+                    placeholder="First name"
+                    data-original=""
+                  />
                 </div>
                 <div>
-                  <label class="form-label" for="middle-name">Middle Name</label>
-                  <input type="text" id="middle-name" placeholder="Middle name" data-original=""/>
+                  <label class="form-label" for="middle-name">
+                    Middle Name
+                  </label>
+                  <input
+                    type="text"
+                    id="middle-name"
+                    placeholder="Middle name"
+                    data-original=""
+                  />
                 </div>
                 <div>
                   <label class="form-label" for="last-name">Last Name</label>
-                  <input type="text" id="last-name" placeholder="Last name" data-original=""/>
+                  <input
+                    type="text"
+                    id="last-name"
+                    placeholder="Last name"
+                    data-original=""
+                  />
                 </div>
               </div>
 
@@ -310,31 +348,47 @@
                   <div class="select-wrap">
                     <select id="suffix" data-original="">
                       <option value="">— None —</option>
-                      <option>Jr.</option><option>Sr.</option>
-                      <option>II</option><option>III</option><option>IV</option><option>V</option>
-                      <option>PhD</option><option>MD</option><option>DDS</option>
-                      <option>Esq.</option><option>CPA</option>
+                      <option>Jr.</option>
+                      <option>Sr.</option>
+                      <option>II</option>
+                      <option>III</option>
+                      <option>IV</option>
+                      <option>V</option>
+                      <option>PhD</option>
+                      <option>MD</option>
+                      <option>DDS</option>
+                      <option>Esq.</option>
+                      <option>CPA</option>
                     </select>
                   </div>
                 </div>
                 <div>
-                  <label class="form-label" for="nickname">Nickname / Preferred Name</label>
-                  <input type="text" id="nickname" placeholder="Preferred name" data-original=""/>
+                  <label class="form-label" for="nickname">
+                    Nickname / Preferred Name
+                  </label>
+                  <input
+                    type="text"
+                    id="nickname"
+                    placeholder="Preferred name"
+                    data-original=""
+                  />
                 </div>
               </div>
 
               <div class="field-grid-2">
                 <div>
                   <label class="form-label" for="dob">Date of Birth</label>
-                  <input type="date" id="dob" data-original=""/>
+                  <input type="date" id="dob" data-original="" />
                 </div>
                 <div>
                   <label class="form-label" for="gender">Gender</label>
                   <div class="select-wrap">
                     <select id="gender" data-original="">
                       <option value="">— Select —</option>
-                      <option>Male</option><option>Female</option>
-                      <option>Non-binary</option><option>Prefer not to say</option>
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Non-binary</option>
+                      <option>Prefer not to say</option>
                     </select>
                   </div>
                 </div>
@@ -357,12 +411,28 @@
                   </div>
                 </div>
                 <div>
-                  <label class="form-label" for="program">Program / Degree</label>
-                  <input type="text" id="program" placeholder="e.g. BS Computer Science" data-original=""/>
+                  <label class="form-label" for="program">
+                    Program / Degree
+                  </label>
+                  <input
+                    type="text"
+                    id="program"
+                    placeholder="e.g. BS Computer Science"
+                    data-original=""
+                  />
                 </div>
                 <div>
-                  <label class="form-label" for="grad-year">Graduation Year</label>
-                  <input type="number" id="grad-year" placeholder="e.g. 2019" min="1900" max="2100" data-original=""/>
+                  <label class="form-label" for="grad-year">
+                    Graduation Year
+                  </label>
+                  <input
+                    type="number"
+                    id="grad-year"
+                    placeholder="e.g. 2019"
+                    min="1900"
+                    max="2100"
+                    data-original=""
+                  />
                 </div>
               </div>
 
@@ -370,7 +440,13 @@
                 <div>
                   <label class="form-label" for="student-id">Student ID</label>
                   <div class="readonly-wrap">
-                    <input type="text" id="student-id" value="" readonly data-original=""/>
+                    <input
+                      type="text"
+                      id="student-id"
+                      value=""
+                      readonly
+                      data-original=""
+                    />
                     <span class="lock-icon">🔒</span>
                   </div>
                 </div>
@@ -386,11 +462,21 @@
               <div class="field-grid-2">
                 <div>
                   <label class="form-label" for="email">Email Address</label>
-                  <input type="email" id="email" placeholder="your@email.com" data-original=""/>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="your@email.com"
+                    data-original=""
+                  />
                 </div>
                 <div>
                   <label class="form-label" for="phone">Phone Number</label>
-                  <input type="tel" id="phone" placeholder="+63 900 000 0000" data-original=""/>
+                  <input
+                    type="tel"
+                    id="phone"
+                    placeholder="+63 900 000 0000"
+                    data-original=""
+                  />
                 </div>
               </div>
             </div>
@@ -403,12 +489,26 @@
 
               <div class="field-grid-2">
                 <div>
-                  <label class="form-label" for="job-title">Current Job Title</label>
-                  <input type="text" id="job-title" placeholder="e.g. Senior Software Engineer" data-original=""/>
+                  <label class="form-label" for="job-title">
+                    Current Job Title
+                  </label>
+                  <input
+                    type="text"
+                    id="job-title"
+                    placeholder="e.g. Senior Software Engineer"
+                    data-original=""
+                  />
                 </div>
                 <div>
-                  <label class="form-label" for="employer">Current Organization / Employer</label>
-                  <input type="text" id="employer" placeholder="Organization name" data-original=""/>
+                  <label class="form-label" for="employer">
+                    Current Organization / Employer
+                  </label>
+                  <input
+                    type="text"
+                    id="employer"
+                    placeholder="Organization name"
+                    data-original=""
+                  />
                 </div>
               </div>
               <div class="field-grid-2">
@@ -430,10 +530,16 @@
               </div>
               <div class="field-single">
                 <label class="form-label" for="bio">Biography</label>
-                <textarea id="bio" rows="5" maxlength="800"
-                          placeholder="Tell us about your career journey, notable achievements, and how USC shaped you..."
-                          data-original=""></textarea>
-                <div class="char-counter" id="bio-counter">0 / 800 characters</div>
+                <textarea
+                  id="bio"
+                  rows="5"
+                  maxlength="800"
+                  placeholder="Tell us about your career journey, notable achievements, and how USC shaped you..."
+                  data-original=""
+                ></textarea>
+                <div class="char-counter" id="bio-counter">
+                  0 / 800 characters
+                </div>
               </div>
             </div>
 
@@ -443,10 +549,24 @@
                 <h3>Awards &amp; Recognition</h3>
               </div>
               <div class="awards-list" id="awards-list"></div>
-              <button class="btn-add-award" type="button" onclick="addAwardRow()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              <button
+                class="btn-add-award"
+                type="button"
+                onclick="addAwardRow()"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
                 Add Award
               </button>
@@ -458,37 +578,45 @@
                 <h3>Profile Tagline / Quote</h3>
               </div>
               <div class="tagline-input-wrap">
-                <input type="text" id="profile-quote"
-                       placeholder='"Your inspiring quote or professional philosophy..."'
-                       data-original=""/>
+                <input
+                  type="text"
+                  id="profile-quote"
+                  placeholder='"Your inspiring quote or professional philosophy..."'
+                  data-original=""
+                />
               </div>
             </div>
 
             <div class="form-actions">
-              <button class="btn-outline-green" type="button" onclick="doCancel()">
+              <button
+                class="btn-outline-green"
+                type="button"
+                onclick="doCancel()"
+              >
                 Cancel
               </button>
-              <button class="btn-green" type="button" id="save-btn" onclick="doSave()">
+              <button
+                class="btn-green"
+                type="button"
+                id="save-btn"
+                onclick="doSave()"
+              >
                 <span class="save-spinner" id="save-spinner"></span>
                 Save Changes
               </button>
             </div>
-
           </div>
         </div>
       </div>
     </div>
     <!-- /account -->
 
-
     <!-- ══ FOOTER (shared) ════════════════════════════════ -->
     <footer>
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-brand-name">Alumni Network</div>
-          <p>
-            To USC we sing, Our Alma Mater Dear.
-          </p>
+          <p>To USC we sing, Our Alma Mater Dear.</p>
         </div>
         <div class="footer-col">
           <h4>Explore</h4>
@@ -509,7 +637,9 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 University of San Carlos Alumni Directory. All rights reserved. </p>
+        <p>
+          © 2026 University of San Carlos Alumni Directory. All rights reserved.
+        </p>
         <p>Privacy Policy · Terms of Use</p>
       </div>
     </footer>
@@ -517,10 +647,15 @@
     <div class="confirm-overlay" id="confirm-overlay">
       <div class="confirm-box">
         <h4>Discard unsaved changes?</h4>
-        <p>This action cannot be undone. Any edits you've made will be lost permanently.</p>
+        <p>
+          This action cannot be undone. Any edits you've made will be lost
+          permanently.
+        </p>
         <div class="confirm-btns">
-          <button class="btn-outline-green" onclick="closeConfirm()">Keep Editing</button>
-          <button class="btn-green"         onclick="confirmDiscard()">Discard</button>
+          <button class="btn-outline-green" onclick="closeConfirm()">
+            Keep Editing
+          </button>
+          <button class="btn-green" onclick="confirmDiscard()">Discard</button>
         </div>
       </div>
     </div>
@@ -529,7 +664,6 @@
       <span class="toast-icon" id="toast-icon"></span>
       <span id="toast-msg"></span>
     </div>
-
 
     <script>
       /* ── DATA ─────────────────────────────────────────────── */
@@ -600,7 +734,6 @@
         const state = e.state || { page: "home" };
         goTo(state.page, state.id, { fromPopState: true });
       });
-
 
       /* ── CARD BUILDER ────────────────────────────────────── */
       function buildCard(a, i) {
@@ -867,106 +1000,133 @@
         (entries) => {
           entries.forEach((e, i) => {
             if (e.isIntersecting) {
-              setTimeout(() => e.target.classList.add('revealed'), i * 60);
+              setTimeout(() => e.target.classList.add("revealed"), i * 60);
               editSectionObserver.unobserve(e.target);
             }
           });
         },
-        { threshold: 0.08 }
+        { threshold: 0.08 },
       );
       function observeEditSections() {
         setTimeout(() => {
-          document.querySelectorAll('#page-account .edit-section:not(.revealed)')
-            .forEach(s => editSectionObserver.observe(s));
+          document
+            .querySelectorAll("#page-account .edit-section:not(.revealed)")
+            .forEach((s) => editSectionObserver.observe(s));
         }, 50);
       }
 
-      function markDirty()  { isDirty = true;  document.getElementById('unsaved-banner').classList.add('visible'); }
-      function clearDirty() { isDirty = false; document.getElementById('unsaved-banner').classList.remove('visible'); }
+      function markDirty() {
+        isDirty = true;
+        document.getElementById("unsaved-banner").classList.add("visible");
+      }
+      function clearDirty() {
+        isDirty = false;
+        document.getElementById("unsaved-banner").classList.remove("visible");
+      }
 
       function checkDirty() {
-        const dirty = [...document.querySelectorAll('#page-account [data-original]')]
-          .some(el => el.value !== (el.dataset.original || ''));
+        const dirty = [
+          ...document.querySelectorAll("#page-account [data-original]"),
+        ].some((el) => el.value !== (el.dataset.original || ""));
         dirty ? markDirty() : clearDirty();
       }
 
       function attachDirtyListeners() {
-        document.querySelectorAll('#page-account [data-original]').forEach(el => {
-          el.addEventListener('input',  checkDirty);
-          el.addEventListener('change', checkDirty);
-        });
-        document.querySelectorAll('#page-account .switch input').forEach(sw => sw.addEventListener('change', markDirty));
+        document
+          .querySelectorAll("#page-account [data-original]")
+          .forEach((el) => {
+            el.addEventListener("input", checkDirty);
+            el.addEventListener("change", checkDirty);
+          });
+        document
+          .querySelectorAll("#page-account .switch input")
+          .forEach((sw) => sw.addEventListener("change", markDirty));
       }
 
       function updateSidebarPreview() {
-        const fn  = document.getElementById('first-name').value.trim();
-        const ln  = document.getElementById('last-name').value.trim();
-        const yr  = document.getElementById('grad-year').value.trim();
-        const collegeSel = document.getElementById('college');
-        const col = collegeSel.options[collegeSel.selectedIndex] ? collegeSel.options[collegeSel.selectedIndex].text : '';
-        document.getElementById('sidebar-name-preview').textContent  = (fn || ln) ? `${fn} ${ln}`.trim() : '[Alumnus Name]';
-        document.getElementById('sidebar-class-preview').textContent = yr ? `Class of ${yr}` : 'Class of [Year]';
-        document.getElementById('sidebar-badge-preview').textContent = (col && collegeSel.value) ? col : '[College]';
+        const fn = document.getElementById("first-name").value.trim();
+        const ln = document.getElementById("last-name").value.trim();
+        const yr = document.getElementById("grad-year").value.trim();
+        const collegeSel = document.getElementById("college");
+        const col = collegeSel.options[collegeSel.selectedIndex]
+          ? collegeSel.options[collegeSel.selectedIndex].text
+          : "";
+        document.getElementById("sidebar-name-preview").textContent =
+          fn || ln ? `${fn} ${ln}`.trim() : "[Alumnus Name]";
+        document.getElementById("sidebar-class-preview").textContent = yr
+          ? `Class of ${yr}`
+          : "Class of [Year]";
+        document.getElementById("sidebar-badge-preview").textContent =
+          col && collegeSel.value ? col : "[College]";
 
-        const initialsEl = document.getElementById('avatar-initials');
+        const initialsEl = document.getElementById("avatar-initials");
         if (initialsEl) {
-          const initials = ((fn[0] || '') + (ln[0] || '')).toUpperCase();
-          initialsEl.textContent = initials || 'AB';
+          const initials = ((fn[0] || "") + (ln[0] || "")).toUpperCase();
+          initialsEl.textContent = initials || "AB";
         }
       }
-      ['first-name','last-name','grad-year','college'].forEach(id => {
+      ["first-name", "last-name", "grad-year", "college"].forEach((id) => {
         const el = document.getElementById(id);
-        el.addEventListener('input', updateSidebarPreview);
-        el.addEventListener('change', updateSidebarPreview);
+        el.addEventListener("input", updateSidebarPreview);
+        el.addEventListener("change", updateSidebarPreview);
       });
 
       function setupCounter(inputId, counterId, max) {
-        const input   = document.getElementById(inputId);
+        const input = document.getElementById(inputId);
         const counter = document.getElementById(counterId);
         function update() {
           const len = input.value.length;
           counter.textContent = `${len} / ${max} characters`;
-          counter.className = 'char-counter' + (len > max * .9 ? ' warn' : '') + (len >= max ? ' full' : '');
+          counter.className =
+            "char-counter" +
+            (len > max * 0.9 ? " warn" : "") +
+            (len >= max ? " full" : "");
         }
-        input.addEventListener('input', update);
+        input.addEventListener("input", update);
         update();
       }
-      setupCounter('bio', 'bio-counter', 800);
+      setupCounter("bio", "bio-counter", 800);
 
-      document.getElementById('avatar-file-input').addEventListener('change', function () {
-        const file = this.files[0]; if (!file) return;
-        pendingPhotoType = file.type;
-        const reader = new FileReader();
-        reader.onload = e => {
-          const dataUrl = e.target.result;
-          pendingPhotoBase64 = dataUrl.split(',')[1];
-          const circle   = document.getElementById('avatar-circle');
-          const initials = document.getElementById('avatar-initials');
-          if (initials) initials.remove();
-          let img = circle.querySelector('img');
-          if (!img) { img = document.createElement('img'); circle.appendChild(img); }
-          img.src = dataUrl;
-        };
-        reader.readAsDataURL(file);
-        markDirty();
-      });
+      document
+        .getElementById("avatar-file-input")
+        .addEventListener("change", function () {
+          const file = this.files[0];
+          if (!file) return;
+          pendingPhotoType = file.type;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const dataUrl = e.target.result;
+            pendingPhotoBase64 = dataUrl.split(",")[1];
+            const circle = document.getElementById("avatar-circle");
+            const initials = document.getElementById("avatar-initials");
+            if (initials) initials.remove();
+            let img = circle.querySelector("img");
+            if (!img) {
+              img = document.createElement("img");
+              circle.appendChild(img);
+            }
+            img.src = dataUrl;
+          };
+          reader.readAsDataURL(file);
+          markDirty();
+        });
 
       function addAwardRow(title, year) {
         awardCount++;
-        const id  = `award-${awardCount}`;
-        const row = document.createElement('div');
-        row.className = 'award-row';
+        const id = `award-${awardCount}`;
+        const row = document.createElement("div");
+        row.className = "award-row";
         row.id = id;
         row.innerHTML = `
     <input type="text"   placeholder="Award title"
-           value="${title||''}" data-original="${title||''}" oninput="checkDirty()"/>
+           value="${title || ""}" data-original="${title || ""}" oninput="checkDirty()"/>
     <input type="number" placeholder="Year" min="1900" max="2100"
-           value="${year||''}"  data-original="${year||''}"  oninput="checkDirty()" style="text-align:center"/>
+           value="${year || ""}"  data-original="${year || ""}"  oninput="checkDirty()" style="text-align:center"/>
     <button class="award-remove-btn" onclick="removeAwardRow('${id}')" type="button" title="Remove">✕</button>`;
-        document.getElementById('awards-list').appendChild(row);
-        row.querySelectorAll('[data-original]').forEach(el => {
-          el.addEventListener('input',  checkDirty);
-          el.addEventListener('change', checkDirty);
+        document.getElementById("awards-list").appendChild(row);
+        row.querySelectorAll("[data-original]").forEach((el) => {
+          el.addEventListener("input", checkDirty);
+          el.addEventListener("change", checkDirty);
         });
       }
 
@@ -976,147 +1136,198 @@
         markDirty();
       }
 
-      function populateLookupSelect(selectEl, items, idKey, nameKey, currentId) {
+      function populateLookupSelect(
+        selectEl,
+        items,
+        idKey,
+        nameKey,
+        currentId,
+      ) {
         selectEl.innerHTML = selectEl.options[0].outerHTML; // keep the placeholder option
-        items.forEach(item => {
-          const opt = document.createElement('option');
+        items.forEach((item) => {
+          const opt = document.createElement("option");
           opt.value = item[idKey];
           opt.textContent = item[nameKey];
           selectEl.appendChild(opt);
         });
-        selectEl.value = currentId || '';
+        selectEl.value = currentId || "";
       }
 
       function snapshotOriginals() {
-        document.querySelectorAll('#page-account [data-original]').forEach(el => el.dataset.original = el.value);
+        document
+          .querySelectorAll("#page-account [data-original]")
+          .forEach((el) => (el.dataset.original = el.value));
         clearDirty();
       }
 
       async function loadAccount() {
         if (accountLoaded) return;
         try {
-          const res = await fetch(API_BASE + 'get_account.php');
-          if (!res.ok) throw new Error('API returned status ' + res.status);
+          const res = await fetch(API_BASE + "get_account.php");
+          if (!res.ok) throw new Error("API returned status " + res.status);
           const data = await res.json();
           if (data.error) throw new Error(data.error);
 
           const acc = data.account;
-          document.getElementById('first-name').value  = acc.first_Name || '';
-          document.getElementById('middle-name').value = acc.middle_Name || '';
-          document.getElementById('last-name').value   = acc.last_Name || '';
-          document.getElementById('suffix').value      = acc.suffix || '';
-          document.getElementById('nickname').value    = acc.nickname || '';
-          document.getElementById('dob').value          = acc.date_Of_Birth || '';
-          document.getElementById('gender').value       = acc.gender || '';
-          document.getElementById('email').value        = acc.email || '';
-          document.getElementById('phone').value        = acc.phone || '';
-          document.getElementById('bio').value           = acc.bio || '';
-          document.getElementById('profile-quote').value = acc.profile_Quote || '';
-          document.getElementById('student-id').value    = acc.school_ID || '';
-          document.getElementById('student-id').dataset.original = acc.school_ID || '';
-          document.getElementById('toggle-email').checked      = !!acc.show_Email;
-          document.getElementById('toggle-phone').checked      = !!acc.show_Phone;
-          document.getElementById('toggle-employment').checked = !!acc.show_Employment;
+          document.getElementById("first-name").value = acc.first_Name || "";
+          document.getElementById("middle-name").value = acc.middle_Name || "";
+          document.getElementById("last-name").value = acc.last_Name || "";
+          document.getElementById("suffix").value = acc.suffix || "";
+          document.getElementById("nickname").value = acc.nickname || "";
+          document.getElementById("dob").value = acc.date_Of_Birth || "";
+          document.getElementById("gender").value = acc.gender || "";
+          document.getElementById("email").value = acc.email || "";
+          document.getElementById("phone").value = acc.phone || "";
+          document.getElementById("bio").value = acc.bio || "";
+          document.getElementById("profile-quote").value =
+            acc.profile_Quote || "";
+          document.getElementById("student-id").value = acc.school_ID || "";
+          document.getElementById("student-id").dataset.original =
+            acc.school_ID || "";
+          document.getElementById("toggle-email").checked = !!acc.show_Email;
+          document.getElementById("toggle-phone").checked = !!acc.show_Phone;
+          document.getElementById("toggle-employment").checked =
+            !!acc.show_Employment;
 
           if (acc.photo) {
-            const circle   = document.getElementById('avatar-circle');
-            const initials = document.getElementById('avatar-initials');
+            const circle = document.getElementById("avatar-circle");
+            const initials = document.getElementById("avatar-initials");
             if (initials) initials.remove();
-            let img = circle.querySelector('img');
-            if (!img) { img = document.createElement('img'); circle.appendChild(img); }
-            img.src = `data:${acc.photo_Type || 'image/jpeg'};base64,${acc.photo}`;
+            let img = circle.querySelector("img");
+            if (!img) {
+              img = document.createElement("img");
+              circle.appendChild(img);
+            }
+            img.src = `data:${acc.photo_Type || "image/jpeg"};base64,${acc.photo}`;
           }
 
-          populateLookupSelect(document.getElementById('college'),   data.colleges,   'college_ID',  'college_Name', data.academic.college_ID);
-          populateLookupSelect(document.getElementById('industry'),  data.industries, 'sector_ID',   'sector_Name',  data.employment.sector_ID);
+          populateLookupSelect(
+            document.getElementById("college"),
+            data.colleges,
+            "college_ID",
+            "college_Name",
+            data.academic.college_ID,
+          );
+          populateLookupSelect(
+            document.getElementById("industry"),
+            data.industries,
+            "sector_ID",
+            "sector_Name",
+            data.employment.sector_ID,
+          );
 
-          document.getElementById('program').value   = data.academic.program_Name || '';
-          document.getElementById('grad-year').value = data.academic.graduation_Year || '';
-          document.getElementById('job-title').value = data.employment.occupation || '';
-          document.getElementById('employer').value  = data.employment.employer || '';
+          document.getElementById("program").value =
+            data.academic.program_Name || "";
+          document.getElementById("grad-year").value =
+            data.academic.graduation_Year || "";
+          document.getElementById("job-title").value =
+            data.employment.occupation || "";
+          document.getElementById("employer").value =
+            data.employment.employer || "";
 
-          document.getElementById('awards-list').innerHTML = '';
+          document.getElementById("awards-list").innerHTML = "";
           awardCount = 0;
-          (data.awards || []).forEach(a => addAwardRow(a.award_Title, a.year_received));
-          if (!data.awards || !data.awards.length) addAwardRow('', '');
+          (data.awards || []).forEach((a) =>
+            addAwardRow(a.award_Title, a.year_received),
+          );
+          if (!data.awards || !data.awards.length) addAwardRow("", "");
 
           snapshotOriginals();
           updateSidebarPreview();
-          document.getElementById('bio-counter').textContent =
-            `${document.getElementById('bio').value.length} / 800 characters`;
+          document.getElementById("bio-counter").textContent =
+            `${document.getElementById("bio").value.length} / 800 characters`;
 
           accountLoaded = true;
         } catch (err) {
-          console.error('Failed to load account:', err);
-          showToast('error', '⚠', 'Could not load your profile. Is the API running?');
+          console.error("Failed to load account:", err);
+          showToast(
+            "error",
+            "⚠",
+            "Could not load your profile. Is the API running?",
+          );
         }
       }
 
       async function doSave() {
-        const btn     = document.getElementById('save-btn');
-        const spinner = document.getElementById('save-spinner');
+        const btn = document.getElementById("save-btn");
+        const spinner = document.getElementById("save-spinner");
         btn.disabled = true;
-        spinner.style.display = 'inline-block';
+        spinner.style.display = "inline-block";
 
-        const awards = [...document.querySelectorAll('#awards-list .award-row')].map(row => {
-          const inputs = row.querySelectorAll('input');
-          return { title: inputs[0].value.trim(), year: inputs[1].value.trim() };
-        }).filter(a => a.title && a.year);
+        const awards = [...document.querySelectorAll("#awards-list .award-row")]
+          .map((row) => {
+            const inputs = row.querySelectorAll("input");
+            return {
+              title: inputs[0].value.trim(),
+              year: inputs[1].value.trim(),
+            };
+          })
+          .filter((a) => a.title && a.year);
 
         const payload = {
-          firstName: document.getElementById('first-name').value.trim(),
-          lastName: document.getElementById('last-name').value.trim(),
-          middleName: document.getElementById('middle-name').value.trim(),
-          suffix: document.getElementById('suffix').value,
-          nickname: document.getElementById('nickname').value.trim(),
-          dob: document.getElementById('dob').value,
-          gender: document.getElementById('gender').value,
-          email: document.getElementById('email').value.trim(),
-          phone: document.getElementById('phone').value.trim(),
-          bio: document.getElementById('bio').value.trim(),
-          profileQuote: document.getElementById('profile-quote').value.trim(),
-          showEmail: document.getElementById('toggle-email').checked ? 1 : 0,
-          showPhone: document.getElementById('toggle-phone').checked ? 1 : 0,
-          showEmployment: document.getElementById('toggle-employment').checked ? 1 : 0,
-          collegeId: document.getElementById('college').value || null,
-          programName: document.getElementById('program').value.trim(),
-          gradYear: document.getElementById('grad-year').value || null,
-          sectorId: document.getElementById('industry').value || null,
-          jobTitle: document.getElementById('job-title').value.trim(),
-          employer: document.getElementById('employer').value.trim(),
+          firstName: document.getElementById("first-name").value.trim(),
+          lastName: document.getElementById("last-name").value.trim(),
+          middleName: document.getElementById("middle-name").value.trim(),
+          suffix: document.getElementById("suffix").value,
+          nickname: document.getElementById("nickname").value.trim(),
+          dob: document.getElementById("dob").value,
+          gender: document.getElementById("gender").value,
+          email: document.getElementById("email").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          bio: document.getElementById("bio").value.trim(),
+          profileQuote: document.getElementById("profile-quote").value.trim(),
+          showEmail: document.getElementById("toggle-email").checked ? 1 : 0,
+          showPhone: document.getElementById("toggle-phone").checked ? 1 : 0,
+          showEmployment: document.getElementById("toggle-employment").checked
+            ? 1
+            : 0,
+          collegeId: document.getElementById("college").value || null,
+          programName: document.getElementById("program").value.trim(),
+          gradYear: document.getElementById("grad-year").value || null,
+          sectorId: document.getElementById("industry").value || null,
+          jobTitle: document.getElementById("job-title").value.trim(),
+          employer: document.getElementById("employer").value.trim(),
           awards: awards,
           photoBase64: pendingPhotoBase64,
           photoType: pendingPhotoType,
         };
 
         try {
-          const res = await fetch(API_BASE + 'update_account.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+          const res = await fetch(API_BASE + "update_account.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
           });
           const result = await res.json();
-          if (!res.ok || result.error) throw new Error(result.error || 'Save failed');
+          if (!res.ok || result.error)
+            throw new Error(result.error || "Save failed");
 
           pendingPhotoBase64 = null;
           pendingPhotoType = null;
           snapshotOriginals();
-          showToast('success', '✓', 'Profile updated successfully.');
+          showToast("success", "✓", "Profile updated successfully.");
         } catch (err) {
-          console.error('Failed to save account:', err);
-          showToast('error', '⚠', 'Could not save your changes. Please try again.');
+          console.error("Failed to save account:", err);
+          showToast(
+            "error",
+            "⚠",
+            "Could not save your changes. Please try again.",
+          );
         } finally {
           btn.disabled = false;
-          spinner.style.display = 'none';
+          spinner.style.display = "none";
         }
       }
 
       function doCancel() {
-        if (isDirty) document.getElementById('confirm-overlay').classList.add('visible');
-        else goTo('home');
+        if (isDirty)
+          document.getElementById("confirm-overlay").classList.add("visible");
+        else goTo("home");
       }
 
-      function closeConfirm() { document.getElementById('confirm-overlay').classList.remove('visible'); }
+      function closeConfirm() {
+        document.getElementById("confirm-overlay").classList.remove("visible");
+      }
 
       function confirmDiscard() {
         closeConfirm();
@@ -1124,23 +1335,28 @@
         loadAccount();
       }
 
-      function doDiscard() { if (isDirty) document.getElementById('confirm-overlay').classList.add('visible'); }
+      function doDiscard() {
+        if (isDirty)
+          document.getElementById("confirm-overlay").classList.add("visible");
+      }
 
       let toastTimer = null;
       function showToast(type, icon, msg) {
-        const t = document.getElementById('toast');
-        document.getElementById('toast-icon').textContent = icon;
-        document.getElementById('toast-msg').textContent  = msg;
+        const t = document.getElementById("toast");
+        document.getElementById("toast-icon").textContent = icon;
+        document.getElementById("toast-msg").textContent = msg;
         t.className = `toast ${type}`;
         void t.offsetWidth;
-        t.classList.add('visible');
+        t.classList.add("visible");
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove('visible'), 3400);
+        toastTimer = setTimeout(() => t.classList.remove("visible"), 3400);
       }
 
-      document.getElementById('confirm-overlay').addEventListener('click', function (e) {
-        if (e.target === this) closeConfirm();
-      });
+      document
+        .getElementById("confirm-overlay")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeConfirm();
+        });
 
       attachDirtyListeners();
     </script>

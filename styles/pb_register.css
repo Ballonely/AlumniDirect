@@ -79,8 +79,6 @@
   100% { opacity: 0; transform: scale(1.08); }
 }
 
-
-  
     .green-overlay {
       position: absolute;
       inset: 0;
@@ -118,6 +116,7 @@
 
     .left-content h1 {
       font-family: var(--secFont);
+      font-weight: 400;
       font-size: var(--xlargeFont);
       line-height: 1.2;
       color: #ffffff;
@@ -128,6 +127,37 @@
     .left-content h1 span {
       font-family: var(--secFont);
       color: var(--secColor);
+    }
+
+    .hero-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin: 10px 0 30px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;     
+      text-align: center;
+    }
+        
+    .stat-num {
+        font-family: var(--secFont);
+        font-size: 30px;
+        color: var(--secColor);
+        font-weight: 600;
+    }
+        
+    .stat-label {
+        font-size: 12px;
+        font-weight: 400;
+        color: white;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-top: 2px;
     }
 
     .left-content p {
@@ -318,20 +348,6 @@
 
     .register-link p a:hover {
       text-decoration: underline;
-    }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      padding: 10px;
-      background: rgba(0,0,0,0.35);
-      color: rgba(255,255,255,0.7);
-      font-size: 0.75em;
-      z-index: 100;
-      backdrop-filter: blur(6px);
     }
 
     /* ── HOME BUTTON (top-right, logo as icon) ── */

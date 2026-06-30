@@ -97,26 +97,30 @@ a {
 .nav-name {
     font-family: var(--secFont);
     font-size: var(--smallFont);
-    font-weight: 600;
-    color: var(--priColor);
-    line-height: 1.1;
+    font-weight: 400;
+    color: var(--dark);
+    letter-spacing: 0.5px;
+    line-height: 1.2;
 }
 
 .nav-sub {
     font-size: var(--xsmallFont);
-    color: black;
-    letter-spacing: 1px;
+    font-weight: 600;
+    color: var(--priColor);
+    letter-spacing: 2px;
     text-transform: uppercase;
 }
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 36px;
 }
 
 .nav-links a {
     text-transform: uppercase;
-    font-size: var(--smallFont);
+    font-family: var(--thirdFont);
+    font-size: var(--xsmallFont);
+    font-weight: 600;
     color: black;
     letter-spacing: 0.3px;
     transition: color 0.18s;
@@ -132,6 +136,13 @@ a {
     border-bottom: 1.5px solid var(--secColor);
     padding-bottom: 2px;
 }
+
+      .nav-divider {
+        color: var(--dark);
+        font-weight: 300;
+        font-size: 0.9em;
+        margin: 0 -20px;
+      }
 
     /* ── PAGES ───────────────────────────────────────── */
 .page {
@@ -397,27 +408,6 @@ a {
     
 .read-more::after {
     content: " →";
-}
-
-    /* CTA band */
-.cta-band {
-    background: var(--priColor);
-    padding: 48px 2.5rem;
-    text-align: center;
-}
-    
-.cta-band h3 {
-    font-family: var(--secFont);
-    font-weight: 400;
-    font-size: 22px;
-    color: #fff;
-    margin-bottom: 10px;
-}
-    
-.cta-band p {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 24px;
 }
 
     /* ── DIRECTORY PAGE ──────────────────────────────── */
