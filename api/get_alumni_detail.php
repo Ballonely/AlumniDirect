@@ -22,7 +22,7 @@ if ($id <= 0) {
 $stmt = $pdo->prepare("
     SELECT
         a.account_ID, a.first_Name, a.last_Name, a.middle_Name, a.suffix,
-        a.email, (a.photo IS NOT NULL) AS has_photo,
+        a.email, a.bio, (a.photo IS NOT NULL) AS has_photo,
         p.program_Name, g.graduation_Year, c.college_Name
     FROM account a
     LEFT JOIN graduation g ON g.account_ID = a.account_ID
@@ -73,6 +73,5 @@ echo json_encode([
     'employment' => $employment,
     'awards'     => $awards,
     'image_url'  => $account['has_photo'] ? "../api/get_image.php?id={$account['account_ID']}" : null,
-    // No bio/career-story column exists in the schema yet — see note in get_alumni.php
-    'career_story' => null,
+    'career_story' => $account['bio'],
 ]);

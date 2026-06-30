@@ -58,8 +58,19 @@ $stmt = $pdo->prepare(
 );
 $stmt->execute([$firstname, $middlenameValue, $lastname, $suffixValue, $schoolid, $email, $hash]);
 
+$newAccountId = $pdo->lastInsertId();
+
+// Create a placeholder graduation row so the new alumnus already has a
+// roster entry. program/college/year start as NULL and get filled in
+// later from the Edit Profile page (see get_account.php / update_account.php).
+$gradStmt = $pdo->prepare(
+    'INSERT INTO graduation (account_ID, program_ID, college_ID, graduation_Year)
+     VALUES (?, NULL, NULL, NULL)'
+);
+$gradStmt->execute([$newAccountId]);
+
 // Auto-login: treat a fresh registration as an authenticated session
-$_SESSION['account_ID'] = $pdo->lastInsertId();
+$_SESSION['account_ID'] = $newAccountId;
 
 header('Location: ../pages/pv_main.html');
 exit;

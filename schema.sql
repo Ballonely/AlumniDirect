@@ -12,6 +12,15 @@ CREATE TABLE account (
     password varchar(255) NOT NULL,
     photo MEDIUMBLOB,
     photo_Type varchar(50),
+    phone varchar(20) DEFAULT NULL,
+    nickname varchar(255) DEFAULT NULL,
+    date_Of_Birth date DEFAULT NULL,
+    gender varchar(30) DEFAULT NULL,
+    bio text DEFAULT NULL,
+    profile_Quote varchar(255) DEFAULT NULL,
+    show_Email tinyint(1) NOT NULL DEFAULT 1,
+    show_Phone tinyint(1) NOT NULL DEFAULT 0,
+    show_Employment tinyint(1) NOT NULL DEFAULT 1,
     UNIQUE KEY uq_account_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -34,8 +43,9 @@ CREATE TABLE college (
 CREATE TABLE employment (
     employment_ID int(11) PRIMARY KEY AUTO_INCREMENT,
     account_ID int(11) NOT NULL,
-    sector_ID int(11) NOT NULL,
-    occupation varchar(255) NOT NULL,
+    sector_ID int(11) DEFAULT NULL,
+    occupation varchar(255) DEFAULT NULL,
+    employer varchar(255) DEFAULT NULL,
     description text DEFAULT NULL,
     KEY fk_employment_account (account_ID),
     KEY fk_employment_sector (sector_ID)
@@ -44,9 +54,9 @@ CREATE TABLE employment (
 CREATE TABLE graduation (
     graduation_ID int(11) PRIMARY KEY AUTO_INCREMENT,
     account_ID int(11) NOT NULL,
-    program_ID int(11) NOT NULL,
-    college_ID int(11) NOT NULL,
-    graduation_Year year(4) NOT NULL,
+    program_ID int(11) DEFAULT NULL,
+    college_ID int(11) DEFAULT NULL,
+    graduation_Year year(4) DEFAULT NULL,
     KEY fk_graduation_account (account_ID),
     KEY fk_graduation_program (program_ID),
     KEY fk_graduation_college (college_ID)
