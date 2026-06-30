@@ -36,33 +36,11 @@
     padding: 0;
 }
 
-html {
-    height: 100%;
-}
-
 body {
     font-family: var(--priFont);
     background: var(--cream);
     color: var(--dark);
     overflow-x: hidden;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Pages sit in this flex-grow slot so short pages still push
-   the footer to the bottom of the viewport instead of leaving
-   it stranded right under the nav. Long pages just push the
-   footer further down and the page scrolls normally — footer
-   is never fixed/sticky, it stays in normal document flow. */
-.page.active {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-footer {
-    flex-shrink: 0;
 }
 
 a {
@@ -136,6 +114,10 @@ a {
     /* ── PAGES ───────────────────────────────────────── */
 .page {
     display: none;
+}
+
+.page.active {
+    display: block;
 }
 
     /* ── HOME HERO ───────────────────────────────────── */
@@ -750,6 +732,49 @@ a {
     background: var(--gold-light);
 }
 
+    /* ── ABOUT PAGE ──────────────────────────────────── */
+.about-hero {
+    background: linear-gradient(140deg, var(--green) 0%, #0f3320 100%);
+    padding: 70px 2.5rem 60px;
+    text-align: center;
+}
+
+.about-hero h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 38px;
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+    
+.about-hero p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.62);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.75;
+}
+    
+.about-body {
+    max-width: 780px;
+    margin: 60px auto;
+    padding: 0 2.5rem;
+}
+    
+.about-body h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 24px;
+    margin-bottom: 14px;
+    margin-top: 36px;
+}
+    
+.about-body p {
+    font-size: 15px;
+    color: #4a5550;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
     /* ── CONTACT PAGE ────────────────────────────────── */
 .contact-hero {
     background: linear-gradient(140deg, var(--green) 0%, #0f3320 100%);
@@ -831,7 +856,7 @@ a {
     opacity: 0.85;
 }
 
-    
+    /* ── FOOTER ──────────────────────────────────────── */
 footer {
     background: var(--dark);
     padding: 48px 2.5rem 24px;
@@ -896,7 +921,7 @@ footer {
     color: rgba(255, 255, 255, 0.28);
 }
 
-    
+    /* ── SCROLL REVEAL ───────────────────────────────── */
 .reveal {
     opacity: 0;
     transform: translateY(28px);
@@ -922,7 +947,7 @@ footer {
     transition-delay: 0.21s;
 }
 
-    
+    /* ── RESPONSIVE ──────────────────────────────────── */
 @media (max-width: 768px) {
     .cards-row,
     .dir-grid {

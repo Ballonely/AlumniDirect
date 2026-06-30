@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../styles/pv_main.css" /> 
+    <link rel="stylesheet" href="../styles/pv_main.css" />
   </head>
   <body>
     <!-- ══ NAV ════════════════════════════════════════════ -->
@@ -25,8 +25,8 @@
       <div class="nav-links">
         <a id="nav-home" onclick="goTo('home')">Home</a>
         <a id="nav-alumni" onclick="goTo('alumni')">Alumni Profiles</a>
+        <a id="nav-about" onclick="goTo('about')">About</a>
         <a id="nav-contact" onclick="goTo('contact')">Contact</a>
-        <a href="pb_login.html">Sign Out</a>
       </div>
     </nav>
 
@@ -67,6 +67,9 @@
         <div class="hero-btns">
           <button class="btn-gold" onclick="goTo('alumni')">
             Browse Profiles
+          </button>
+          <button class="btn-outline-white" onclick="goTo('about')">
+            About the Network
           </button>
         </div>
       </div>
@@ -188,8 +191,37 @@
       </div>
     </div>
 
-    <!-- ══ PAGE: ABOUT ══════════════════════════════════════ Removed Entirely-->     
-    
+    <!-- ══ PAGE: ABOUT ══════════════════════════════════════ -->
+    <div class="page" id="page-about">
+      <div class="about-hero">
+        <h1>About the Network</h1>
+        <p>[Mission statement placeholder meow.]</p>
+      </div>
+      <div class="about-body reveal">
+        <h2>Who we are</h2>
+        <p>
+          [Description of the alumni network organization, its founding, and its
+          mission. This section introduces the institution and what binds its
+          graduates together.]
+        </p>
+        <p>
+          [Additional paragraph describing the community, geographic reach, and
+          the kinds of alumni represented in this directory.]
+        </p>
+        <h2>What we do</h2>
+        <p>
+          [Explain the purpose of the profiles directory — storytelling,
+          mentorship, inspiration, and connection. Describe how alumni are
+          selected or can submit their own profiles.]
+        </p>
+        <h2>Join us</h2>
+        <p>
+          [Call to action for alumni who want to connect, mentor, or share their
+          story. Link to the contact page or submission form.]
+        </p>
+      </div>
+    </div>
+
     <!-- ══ PAGE: CONTACT ════════════════════════════════════ -->
     <div class="page" id="page-contact">
       <div class="contact-hero">
@@ -224,12 +256,14 @@
         <div class="footer-brand">
           <div class="footer-brand-name">Alumni Network</div>
           <p>
-            To USC we sing, Our Alma Mater Dear.
+            [One-sentence mission statement about connecting alumni across
+            generations.]
           </p>
         </div>
         <div class="footer-col">
           <h4>Explore</h4>
           <a onclick="goTo('alumni')">Profiles</a>
+          <a onclick="goTo('about')">About</a>
           <a onclick="goTo('contact')">Contact</a>
         </div>
         <div class="footer-col">
@@ -246,7 +280,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 University of San Carlos Alumni Directory. All rights reserved. </p>
+        <p>© [Year] Alumni Network. Wireframe mockup.</p>
         <p>Privacy Policy · Terms of Use</p>
       </div>
     </footer>
