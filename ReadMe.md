@@ -45,8 +45,8 @@
 Done above the University of San Carlos Landing Page Logo ✔-->
 
 < ALUMNI PROFILE >
-- Have an option to only show descriptions and names without profile
-- Have schools as buttons, have program as a dropbox
+<!-- Have schools as buttons, have program as a dropbox -->
+- remove stats in home page and increase the height of the home page background
 <!--remove about in AlumniProfile.html
 Entirety of About is now Removed in pv_main or in the AlumniProfile.html ✔-->
 <!-- sticky nav for search bar (ts is done) ✔ -->

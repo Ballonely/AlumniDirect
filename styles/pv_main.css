@@ -1215,7 +1215,7 @@ footer {
 
 #page-account .select-wrap { position:relative; }
 #page-account .select-wrap::after {
-    content:'▾'; position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    content:'\25BE'; position:absolute; right:12px; top:50%; transform:translateY(-50%);
     color:var(--muted); font-size:13px; pointer-events:none; transition: color .18s;
 }
 #page-account .select-wrap:focus-within::after { color:var(--gold); }
@@ -1316,6 +1316,61 @@ footer {
 }
 
 #page-account #avatar-file-input { display:none; }
+
+/* Biography textarea — fixed, no user resize, grows with content */
+#page-account #bio {
+    resize: none;
+    overflow: hidden;
+    min-height: 112px; /* ~5 rows */
+    transition: height 0.1s ease, border-color .2s, box-shadow .2s, background .2s;
+}
+
+/* Hidden extra sections */
+#page-account .edit-section.sec-hidden {
+    display: none;
+}
+
+/* Section accordion controls row */
+#page-account .section-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 20px;
+}
+
+#page-account .btn-section-add,
+#page-account .btn-section-hide {
+    font-family: var(--priFont);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .18s;
+    border: 1.5px solid;
+}
+
+#page-account .btn-section-add {
+    background: var(--green);
+    color: #fff;
+    border-color: var(--green);
+}
+#page-account .btn-section-add:hover {
+    background: var(--green-light);
+    border-color: var(--green-light);
+}
+
+#page-account .btn-section-hide {
+    background: transparent;
+    color: var(--muted);
+    border-color: var(--border);
+}
+#page-account .btn-section-hide:hover {
+    background: rgba(200,153,58,.07);
+    border-color: var(--gold);
+    color: var(--dark);
+}
 
 .at-icons--magnifying-glass {
   display: inline-block;

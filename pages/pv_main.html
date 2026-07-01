@@ -85,7 +85,7 @@
         </div>
         <div class="cards-row" id="home-cards"></div>
       </div>
-
+    </div>
     <!-- /home -->
 
     <!-- ══ PAGE: ALUMNI DIRECTORY ══════════════════════════ -->
@@ -304,7 +304,7 @@
           </aside>
 
           <div class="edit-body">
-            <div class="edit-section" id="acc-sec-1">
+            <div class="edit-section revealed" id="acc-sec-1">
               <div class="section-header-row">
                 <div class="section-num">1</div>
                 <h3>Personal Information</h3>
@@ -395,7 +395,7 @@
               </div>
             </div>
 
-            <div class="edit-section" id="acc-sec-2">
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-2">
               <div class="section-header-row">
                 <div class="section-num">2</div>
                 <h3>Academic Background</h3>
@@ -453,7 +453,7 @@
               </div>
             </div>
 
-            <div class="edit-section" id="acc-sec-3">
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-3">
               <div class="section-header-row">
                 <div class="section-num">3</div>
                 <h3>Contact Information</h3>
@@ -481,7 +481,7 @@
               </div>
             </div>
 
-            <div class="edit-section" id="acc-sec-4">
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-4">
               <div class="section-header-row">
                 <div class="section-num">4</div>
                 <h3>Professional Profile</h3>
@@ -523,7 +523,7 @@
               </div>
             </div>
 
-            <div class="edit-section" id="acc-sec-5">
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-5">
               <div class="section-header-row">
                 <div class="section-num">5</div>
                 <h3>Career Story (Biography)</h3>
@@ -536,6 +536,8 @@
                   maxlength="800"
                   placeholder="Tell us about your career journey, notable achievements, and how USC shaped you..."
                   data-original=""
+                  style="resize:none;overflow:hidden;"
+                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
                 ></textarea>
                 <div class="char-counter" id="bio-counter">
                   0 / 800 characters
@@ -543,7 +545,7 @@
               </div>
             </div>
 
-            <div class="edit-section" id="acc-sec-6">
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-6">
               <div class="section-header-row">
                 <div class="section-num">6</div>
                 <h3>Awards &amp; Recognition</h3>
@@ -572,7 +574,7 @@
               </button>
             </div>
 
-            <div class="edit-section" id="acc-sec-7">
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-7">
               <div class="section-header-row">
                 <div class="section-num">7</div>
                 <h3>Profile Tagline / Quote</h3>
@@ -587,24 +589,12 @@
               </div>
             </div>
 
-            <div class="form-actions">
-              <button
-                class="btn-outline-green"
-                type="button"
-                onclick="doCancel()"
-              >
-                Cancel
-              </button>
-              <button
-                class="btn-green"
-                type="button"
-                id="save-btn"
-                onclick="doSave()"
-              >
-                <span class="save-spinner" id="save-spinner"></span>
-                Save Changes
-              </button>
+            <div class="section-controls" id="section-controls">
+              <button class="btn-section-hide" id="btn-hide-section" type="button" onclick="hideSectionStep()" style="display:none;">Hide additional details</button>
+              <button class="btn-section-add" id="btn-add-section" type="button" onclick="addSectionStep()">Add more details</button>
             </div>
+
+
           </div>
         </div>
       </div>
@@ -1008,9 +998,10 @@
         { threshold: 0.08 },
       );
       function observeEditSections() {
+        // Only observe sections that are visible (not hidden by the accordion)
         setTimeout(() => {
           document
-            .querySelectorAll("#page-account .edit-section:not(.revealed)")
+            .querySelectorAll("#page-account .edit-section:not(.revealed):not(.sec-hidden)")
             .forEach((s) => editSectionObserver.observe(s));
         }, 50);
       }
@@ -1357,6 +1348,52 @@
         .addEventListener("click", function (e) {
           if (e.target === this) closeConfirm();
         });
+
+      /* ── SECTION ACCORDION ───────────────────────────────── */
+      // Sections 2–7 are hidden on load. Each click of "Add more details"
+      // reveals the next hidden section. "Hide additional details" collapses
+      // the last revealed extra section.
+      const EXTRA_SECTIONS = ['acc-sec-2','acc-sec-3','acc-sec-4','acc-sec-5','acc-sec-6','acc-sec-7'];
+      let visibleCount = 0; // how many extra sections are currently showing
+
+      function updateSectionButtons() {
+        const addBtn  = document.getElementById('btn-add-section');
+        const hideBtn = document.getElementById('btn-hide-section');
+        addBtn.style.display  = visibleCount < EXTRA_SECTIONS.length ? '' : 'none';
+        hideBtn.style.display = visibleCount > 0 ? '' : 'none';
+      }
+
+      function addSectionStep() {
+        if (visibleCount >= EXTRA_SECTIONS.length) return;
+        const sec = document.getElementById(EXTRA_SECTIONS[visibleCount]);
+        sec.classList.remove('sec-hidden');
+        // Trigger the reveal animation
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => sec.classList.add('revealed'));
+        });
+        // Re-init auto-height for any textarea in this section
+        sec.querySelectorAll('textarea[style*="overflow:hidden"]').forEach(ta => {
+          ta.style.height = 'auto';
+          ta.style.height = ta.scrollHeight + 'px';
+        });
+        visibleCount++;
+        updateSectionButtons();
+      }
+
+      function hideSectionStep() {
+        if (visibleCount <= 0) return;
+        visibleCount--;
+        const sec = document.getElementById(EXTRA_SECTIONS[visibleCount]);
+        sec.classList.remove('revealed');
+        updateSectionButtons();
+        // Wait for the fade+slide-out transition to finish, then hide
+        sec.addEventListener('transitionend', function handler() {
+          sec.classList.add('sec-hidden');
+          sec.removeEventListener('transitionend', handler);
+        });
+      }
+
+      updateSectionButtons();
 
       attachDirtyListeners();
     </script>

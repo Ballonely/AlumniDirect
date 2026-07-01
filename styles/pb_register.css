@@ -521,7 +521,8 @@
       color: rgba(255,255,255,0.6);
     }
   
-    .suffix-chevron {
+    .suffix-select-wrap::after {
+      content: '\25BE';
       position: absolute;
       right: 8px;
       top: 50%;
@@ -530,9 +531,10 @@
       color: rgba(255,255,255,0.7);
       pointer-events: none;
       line-height: 1;
+      transition: color 0.2s;
     }
-  
-    .suffix-select-wrap:focus-within .suffix-chevron {
+
+    .suffix-select-wrap:focus-within::after {
       color: var(--secColor);
     }
     
