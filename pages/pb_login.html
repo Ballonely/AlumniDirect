@@ -122,6 +122,8 @@
         msgEl.textContent = "Incorrect email or password.";
       } else if (params.get("error") === "missing") {
         msgEl.textContent = "Please fill in both fields.";
+      } else if (params.get("error") === "session") {
+        msgEl.textContent = "Please sign in to continue.";
       }
     </script>
   </body>

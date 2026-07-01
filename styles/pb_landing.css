@@ -802,3 +802,33 @@
   margin-bottom: 18px;
   display: block;
 }
+
+
+/* ── CUSTOM SCROLLBAR ── */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secColor) var(--priColor);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--priColor);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secColor);
+  border-radius: 10px;
+  border: 2px solid var(--priColor);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fourthColor);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--priColor);
+}

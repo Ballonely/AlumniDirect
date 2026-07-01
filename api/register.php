@@ -72,5 +72,5 @@ $gradStmt->execute([$newAccountId]);
 // Auto-login: treat a fresh registration as an authenticated session
 $_SESSION['account_ID'] = $newAccountId;
 
-header('Location: ../pages/pv_main.html');
+header('Location: ../pages/pv_main.php');
 exit;

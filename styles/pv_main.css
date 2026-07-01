@@ -224,7 +224,7 @@ a {
 .btn-gold:hover {
     opacity: 0.88;
 }
-    
+
 .btn-outline-white {
     background: transparent;
     color: rgba(255, 255, 255, 0.85);
@@ -316,99 +316,93 @@ a {
 }
 
     /* cards row */
+    
 .cards-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-    
-.profile-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    transition:
-        transform 0.2s,
-        box-shadow 0.2s;
-}
-    
-.profile-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 28px rgba(26, 74, 46, 0.11);
-}
-    
-.card-banner {
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-    
-.card-initials {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: rgba(200, 153, 58, 0.18);
-    border: 1.5px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Playfair Display", serif;
-    font-size: 18px;
-    color: var(--gold);
-}
-    
-.card-sector {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.38);
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 10px;
-}
-    
-.card-body {
-    padding: 16px 18px;
-}
-    
-.card-program {
-    font-size: 10.5px;
-    color: var(--muted);
-    margin-bottom: 4px;
-}
-    
-.card-name {
-    font-family: var(--thirdFont);
-    font-size: var(--xsmallFont);
-    font-weight: 700;
-    margin-bottom: 6px;
+    gap: 22px;
+    align-items: stretch;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.card-tagline {
-    font-size: 12.5px;
-    color: var(--muted);
-    line-height: 1.55;
-    margin-bottom: 12px;
+.card {
+    font-family: var(--priFont)
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background: #ddd;
 }
-    
-.card-footer {
-    border-top: 1px solid var(--border);
-    padding: 10px 18px;
-}
-    
-.read-more {
-    font-size: 12px;
-    color: var(--dark);
-    font-weight: 500;
-}
-    
-.read-more::after {
-    content: " →";
-}
+
+  .card-initials {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+.card-initials img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .card-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--priColor);
+    color: #fff;
+    padding: 16px 18px 18px;
+    border-bottom: 4px solid var(--secColor);
+    transition: padding-bottom 0.25s ease;
+    text-align: left;
+  }
+
+  .card-caption .name {
+    font-family: var(--thirdFont);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.2px;
+  }
+
+  .card-caption .meta {
+    font-family: var(--priFont);
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 0;
+    line-height: 1.4;
+    color: #f1ece2;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.25s ease;
+  }
+
+  .card-caption .meta span {
+    display: block;
+  }
+
+  .card-initials, .card-caption {
+    cursor: pointer;
+  }
+
+  /* reveal details on hover / focus */
+  .card:hover .card-caption .meta,
+  .card:focus-within .card-caption .meta {
+    max-height: 80px;
+    opacity: 1;
+    margin-top: 6px;
+  }
+
+  .card:hover .card-caption,
+  .card:focus-within .card-caption {
+    padding-bottom: 20px;
+  }
+
+
 
     /* ── DIRECTORY PAGE ──────────────────────────────── */
 .dir-header {
@@ -581,6 +575,12 @@ a {
     background: var(--green);
     color: #fff;
     border-color: var(--green);
+}
+
+.page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
     /* ── PROFILE DETAIL PAGE ─────────────────────────── */
@@ -1385,4 +1385,34 @@ footer {
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
   background-color: var(--green);
+}
+
+
+/* ── CUSTOM SCROLLBAR ── */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secColor) var(--priColor);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--priColor);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secColor);
+  border-radius: 10px;
+  border: 2px solid var(--priColor);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fourthColor);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--priColor);
 }

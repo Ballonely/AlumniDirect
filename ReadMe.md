@@ -68,6 +68,7 @@ Entirety of About is now Removed in pv_main or in the AlumniProfile.html ✔-->
 <!--add a back button to go back to the landing page 
 Button to go back for Login Page is added as a USC Logo on the Top Right Navigation, and Register Sh ✔-->
 - (Added Extra by Anthony) Update Password with an Eye Icon to check password Input and Misinputs.
+- change to symbol x when closing
 
 < STUDENT UI >
 - Enter school ID 

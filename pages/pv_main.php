@@ -1,3 +1,33 @@
+<?php
+/**
+ * pv_main.php
+ *
+ * This page used to be pv_main.html — a static file with no server-side
+ * protection. Anyone could load it directly regardless of login state,
+ * and hitting the browser back button after logout would show a cached
+ * copy instead of re-checking anything. Converting to .php lets us:
+ *   1. Reject the request server-side before any HTML is sent, if there
+ *      is no valid session.
+ *   2. Send no-cache headers so the browser cannot serve a stale,
+ *      already-rendered copy of this page from history/back-forward
+ *      cache after logout.
+ */
+
+session_start();
+
+if (empty($_SESSION['account_ID'])) {
+    header('Location: pb_login.html?error=session');
+    exit;
+}
+
+// Prevent the browser (and any intermediate cache) from storing or
+// reusing this response. Without this, pressing back after logout can
+// still render the last-loaded copy of this page from bfcache/history,
+// even though the session is gone.
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -11,6 +41,65 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../styles/pv_main.css" />
+    <style>
+      /* ── Expanded hero to contain featured profiles ── */
+      .hero--expanded {
+        padding-bottom: 60px;
+        min-height: unset;
+      }
+
+      .hero-featured {
+        width: 100%;
+        max-width: 1100px;
+        margin: 56px auto 0;
+        padding: 0 24px;
+        box-sizing: border-box;
+      }
+
+      .hero-featured-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+
+      .hero-featured .section-eyebrow {
+        color: var(--gold, #c9a84c);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .hero-featured .section-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(1.4rem, 3vw, 2rem);
+        color: #fff;
+        line-height: 1.1;
+        margin: 0;
+      }
+
+      .hero-featured .gold-bar {
+        margin-top: 10px;
+      }
+
+      .hero-featured .link-arrow {
+        color: var(--gold, #c9a84c);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        padding-bottom: 4px;
+        transition: opacity 0.2s;
+      }
+      .hero-featured .link-arrow:hover { opacity: 0.75; }
+
+      /* Cards inside hero inherit cards-row layout but need no extra bg */
+      .hero-featured .cards-row {
+        transition: opacity 1s ease;
+      }
+    </style>
   </head>
   <body>
     <!-- ══ NAV ════════════════════════════════════════════ -->
@@ -27,13 +116,13 @@
         <a id="nav-alumni" onclick="goTo('alumni')">Alumni Profiles</a>
         <a id="nav-account" onclick="goTo('account')">My Account</a>
         <span class="nav-divider">|</span>
-        <a href="pb_login.html">Sign Out</a>
+        <a onclick="requestSignOut()">Sign Out</a>
       </div>
     </nav>
 
     <!-- ══ PAGE: HOME ══════════════════════════════════════ -->
     <div class="page active" id="page-home">
-      <div class="hero">
+      <div class="hero hero--expanded">
         <div class="hero-eyebrow">Class of Every Year</div>
         <h1 class="hero-main">
           University
@@ -47,43 +136,25 @@
           <br />
           <em>Stories told everywhere.</em>
         </h1>
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-num">120k+</div>
-            <div class="stat-label">Alumni worldwide</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">80+</div>
-            <div class="stat-label">Countries</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">90</div>
-            <div class="stat-label">Programs</div>
-          </div>
-          <div class="stat">
-            <div class="stat-num">78</div>
-            <div class="stat-label">Years of legacy</div>
-          </div>
-        </div>
         <div class="hero-btns">
           <button class="btn-gold" onclick="goTo('alumni')">
             Browse Profiles
           </button>
         </div>
-      </div>
 
-      <div class="section">
-        <div class="section-header reveal">
-          <div>
-            <div class="section-eyebrow">Featured</div>
-            <div class="section-title">Recent Profiles</div>
-            <div class="gold-bar"></div>
+        <div class="hero-featured">
+          <div class="hero-featured-header">
+            <div>
+              <div class="section-eyebrow">Featured</div>
+              <div class="section-title">Recent Profiles</div>
+              <div class="gold-bar"></div>
+            </div>
+            <span class="link-arrow" onclick="goTo('alumni')">
+              View all profiles →
+            </span>
           </div>
-          <span class="link-arrow" onclick="goTo('alumni')">
-            View all profiles →
-          </span>
+          <div class="cards-row" id="home-cards"></div>
         </div>
-        <div class="cards-row" id="home-cards"></div>
       </div>
     </div>
     <!-- /home -->
@@ -175,14 +246,7 @@
 
       <div class="dir-grid" id="dir-cards"></div>
 
-      <div class="pagination">
-        <button class="page-btn">‹</button>
-        <button class="page-btn on">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">4</button>
-        <button class="page-btn">›</button>
-      </div>
+      <div class="pagination" id="dir-pagination"></div>
     </div>
     <!-- /alumni -->
 
@@ -650,6 +714,24 @@
       </div>
     </div>
 
+    <div class="confirm-overlay" id="signout-overlay">
+      <div class="confirm-box">
+        <h4>Sign out?</h4>
+        <p>
+          You'll need to sign in again to access your account and the alumni
+          directory.
+        </p>
+        <div class="confirm-btns">
+          <button class="btn-outline-green" onclick="closeSignOutConfirm()">
+            Cancel
+          </button>
+          <button class="btn-green" onclick="confirmSignOut()">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="toast" id="toast">
       <span class="toast-icon" id="toast-icon"></span>
       <span id="toast-msg"></span>
@@ -727,23 +809,19 @@
 
       /* ── CARD BUILDER ────────────────────────────────────── */
       function buildCard(a, i) {
-        const banner = BANNERS[i % BANNERS.length];
         const avatarInner = a.image_url
-          ? `<img src="${a.image_url}" alt="${a.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+          ? `<img src="${a.image_url}" alt="${a.name}">`
           : a.initials;
         return `
-    <div class="profile-card reveal s${(i % 3) + 1}" onclick="goTo('profile',${a.id})">
-      <div class="card-banner" style="background:${banner}">
-        <div class="card-initials">${avatarInner}</div>
-        <span class="card-sector">${a.sector || ""}</span>
-      </div>
-      <div class="card-body">
-        <div class="card-program">${a.program} · ${a.grad}</div>
-        <div class="card-name">${a.name}</div>
-        <div class="card-tagline">${a.tagline}</div>
-      </div>
-      <div class="card-footer">
-        <span class="read-more">Read profile</span>
+    <div class="card reveal s${(i % 3) + 1}" onclick="goTo('profile',${a.id})">
+      <div class="card-initials">${avatarInner}</div>
+      <div class="card-caption">
+        <div class="name">${a.name}</div>
+
+        <div class="meta">
+          <div class="program">${a.program} · ${a.grad}</div>
+          <div class="tagline">${a.tagline}</div>
+        </div>
       </div>
     </div>`;
       }
@@ -765,16 +843,58 @@
           return;
         }
 
-        document.getElementById("home-cards").innerHTML = ALUMNI.slice(0, 3)
-          .map(buildCard)
-          .join("");
-
+        renderHomeCards();
         renderDir();
+        startHomeRotation();
+      }
+
+      /* ── HOME CARD ROTATION ──────────────────────────────── */
+      // Pick 3 unique alumni at random; no two of the current three
+      // will be the same. Previous alumni can re-appear in later rounds
+      // but never twice simultaneously.
+      let _homeRotationTimer = null;
+      let _homeCurrentIds = [];
+
+      function pickThreeRandom() {
+        if (ALUMNI.length === 0) return [];
+        const pool = ALUMNI.filter(a => !_homeCurrentIds.includes(a.id));
+        // If the pool is too small (≤3 alumni total), just pick from all
+        const source = pool.length >= 3 ? pool : ALUMNI;
+        const shuffled = [...source].sort(() => Math.random() - 0.5);
+        return shuffled.slice(0, 3);
+      }
+
+      function renderHomeCards() {
+        const three = pickThreeRandom();
+        _homeCurrentIds = three.map(a => a.id);
+        const container = document.getElementById("home-cards");
+        // Fade out slowly
+        container.style.transition = "opacity 1s ease";
+        container.style.opacity = "0";
+        setTimeout(() => {
+          container.innerHTML = three.map(buildCard).join("");
+          observeReveal();
+          // Fade in at the same pace
+          container.style.transition = "opacity 1s ease";
+          container.style.opacity = "1";
+        }, 1000);
+      }
+
+      function startHomeRotation() {
+        clearInterval(_homeRotationTimer);
+        _homeRotationTimer = setInterval(() => {
+          // Only rotate when the home page is visible
+          if (document.getElementById("page-home").classList.contains("active")) {
+            renderHomeCards();
+          }
+        }, 6000);
       }
 
       loadAlumni();
       let activeFilters = { college: "all", year: "all", industry: "all" };
       let searchQuery = "";
+      const DIR_PAGE_SIZE = 9;
+      let dirPage = 1;
 
       function normalizeCollegeText(s) {
         return (s || "")
@@ -821,14 +941,44 @@
 
           return true;
         });
+        const totalPages = Math.max(1, Math.ceil(list.length / DIR_PAGE_SIZE));
+        if (dirPage > totalPages) dirPage = totalPages;
+        if (dirPage < 1) dirPage = 1;
+        const start = (dirPage - 1) * DIR_PAGE_SIZE;
+        const pageItems = list.slice(start, start + DIR_PAGE_SIZE);
+
         document.getElementById("dir-cards").innerHTML = list.length
-          ? list.map(buildCard).join("")
+          ? pageItems.map(buildCard).join("")
           : '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;">No profiles match the selected filters.</p>';
+        renderDirPagination(totalPages);
         observeReveal();
+      }
+
+      function goToDirPage(n) {
+        dirPage = n;
+        renderDir();
+        const dirGrid = document.getElementById("dir-cards");
+        if (dirGrid) dirGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function renderDirPagination(totalPages) {
+        const el = document.getElementById("dir-pagination");
+        if (!el) return;
+        if (totalPages <= 1) {
+          el.innerHTML = "";
+          return;
+        }
+        let html = `<button class="page-btn" ${dirPage === 1 ? "disabled" : ""} onclick="goToDirPage(${dirPage - 1})">‹</button>`;
+        for (let i = 1; i <= totalPages; i++) {
+          html += `<button class="page-btn${i === dirPage ? " on" : ""}" onclick="goToDirPage(${i})">${i}</button>`;
+        }
+        html += `<button class="page-btn" ${dirPage === totalPages ? "disabled" : ""} onclick="goToDirPage(${dirPage + 1})">›</button>`;
+        el.innerHTML = html;
       }
 
       function setFilter(type, val, el) {
         activeFilters[type] = val;
+        dirPage = 1;
         if (el && el.classList && el.classList.contains("filter-btn")) {
           el.closest(".filter-bar")
             .querySelectorAll(".filter-btn")
@@ -843,6 +993,7 @@
         clearTimeout(searchDebounce);
         searchDebounce = setTimeout(() => {
           searchQuery = val;
+          dirPage = 1;
           renderDir();
         }, 150);
       }
@@ -1155,6 +1306,10 @@
         if (accountLoaded) return;
         try {
           const res = await fetch(API_BASE + "get_account.php");
+          if (res.status === 401) {
+            window.location.href = "pb_login.html?error=session";
+            return;
+          }
           if (!res.ok) throw new Error("API returned status " + res.status);
           const data = await res.json();
           if (data.error) throw new Error(data.error);
@@ -1315,6 +1470,26 @@
           document.getElementById("confirm-overlay").classList.add("visible");
         else goTo("home");
       }
+
+      function requestSignOut() {
+        document.getElementById("signout-overlay").classList.add("visible");
+      }
+
+      function closeSignOutConfirm() {
+        document
+          .getElementById("signout-overlay")
+          .classList.remove("visible");
+      }
+
+      function confirmSignOut() {
+        window.location.href = API_BASE + "logout.php";
+      }
+
+      document
+        .getElementById("signout-overlay")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeSignOutConfirm();
+        });
 
       function closeConfirm() {
         document.getElementById("confirm-overlay").classList.remove("visible");
