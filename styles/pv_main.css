@@ -92,6 +92,12 @@ a {
 .nav-logo {
     width: 70px;
     height: 70px;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.nav-logo:hover {
+    transform: scale(1.07);
 }
 
 .nav-name {
@@ -241,65 +247,45 @@ a {
 .btn-outline-white:hover {
     border-color: rgba(255, 255, 255, 0.7);
 }
-    
-.hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
-    flex-wrap: wrap;
-    margin: 35px 0 20px;
-}
-    
-.stat-num {
-    font-family: var(--secFont);
-    font-size: 30px;
-    color: var(--secColor);
-    font-weight: 600;
-}
-    
-.stat-label {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.48);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-top: 2px;
-}
 
     /* ── HOME FEATURED STRIP ─────────────────────────── */
 .section {
     padding: 64px 2.5rem;
     max-width: 1100px;
     margin: 0 auto;
+    
 }
     
 .section-eyebrow {
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--priColor);
+    color: var(--secColor);
     font-weight: 600;
-    margin-bottom: 6px;
+    text-align: left;
+
+    margin-bottom: 8px;
 }
     
 .section-title {
     font-family: var(--secFont);
-    font-size: 28px;
+    font-size: var(--medFont);
     font-weight: 400;
-    color: var(--dark);
+    color: white;
+    text-align: left;
 }
     
 .section-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 32px;
 }
     
 .gold-bar {
     width: 44px;
     height: 3px;
-    background: var(--priColor);
-    margin: 8px 0 0;
+    background: var(--secColor);
+    margin: 10px 0;
 }
     
 .link-arrow {
@@ -315,6 +301,32 @@ a {
     color: var(--secColor);
 }
 
+.our-alumni {
+    font-family: var(--thirdFont);
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: var(--secColor);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.our-alumni svg {
+    transition: transform 0.2s ease;
+}
+
+.our-alumni:hover{
+    border-bottom: 1px solid var(--secColor);
+    cursor: pointer;
+}
+
+.our-alumni:hover svg {
+    transform: translateX(4px);
+    
+}
+
     /* cards row */
     
 .cards-row {
@@ -327,7 +339,7 @@ a {
 }
 
 .card {
-    font-family: var(--priFont)
+    font-family: var(--priFont);
     position: relative;
     border-radius: 4px;
     overflow: hidden;
@@ -1047,25 +1059,27 @@ footer {
     pointer-events: none;
     animation: float-particle 6s ease-in-out infinite;
 }
-#page-account .header-inner { position: relative; z-index: 1; animation: fadeUp .55s ease both; }
-#page-account .page-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(200,153,58,.12);
-    border: 1px solid rgba(200,153,58,.45);
-    color: var(--secColor);
-    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-    padding: 5px 16px; border-radius: 20px;
-    margin-bottom: 18px;
-    font-family: var(--priFont);
-}
-#page-account .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--secColor); animation: pulse-ring 2s infinite; }
+#page-account .header-inner {    
+    text-align: center; 
+    z-index: 1; animation: 
+    fadeUp .55s ease both; }
+
 #page-account .page-header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px; color: #fff; font-weight: 600;
-    margin-bottom: 10px; line-height: 1.2;
+    font-family: var(--secFont);
+    font-size: var(--largeFont);
+    color: #fff;
+    font-weight: 400;
+    margin-bottom: 12px;
 }
-#page-account .page-header h1 em { color: var(--gold); font-style: italic; }
-#page-account .page-header p { font-size: 14px; color: rgba(255,255,255,.62); font-family: var(--priFont); line-height: 1.7; }
+
+#page-account .page-header p { 
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
 #page-account .particle { position: absolute; border-radius: 50%; background: rgba(200,153,58,.28); pointer-events: none; }
 #page-account .p1 { width:10px;height:10px; top:22%;left:12%; animation:float-particle 5s ease-in-out infinite; }
 #page-account .p2 { width:6px;height:6px;   top:55%;left:28%; animation:float-particle 7s ease-in-out infinite .8s; }

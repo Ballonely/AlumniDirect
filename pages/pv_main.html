@@ -63,38 +63,6 @@ header('Expires: 0');
         margin-bottom: 28px;
       }
 
-      .hero-featured .section-eyebrow {
-        color: var(--gold, #c9a84c);
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        margin-bottom: 6px;
-      }
-
-      .hero-featured .section-title {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: clamp(1.4rem, 3vw, 2rem);
-        color: #fff;
-        line-height: 1.1;
-        margin: 0;
-      }
-
-      .hero-featured .gold-bar {
-        margin-top: 10px;
-      }
-
-      .hero-featured .link-arrow {
-        color: var(--gold, #c9a84c);
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        white-space: nowrap;
-        padding-bottom: 4px;
-        transition: opacity 0.2s;
-      }
-      .hero-featured .link-arrow:hover { opacity: 0.75; }
-
       /* Cards inside hero inherit cards-row layout but need no extra bg */
       .hero-featured .cards-row {
         transition: opacity 1s ease;
@@ -107,7 +75,11 @@ header('Expires: 0');
       <div class="nav-brand" onclick="goTo('home')">
         <img src="../images/usc_logo.png" alt="USC Logo" class="nav-logo" />
         <div>
-          <div class="nav-name">University <i>of</i> San Carlos</div>
+          <div class="nav-name">
+            University
+            <i>of</i>
+            San Carlos
+          </div>
           <div class="nav-sub">Dugtong Carolinian</div>
         </div>
       </div>
@@ -146,12 +118,27 @@ header('Expires: 0');
           <div class="hero-featured-header">
             <div>
               <div class="section-eyebrow">Featured</div>
-              <div class="section-title">Recent Profiles</div>
+              <div class="section-title">Alumni Profiles</div>
               <div class="gold-bar"></div>
             </div>
-            <span class="link-arrow" onclick="goTo('alumni')">
-              View all profiles →
-            </span>
+            <div class="our-alumni" onclick="goTo('alumni')">
+              Our Alumni
+              <a href="#" class="our-alumni" onclick="goTo('alumni')">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
           </div>
           <div class="cards-row" id="home-cards"></div>
         </div>
@@ -164,7 +151,10 @@ header('Expires: 0');
       <div class="dir-header">
         <div class="dir-eyebrow">Directory</div>
         <h1>Alumni Profiles</h1>
-        <p>[Intro paragraph]</p>
+        <p>
+          Connect with fellow alumni, expand your network, and build meaningful
+          professional relationships within our growing community.
+        </p>
       </div>
 
       <div class="filter-bar">
@@ -258,8 +248,6 @@ header('Expires: 0');
       </div>
     </div>
 
-    <!-- ══ PAGE: ABOUT ══════════════════════════════════════ Removed Entirely-->
-
     <!-- ══ PAGE: MY ACCOUNT (Edit Profile) ══════════════════ -->
     <div class="page" id="page-account">
       <div class="unsaved-banner" id="unsaved-banner">
@@ -282,17 +270,12 @@ header('Expires: 0');
         <div class="particle p4"></div>
         <div class="particle p5"></div>
         <div class="header-inner">
-          <div class="page-eyebrow">
-            <span class="eyebrow-dot"></span>
-            My Account
-          </div>
-          <h1>
-            Edit Your
-            <em>Profile</em>
-          </h1>
+          <div class="dir-eyebrow">My Account</div>
+          <h1>Edit Your Profile</h1>
           <p>
-            Keep your alumni record up to date. Changes are saved securely to
-            your record.
+            Keep your alumni record up to date.
+            <br />
+            Changes are saved securely to your record.
           </p>
         </div>
       </div>
@@ -600,8 +583,11 @@ header('Expires: 0');
                   maxlength="800"
                   placeholder="Tell us about your career journey, notable achievements, and how USC shaped you..."
                   data-original=""
-                  style="resize:none;overflow:hidden;"
-                  oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"
+                  style="resize: none; overflow: hidden"
+                  oninput="
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                  "
                 ></textarea>
                 <div class="char-counter" id="bio-counter">
                   0 / 800 characters
@@ -654,11 +640,24 @@ header('Expires: 0');
             </div>
 
             <div class="section-controls" id="section-controls">
-              <button class="btn-section-hide" id="btn-hide-section" type="button" onclick="hideSectionStep()" style="display:none;">Hide additional details</button>
-              <button class="btn-section-add" id="btn-add-section" type="button" onclick="addSectionStep()">Add more details</button>
+              <button
+                class="btn-section-hide"
+                id="btn-hide-section"
+                type="button"
+                onclick="hideSectionStep()"
+                style="display: none"
+              >
+                Hide additional details
+              </button>
+              <button
+                class="btn-section-add"
+                id="btn-add-section"
+                type="button"
+                onclick="addSectionStep()"
+              >
+                Add more details
+              </button>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -725,9 +724,7 @@ header('Expires: 0');
           <button class="btn-outline-green" onclick="closeSignOutConfirm()">
             Cancel
           </button>
-          <button class="btn-green" onclick="confirmSignOut()">
-            Sign Out
-          </button>
+          <button class="btn-green" onclick="confirmSignOut()">Sign Out</button>
         </div>
       </div>
     </div>
@@ -857,7 +854,7 @@ header('Expires: 0');
 
       function pickThreeRandom() {
         if (ALUMNI.length === 0) return [];
-        const pool = ALUMNI.filter(a => !_homeCurrentIds.includes(a.id));
+        const pool = ALUMNI.filter((a) => !_homeCurrentIds.includes(a.id));
         // If the pool is too small (≤3 alumni total), just pick from all
         const source = pool.length >= 3 ? pool : ALUMNI;
         const shuffled = [...source].sort(() => Math.random() - 0.5);
@@ -866,7 +863,7 @@ header('Expires: 0');
 
       function renderHomeCards() {
         const three = pickThreeRandom();
-        _homeCurrentIds = three.map(a => a.id);
+        _homeCurrentIds = three.map((a) => a.id);
         const container = document.getElementById("home-cards");
         // Fade out slowly
         container.style.transition = "opacity 1s ease";
@@ -884,7 +881,9 @@ header('Expires: 0');
         clearInterval(_homeRotationTimer);
         _homeRotationTimer = setInterval(() => {
           // Only rotate when the home page is visible
-          if (document.getElementById("page-home").classList.contains("active")) {
+          if (
+            document.getElementById("page-home").classList.contains("active")
+          ) {
             renderHomeCards();
           }
         }, 6000);
@@ -958,7 +957,8 @@ header('Expires: 0');
         dirPage = n;
         renderDir();
         const dirGrid = document.getElementById("dir-cards");
-        if (dirGrid) dirGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (dirGrid)
+          dirGrid.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
       function renderDirPagination(totalPages) {
@@ -1152,7 +1152,9 @@ header('Expires: 0');
         // Only observe sections that are visible (not hidden by the accordion)
         setTimeout(() => {
           document
-            .querySelectorAll("#page-account .edit-section:not(.revealed):not(.sec-hidden)")
+            .querySelectorAll(
+              "#page-account .edit-section:not(.revealed):not(.sec-hidden)",
+            )
             .forEach((s) => editSectionObserver.observe(s));
         }, 50);
       }
@@ -1476,9 +1478,7 @@ header('Expires: 0');
       }
 
       function closeSignOutConfirm() {
-        document
-          .getElementById("signout-overlay")
-          .classList.remove("visible");
+        document.getElementById("signout-overlay").classList.remove("visible");
       }
 
       function confirmSignOut() {
@@ -1528,29 +1528,39 @@ header('Expires: 0');
       // Sections 2–7 are hidden on load. Each click of "Add more details"
       // reveals the next hidden section. "Hide additional details" collapses
       // the last revealed extra section.
-      const EXTRA_SECTIONS = ['acc-sec-2','acc-sec-3','acc-sec-4','acc-sec-5','acc-sec-6','acc-sec-7'];
+      const EXTRA_SECTIONS = [
+        "acc-sec-2",
+        "acc-sec-3",
+        "acc-sec-4",
+        "acc-sec-5",
+        "acc-sec-6",
+        "acc-sec-7",
+      ];
       let visibleCount = 0; // how many extra sections are currently showing
 
       function updateSectionButtons() {
-        const addBtn  = document.getElementById('btn-add-section');
-        const hideBtn = document.getElementById('btn-hide-section');
-        addBtn.style.display  = visibleCount < EXTRA_SECTIONS.length ? '' : 'none';
-        hideBtn.style.display = visibleCount > 0 ? '' : 'none';
+        const addBtn = document.getElementById("btn-add-section");
+        const hideBtn = document.getElementById("btn-hide-section");
+        addBtn.style.display =
+          visibleCount < EXTRA_SECTIONS.length ? "" : "none";
+        hideBtn.style.display = visibleCount > 0 ? "" : "none";
       }
 
       function addSectionStep() {
         if (visibleCount >= EXTRA_SECTIONS.length) return;
         const sec = document.getElementById(EXTRA_SECTIONS[visibleCount]);
-        sec.classList.remove('sec-hidden');
+        sec.classList.remove("sec-hidden");
         // Trigger the reveal animation
         requestAnimationFrame(() => {
-          requestAnimationFrame(() => sec.classList.add('revealed'));
+          requestAnimationFrame(() => sec.classList.add("revealed"));
         });
         // Re-init auto-height for any textarea in this section
-        sec.querySelectorAll('textarea[style*="overflow:hidden"]').forEach(ta => {
-          ta.style.height = 'auto';
-          ta.style.height = ta.scrollHeight + 'px';
-        });
+        sec
+          .querySelectorAll('textarea[style*="overflow:hidden"]')
+          .forEach((ta) => {
+            ta.style.height = "auto";
+            ta.style.height = ta.scrollHeight + "px";
+          });
         visibleCount++;
         updateSectionButtons();
       }
@@ -1559,12 +1569,12 @@ header('Expires: 0');
         if (visibleCount <= 0) return;
         visibleCount--;
         const sec = document.getElementById(EXTRA_SECTIONS[visibleCount]);
-        sec.classList.remove('revealed');
+        sec.classList.remove("revealed");
         updateSectionButtons();
         // Wait for the fade+slide-out transition to finish, then hide
-        sec.addEventListener('transitionend', function handler() {
-          sec.classList.add('sec-hidden');
-          sec.removeEventListener('transitionend', handler);
+        sec.addEventListener("transitionend", function handler() {
+          sec.classList.add("sec-hidden");
+          sec.removeEventListener("transitionend", handler);
         });
       }
 
