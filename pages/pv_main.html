@@ -33,7 +33,7 @@ header('Expires: 0');
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alumni Network</title>
+    <title>Home | Dugtong Carolinian</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -83,13 +83,19 @@ header('Expires: 0');
           <div class="nav-sub">Dugtong Carolinian</div>
         </div>
       </div>
-      <div class="nav-links">
-        <a id="nav-home" onclick="goTo('home')">Home</a>
-        <a id="nav-alumni" onclick="goTo('alumni')">Alumni Profiles</a>
-        <a id="nav-account" onclick="goTo('account')">My Account</a>
-        <span class="nav-divider">|</span>
-        <a onclick="requestSignOut()">Sign Out</a>
-      </div>
+      <ul class="nav-links">
+        <li><a id="nav-home" onclick="goTo('home')">About USC</a></li>
+        <li>
+          <a id="nav-alumni" onclick="goTo('alumni')">Alumni Profiles</a>
+        </li>
+        <li>
+          <a id="nav-account" onclick="goTo('account')">My Account</a>
+        </li>
+        <li><span class="nav-divider">|</span></li>
+        <li>
+          <a onclick="requestSignOut()" class="nav-logout">Sign Out</a>
+        </li>
+      </ul>
     </nav>
 
     <!-- ══ PAGE: HOME ══════════════════════════════════════ -->
@@ -668,8 +674,16 @@ header('Expires: 0');
     <footer>
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-brand-name">Alumni Network</div>
-          <p>To USC we sing, Our Alma Mater Dear.</p>
+          <div class="footer-school-name">
+            University
+            <i>of</i>
+            San Carlos
+          </div>
+          <div class="footer-brand-name">Dugtong Carolinian</div>
+          <p>
+            The official Carolinian alumni directory of all college schools from
+            the University of San Carlos.
+          </p>
         </div>
         <div class="footer-col">
           <h4>Explore</h4>
@@ -678,22 +692,45 @@ header('Expires: 0');
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
-          <a>[Address line 1]</a>
-          <a>[Address line 2]</a>
-          <a>[Phone] · [Email]</a>
+          <div class="footer-contact">
+            Address:
+            <a
+              href="https://maps.app.goo.gl/u1eZzMsrr9EZYghT8"
+              target="_blank"
+              class="footer-info"
+            >
+              P. del Rosario St., Cebu City, 6000, Philippines
+            </a>
+            Landline:
+            <a href="tel:+63324012300" class="footer-info">+63-32-401-2300</a>
+            Email:
+            <a href="mailto:info@usc.edu.ph" class="footer-info">
+              info@usc.edu.ph
+            </a>
+          </div>
         </div>
         <div class="footer-col">
           <h4>Follow</h4>
-          <a>Facebook</a>
-          <a>Instagram</a>
-          <a>LinkedIn</a>
+          <a href="https://www.facebook.com/usccebu" target="_blank">
+            Facebook
+          </a>
+          <a href="https://www.instagram.com/uscphilippines" target="_blank">
+            Instagram
+          </a>
+          <a
+            href="https://www.linkedin.com/school/university-of-san-carlos"
+            target="_blank"
+          >
+            LinkedIn
+          </a>
         </div>
       </div>
       <div class="footer-bottom">
         <p>
-          © 2026 University of San Carlos Alumni Directory. All rights reserved.
+          © 2026 University of San Carlos - Dugtong Carolinian. All rights
+          reserved.
         </p>
-        <p>Privacy Policy · Terms of Use</p>
+        <p>Privacy Policy</p>
       </div>
     </footer>
 

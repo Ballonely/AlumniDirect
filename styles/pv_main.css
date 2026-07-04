@@ -117,7 +117,7 @@ a {
     text-transform: uppercase;
 }
 
-.nav-links {
+/* .nav-links {
     display: flex;
     gap: 36px;
 }
@@ -141,13 +141,75 @@ a {
 .nav-links a.active {
     border-bottom: 1.5px solid var(--secColor);
     padding-bottom: 2px;
-}
+} */
 
+.nav-links {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        list-style: none;
+      }
+ 
+      .nav-links a {
+        font-family: var(--thirdFont);
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: black;
+        text-decoration: none;
+        transition: color 0.2s;
+        position: relative;
+      }
+ 
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--secColor);
+        transition: width 0.25s ease;
+      }
+ 
+      .nav-links a:hover {
+        color: var(--secColor);
+      }
+ 
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+ 
+      .nav-logout {
+        font-family: var(--thirdFont);
+        font-size: 0.82em;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: black !important;
+        border: 1.5px solid rgba(252,191,22,0.6);
+        padding: 7px 18px;
+        border-radius: 30px;
+        transition: background 0.2s, color 0.2s, border-color 0.2s !important;
+        white-space: nowrap;
+      }
+ 
+      .nav-lagout::after {
+        display: none !important;
+      }
+ 
+      .nav-lagout:hover {
+        background: var(--secColor) !important;
+        color: var(--priColor) !important;
+        border-color: var(--secColor) !important;
+      }
+ 
       .nav-divider {
-        color: var(--dark);
+        color: black;
         font-weight: 300;
         font-size: 0.9em;
-        margin: 0 -20px;
+        margin-left: -20px;
+        margin-right: 19px;
       }
 
     /* ── PAGES ───────────────────────────────────────── */
@@ -184,7 +246,7 @@ a {
 
 .hero-main {
     font-family: var(--secFont);
-    font-size: var(--largeFont);
+    font-size: var(--medFont);
     color: #fff;
     font-weight: 400;
     line-height: 1.15;
@@ -879,7 +941,7 @@ a {
 
     /* ── FOOTER ──────────────────────────────────────── */
 footer {
-    background: var(--dark);
+    background: #fff;
     padding: 48px 2.5rem 24px;
 }
     
@@ -891,46 +953,68 @@ footer {
     gap: 2.5rem;
     margin-bottom: 36px;
 }
+
+.footer-school-name {
+    font-family: var(--secFont);
+    font-size: var(--xsmallFont);
+}
     
 .footer-brand-name {
-    font-family: "Playfair Display", serif;
-    font-size: 17px;
-    color: var(--gold);
+    font-family: var(--secFont);
+    font-size: var(--medFont);
+    font-weight: 400;
+    color: var(--secColor);
     margin-bottom: 8px;
 }
     
 .footer-brand p {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    font-size: 12.5px;
+    color: black;
     line-height: 1.75;
+    max-width: 300px;
 }
     
 .footer-col h4 {
-    font-size: 10.5px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--gold);
+    padding-bottom: 5px;
+
+    font-family: var(--secFont);
+    font-size: var(--smallFont);
+    color: black;
     margin-bottom: 14px;
-    font-weight: 600;
+    font-weight: 400;
+}
+
+.footer-contact {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.footer-info {
+    text-transform: none !important;
+    font-weight: 400;
 }
     
 .footer-col a {
     display: block;
-    font-size: 12.5px;
-    color: rgba(255, 255, 255, 0.48);
+    font-size: 15px;
+    color: black;
+    text-transform: uppercase;
     margin-bottom: 9px;
     cursor: pointer;
     transition: color 0.15s;
 }
     
 .footer-col a:hover {
-    color: rgba(255, 255, 255, 0.88);
+    color: var(--secColor);
+    text-decoration: underline;
 }
+
+
     
 .footer-bottom {
     max-width: 1100px;
     margin: 0 auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid black;
     padding-top: 18px;
     display: flex;
     justify-content: space-between;
@@ -939,7 +1023,7 @@ footer {
     
 .footer-bottom p {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.28);
+    color: black(255, 255, 255, 0.28);
 }
 
     /* ── SCROLL REVEAL ───────────────────────────────── */
