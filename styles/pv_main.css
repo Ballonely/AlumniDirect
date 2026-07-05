@@ -116,101 +116,74 @@ a {
     letter-spacing: 2px;
     text-transform: uppercase;
 }
-
-/* .nav-links {
-    display: flex;
-    gap: 36px;
-}
-
-.nav-links a {
-    text-transform: uppercase;
-    font-family: var(--thirdFont);
-    font-size: var(--xsmallFont);
-    font-weight: 600;
-    color: black;
-    letter-spacing: 0.3px;
-    transition: color 0.18s;
-    cursor: pointer;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--secColor);
-}
-
-.nav-links a.active {
-    border-bottom: 1.5px solid var(--secColor);
-    padding-bottom: 2px;
-} */
-
 .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 36px;
-        list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+}
+ 
+.nav-links a {
+    font-family: var(--thirdFont);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: black;
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+}
+ 
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--secColor);
+    transition: width 0.25s ease;
+}
+ 
+.nav-links a:hover {
+    color: var(--secColor);
       }
  
-      .nav-links a {
-        font-family: var(--thirdFont);
-        font-size: 15px;
-        font-weight: 600;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        color: black;
-        text-decoration: none;
-        transition: color 0.2s;
-        position: relative;
-      }
+.nav-links a:hover::after {
+    width: 100%;
+}
  
-      .nav-links a::after {
-        content: '';
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--secColor);
-        transition: width 0.25s ease;
-      }
+.nav-logout {
+    font-family: var(--thirdFont);
+    font-size: 0.82em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: black !important;
+    border: 1.5px solid var(--priColor);
+    padding: 7px 18px;
+    border-radius: 30px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s !important;
+    white-space: nowrap;
+}
  
-      .nav-links a:hover {
-        color: var(--secColor);
-      }
+.nav-logout::after {
+    display: none !important;
+}
  
-      .nav-links a:hover::after {
-        width: 100%;
-      }
+.nav-logout:hover {
+    background: var(--priColor) !important;
+    color: var(--secColor) !important;
+    border-color: var(--priColor) !important;
+}
  
-      .nav-logout {
-        font-family: var(--thirdFont);
-        font-size: 0.82em;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        color: black !important;
-        border: 1.5px solid rgba(252,191,22,0.6);
-        padding: 7px 18px;
-        border-radius: 30px;
-        transition: background 0.2s, color 0.2s, border-color 0.2s !important;
-        white-space: nowrap;
-      }
- 
-      .nav-lagout::after {
-        display: none !important;
-      }
- 
-      .nav-lagout:hover {
-        background: var(--secColor) !important;
-        color: var(--priColor) !important;
-        border-color: var(--secColor) !important;
-      }
- 
-      .nav-divider {
-        color: black;
-        font-weight: 300;
-        font-size: 0.9em;
-        margin-left: -20px;
-        margin-right: 19px;
-      }
+.nav-divider {
+    color: var(--priColor);
+    font-weight: 300;
+    font-size: 0.9em;
+    margin-left: -20px;
+    margin-right: 19px;
+}
 
     /* ── PAGES ───────────────────────────────────────── */
 .page {
@@ -246,17 +219,25 @@ a {
 
 .hero-main {
     font-family: var(--secFont);
-    font-size: var(--medFont);
-    color: #fff;
+    font-size: var(--smallFont);
+    color: rgba(255,255,255,0.85);
     font-weight: 400;
     line-height: 1.15;
+    letter-spacing: 3px;
+    text-transform: uppercase;
     margin: 0 auto 18px;
     max-width: 800px;
+}
+
+.hero-main i {
+    text-transform: none;
 }
     
 .hero-main span {
     color: var(--secColor);
     font-size: var(--xlargeFont);
+    text-transform: none;
+    letter-spacing: 0;
 }
 
 .hero-main-sub {
