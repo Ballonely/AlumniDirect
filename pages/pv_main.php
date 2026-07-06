@@ -222,7 +222,24 @@ header('Expires: 0');
     <!-- ══ PAGE: PROFILE DETAIL ════════════════════════════ -->
     <div class="page" id="page-profile">
       <div class="profile-page">
-        <div class="back-link" onclick="goTo('alumni')">Back to profiles</div>
+        <div class="our-alumni back-link" onclick="goTo('alumni')">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                transform="rotate(180)"
+              >
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+        
+            Back to profiles
+        </div>
         <div class="profile-shell" id="profile-shell"></div>
       </div>
     </div>
