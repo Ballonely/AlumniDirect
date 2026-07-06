@@ -4,6 +4,8 @@
  *
  * Returns a single alumnus's full profile as JSON: basic info, all
  * employment rows, all awards, and graduation/program/college info.
+ * Contact fields (email, phone) are returned only when the alumnus
+ * has opted in via show_Email / show_Phone.
  */
 
 require_once __DIR__ . '/db.php';
@@ -22,7 +24,8 @@ if ($id <= 0) {
 $stmt = $pdo->prepare("
     SELECT
         a.account_ID, a.first_Name, a.last_Name, a.middle_Name, a.suffix,
-        a.email, a.bio, (a.photo IS NOT NULL) AS has_photo,
+        a.email, a.phone, a.show_Email, a.show_Phone,
+        a.bio, (a.photo IS NOT NULL) AS has_photo,
         p.program_Name, g.graduation_Year, c.college_Name
     FROM account a
     LEFT JOIN graduation g ON g.account_ID = a.account_ID
@@ -64,14 +67,20 @@ $fullName = trim($account['first_Name'] . ' ' . $account['last_Name']);
 $initials = strtoupper(mb_substr($account['first_Name'], 0, 1) . mb_substr($account['last_Name'], 0, 1));
 
 echo json_encode([
-    'id'         => (int) $account['account_ID'],
-    'initials'   => $initials,
-    'name'       => $fullName,
-    'program'    => $account['program_Name'],
-    'grad'       => $account['graduation_Year'],
-    'college'    => $account['college_Name'],
-    'employment' => $employment,
-    'awards'     => $awards,
-    'image_url'  => $account['has_photo'] ? "../api/get_image.php?id={$account['account_ID']}" : null,
+    'id'          => (int) $account['account_ID'],
+    'initials'    => $initials,
+    'name'        => $fullName,
+    'program'     => $account['program_Name'],
+    'grad'        => $account['graduation_Year'],
+    'college'     => $account['college_Name'],
+    // Contact — always return the flag; only return the value when the
+    // alumnus has chosen to make it public.
+    'show_email'  => (bool) $account['show_Email'],
+    'email'       => $account['show_Email'] ? $account['email'] : null,
+    'show_phone'  => (bool) $account['show_Phone'],
+    'phone'       => $account['show_Phone'] ? $account['phone'] : null,
+    'employment'  => $employment,
+    'awards'      => $awards,
+    'image_url'   => $account['has_photo'] ? "../api/get_image.php?id={$account['account_ID']}" : null,
     'career_story' => $account['bio'],
 ]);

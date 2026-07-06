@@ -261,8 +261,9 @@ header('Expires: 0');
           <span class="unsaved-pulse"></span>
           You have unsaved changes.
         </span>
-        <button class="unsaved-btn save-now" onclick="doSave()">
+        <button class="unsaved-btn save-now" id="save-btn" onclick="doSave()">
           Save Now
+          <span id="save-spinner" class="save-spinner" style="display:none;"></span>
         </button>
         <button class="unsaved-btn discard-btn" onclick="doDiscard()">
           Discard
@@ -766,6 +767,16 @@ header('Expires: 0');
       </div>
     </div>
 
+    <div class="confirm-overlay" id="contact-overlay">
+      <div class="confirm-box">
+        <h4>Contact Information</h4>
+        <div id="contact-modal-body"></div>
+        <div class="confirm-btns">
+          <button class="btn-green" onclick="closeContactModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
     <div class="toast" id="toast">
       <span class="toast-icon" id="toast-icon"></span>
       <span id="toast-msg"></span>
@@ -1092,6 +1103,12 @@ header('Expires: 0');
           return;
         }
 
+        _currentContactInfo = {
+          name: detail.name,
+          email: detail.show_email ? detail.email : null,
+          phone: detail.show_phone ? detail.phone : null,
+        };
+
         const employmentHtml = (detail.employment || []).length
           ? detail.employment
               .map(
@@ -1137,8 +1154,7 @@ header('Expires: 0');
         <p style="font-size:13px;color:var(--muted);">${a.program} — ${a.college}, ${a.grad}</p>
       </div>
       <div class="btn-row">
-        <button class="btn-green">Request Record Modification</button>
-        <button class="btn-outline-green">Contact Alumni</button>
+        <button class="btn-outline-green" onclick="openContactModal()">Contact Alumni</button>
       </div>`;
       }
 
@@ -1167,6 +1183,45 @@ header('Expires: 0');
          Loads/saves the logged-in alumnus's record via
          api/get_account.php and api/update_account.php.
          ════════════════════════════════════════════════════ */
+
+      let _currentContactInfo = null;
+
+      function openContactModal() {
+        const info = _currentContactInfo;
+        let bodyHtml = "";
+
+        if (!info || (!info.email && !info.phone)) {
+          bodyHtml = `<p style="font-size:14px;color:var(--muted);margin:0;">
+            This alumnus has chosen not to share contact information publicly.
+          </p>`;
+        } else {
+          if (info.email) {
+            bodyHtml += `<div style="margin-bottom:12px;">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Email</div>
+              <a href="mailto:${info.email}" style="font-size:14px;color:var(--gold);text-decoration:none;">${info.email}</a>
+            </div>`;
+          }
+          if (info.phone) {
+            bodyHtml += `<div style="margin-bottom:4px;">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Phone</div>
+              <a href="tel:${info.phone}" style="font-size:14px;color:var(--gold);text-decoration:none;">${info.phone}</a>
+            </div>`;
+          }
+        }
+
+        document.getElementById("contact-modal-body").innerHTML = bodyHtml;
+        document.getElementById("contact-overlay").classList.add("visible");
+      }
+
+      function closeContactModal() {
+        document.getElementById("contact-overlay").classList.remove("visible");
+      }
+
+      document
+        .getElementById("contact-overlay")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeContactModal();
+        });
 
       let isDirty = false;
       let accountLoaded = false;

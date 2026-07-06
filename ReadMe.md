@@ -52,17 +52,19 @@ Done above the University of San Carlos Landing Page Logo ✔-->
 Entirety of About is now Removed in pv_main or in the AlumniProfile.html ✔-->
 <!-- sticky nav for search bar (ts is done) ✔ -->
 <!-- session key lock (kind of done) ✔ --> 
-
+<!-- Contact information UI -->
+<!-- remove request modification -->
 <!--LANDING PAGE >
 - use iconify for landing page, register and log in
 <This is now added and finished ✔-->
 
 < PROFILE EDIT PAGE >
-- remove phone number in edit
 <!--logout button on the right of the nav
  Log out button successfully Working ✔
 <(Extra Add) Footer now should only be fixed at the bottom when deleting a content ✔-->
 <!-- biography should be fixed size but readable (still scrollable) -->
+- have an indicator that changes need to be verified, and an are you sure message
+
 
 < LOGIN & REGISTER PAGE >
 - (Added Extra by Anthony) Update Password with an Eye Icon to check password Input and Misinputs.

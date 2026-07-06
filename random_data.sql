@@ -23,21 +23,21 @@ INSERT INTO industry_sector (sector_ID, sector_Name, sector_Description) VALUES
 
 -- ── ACCOUNTS (sample alumni, IDs 9001–9009) ──────────────────
 -- Bcrypt hash below is real and verifiable: password_verify('Password123!', $hash) === true
-INSERT INTO account (account_ID, first_Name, last_Name, middle_Name, suffix, school_ID, email, password) VALUES
-(9001, 'Maria',     'Santos',     'Lopez',    NULL, '18-0001', 'maria.santos@alumni.sample.edu.ph',     '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9002, 'Juan',       'Dela Cruz', 'Ramos',    NULL, '15-0002', 'juan.delacruz@alumni.sample.edu.ph',    '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9003, 'Ana',        'Reyes',     'Cruz',     'MD', '12-0003', 'ana.reyes@alumni.sample.edu.ph',        '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9004, 'Carlos',     'Mendoza',   'Garcia',   NULL, '10-0004', 'carlos.mendoza@alumni.sample.edu.ph',   '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9005, 'Liza',       'Fernandez', 'Torres',   NULL, '19-0005', 'liza.fernandez@alumni.sample.edu.ph',   '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9006, 'Mark',       'Villanueva','Bautista', NULL, '16-0006', 'mark.villanueva@alumni.sample.edu.ph',  '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9007, 'Patricia',   'Lim',       'Ong',      NULL, '20-0007', 'patricia.lim@alumni.sample.edu.ph',     '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9008, 'Roberto',    'Tan',       'Sy',       NULL, '08-0008', 'roberto.tan@alumni.sample.edu.ph',      '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG'),
-(9009, 'Grace',      'Aquino',    'Pascual',  NULL, '14-0009', 'grace.aquino@alumni.sample.edu.ph',     '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG');
+-- phone and show_Phone added; show_Email defaults to 1 (visible)
+INSERT INTO account (account_ID, first_Name, last_Name, middle_Name, suffix, school_ID, email, password, phone, show_Email, show_Phone) VALUES
+(9001, 'Maria',     'Santos',     'Lopez',    NULL, '18-0001', 'maria.santos@alumni.sample.edu.ph',     '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 917 123 0001', 1, 1),
+(9002, 'Juan',       'Dela Cruz', 'Ramos',    NULL, '15-0002', 'juan.delacruz@alumni.sample.edu.ph',    '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 918 123 0002', 1, 1),
+(9003, 'Ana',        'Reyes',     'Cruz',     'MD', '12-0003', 'ana.reyes@alumni.sample.edu.ph',        '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 919 123 0003', 1, 1),
+(9004, 'Carlos',     'Mendoza',   'Garcia',   NULL, '10-0004', 'carlos.mendoza@alumni.sample.edu.ph',   '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 920 123 0004', 1, 0),
+(9005, 'Liza',       'Fernandez', 'Torres',   NULL, '19-0005', 'liza.fernandez@alumni.sample.edu.ph',   '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 921 123 0005', 1, 1),
+(9006, 'Mark',       'Villanueva','Bautista', NULL, '16-0006', 'mark.villanueva@alumni.sample.edu.ph',  '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 922 123 0006', 1, 0),
+(9007, 'Patricia',   'Lim',       'Ong',      NULL, '20-0007', 'patricia.lim@alumni.sample.edu.ph',     '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 923 123 0007', 1, 1),
+(9008, 'Roberto',    'Tan',       'Sy',       NULL, '08-0008', 'roberto.tan@alumni.sample.edu.ph',      '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 924 123 0008', 1, 1),
+(9009, 'Grace',      'Aquino',    'Pascual',  NULL, '14-0009', 'grace.aquino@alumni.sample.edu.ph',     '$2b$10$QPZfXxrXqDTGexpngcvjTO5pmn8ECW6lCK2BIl4.4vkvH9VILRTgG', '+63 925 123 0009', 1, 1);
 
 -- ── PROGRAMS (IDs 9001–9009, one row per sample account) ─────
--- Same normalization issue I flagged before: program is tied 1:1 to an
--- account instead of being a shared catalog. Following your existing
--- design as-is, not fixing it here.
+-- Same normalization issue flagged before: program is tied 1:1 to an
+-- account instead of being a shared catalog. Following existing design as-is.
 INSERT INTO program (program_ID, account_ID, program_Name) VALUES
 (9001, 9001, 'BS Computer Engineering'),
 (9002, 9002, 'BS Accountancy'),
@@ -50,9 +50,8 @@ INSERT INTO program (program_ID, account_ID, program_Name) VALUES
 (9009, 9009, 'BS Nursing');
 
 -- ── GRADUATION ─────────────────────────────────────────────
--- college_ID values below reuse the colleges already in your database:
--- 1 Engineering, 2 Business and Accountancy, 3 Arts and Sciences,
--- 4 Law and Governance, 5 Health Care Professions
+-- college_ID values: 1 Engineering, 2 Business and Accountancy,
+-- 3 Arts and Sciences, 4 Law and Governance, 5 Health Care Professions
 INSERT INTO graduation (account_ID, program_ID, college_ID, graduation_Year) VALUES
 (9001, 9001, 1, 2018),
 (9002, 9002, 2, 2015),
@@ -65,8 +64,8 @@ INSERT INTO graduation (account_ID, program_ID, college_ID, graduation_Year) VAL
 (9009, 9009, 5, 2014);
 
 -- ── EMPLOYMENT ─────────────────────────────────────────────
--- sector_ID values reuse the sectors already in your database:
--- 1 Technology, 2 Finance, 3 Healthcare, 4 Public Service, 5 Arts & Media, 6 Education
+-- sector_ID values: 1 Technology, 2 Finance, 3 Healthcare,
+-- 4 Public Service, 5 Arts & Media, 6 Education
 INSERT INTO employment (account_ID, sector_ID, occupation, description) VALUES
 (9001, 1, 'Senior Software Engineer', 'Builds backend systems for a telecommunications company, leading a team of 5 engineers.'),
 (9002, 2, 'Financial Analyst', 'Analyzes investment portfolios and corporate finance strategy for a major Philippine bank.'),
