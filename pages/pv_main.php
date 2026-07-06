@@ -176,44 +176,17 @@ header('Expires: 0');
         </div>
 
         <div class="filter-row">
-          <span class="filter-label">School:</span>
-          <button
-            class="filter-btn on"
-            onclick="setFilter('college', 'all', this)"
+          <select
+            class="filter-select"
+            onchange="setFilter('college', this.value, this)"
           >
-            All Schools
-          </button>
-          <button
-            class="filter-btn"
-            onclick="setFilter('college', 'Business', this)"
-          >
-            Business
-          </button>
-          <button
-            class="filter-btn"
-            onclick="setFilter('college', 'Engineering', this)"
-          >
-            Engineering
-          </button>
-          <button
-            class="filter-btn"
-            onclick="setFilter('college', 'Arts &amp; Sciences', this)"
-          >
-            Arts &amp; Sciences
-          </button>
-          <button
-            class="filter-btn"
-            onclick="setFilter('college', 'Law and Governance', this)"
-          >
-            Law and Governance
-          </button>
-          <button
-            class="filter-btn"
-            onclick="setFilter('college', 'Health Care Professions', this)"
-          >
-            Health Care Professions
-          </button>
-          <span style="flex: 1"></span>
+            <option value="all">All Schools</option>
+            <option value="Business">Business</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Arts &amp; Sciences">Arts &amp; Sciences</option>
+            <option value="Law and Governance">Law and Governance</option>
+            <option value="Health Care Professions">Health Care Professions</option>
+          </select>
           <select
             class="filter-select"
             onchange="setFilter('year', this.value, this)"

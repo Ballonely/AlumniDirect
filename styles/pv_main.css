@@ -495,8 +495,10 @@ a {
     border-bottom: 1px solid var(--border);
     padding: 16px 2.5rem;
     display: flex;
-    flex-direction: column;
-    gap: 14px;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
     position: sticky;
     top: 100px;
     z-index: 100;
@@ -507,6 +509,7 @@ a {
     gap: 10px;
     flex-wrap: wrap;
     align-items: center;
+    margin-left: auto;
 }
     
 .filter-label {
@@ -556,7 +559,8 @@ a {
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 100%;
+    flex: 1;
+    min-width: 200px;
     max-width: 420px;
     background: var(--cream);
     border: 1px solid var(--border);
