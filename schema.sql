@@ -93,6 +93,12 @@ CREATE TABLE staff (
     KEY fk_staff_account (account_ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE student (
+    school_id  varchar(8)   PRIMARY KEY,
+    email      varchar(50)  DEFAULT NULL,
+    password   varchar(255) DEFAULT NULL
+);
+
 ALTER TABLE awards
   ADD CONSTRAINT fk_awards_account FOREIGN KEY (account_ID) REFERENCES account (account_ID);
 

@@ -11,6 +11,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../styles/pb_landing.css" />
+
   </head>
   <body>
     <nav id="navbar">
@@ -26,6 +27,9 @@
       <ul class="nav-links">
         <li><a href="#about">About USC</a></li>
         <li><a href="#alumni">Alumni</a></li>
+        <li>
+          <a href="#" id="studentViewBtn">View as Student</a>
+        </li>
         <li>
           <a href="pb_login.html">Sign in</a>
         </li>
@@ -159,8 +163,6 @@
               to the university, and to the shared values instilled in every
               graduate. This directory is your bridge back to that community.
             </p>
-
-            <!-- REMOVED OLD ICON TO NEWER ICON FINISHED-->
           </div>
         </div>
       </div>
@@ -248,7 +250,7 @@
       </div>
     </footer>
 
-    <!-- MODAL -->
+    <!-- ── DISCOVER MODAL (existing) ── -->
     <div class="modal-backdrop" id="discoverModal">
       <div class="modal-box">
         <p class="modal-title">Hold on, Carolinian.</p>
@@ -263,12 +265,151 @@
       </div>
     </div>
 
+    <!-- ── STUDENT VIEW MODAL ── -->
+    <div class="student-modal-backdrop" id="studentModal">
+      <div class="student-modal-box" id="studentModalBox">
+
+        <!-- LEFT: form -->
+        <div class="sm-form-side">
+          <p class="student-modal-eyebrow">Read-only access</p>
+          <p class="student-modal-title">View as Student</p>
+          <p class="student-modal-sub">
+            Enter your USC student ID to browse the alumni directory.
+            You won't be able to edit profiles in this mode.
+          </p>
+
+          <!-- Step 1: ID field (always visible) -->
+          <div class="sm-field">
+            <label for="sm-id-input">Student ID</label>
+            <input
+              type="text"
+              id="sm-id-input"
+              placeholder="e.g. 24-1001"
+              autocomplete="off"
+              inputmode="text"
+              spellcheck="false"
+            />
+            <span class="field-spinner" id="sm-id-spinner"></span>
+            <span class="field-verified" id="sm-id-check">✓</span>
+          </div>
+
+          <!-- Step 2: Password field — slides in after ID verified -->
+          <div class="sm-pw-wrap" id="sm-pw-wrap">
+            <div class="sm-field">
+              <label for="sm-pw-input">Password</label>
+              <input
+                type="password"
+                id="sm-pw-input"
+                placeholder="Your student view password"
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                class="pw-toggle"
+                aria-label="Toggle password visibility"
+                id="sm-pw-toggle"
+              >👁</button>
+            </div>
+          </div>
+
+          <!-- Feedback message row -->
+          <p class="sm-msg" id="sm-msg" role="alert"></p>
+
+          <!-- "Use a different ID" link (shown once ID is locked) -->
+          <button type="button" class="sm-change-id" id="sm-change-id">
+            ← Use a different ID
+          </button>
+
+          <div class="student-modal-actions">
+            <button type="button" class="student-modal-dismiss" id="studentModalDismiss">
+              Cancel
+            </button>
+            <button type="button" class="student-modal-submit" id="studentModalSubmit">
+              <span class="btn-spinner" id="sm-btn-spinner"></span>
+              <span id="sm-btn-label">Continue</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: no-password setup panel (hidden until needs_password) -->
+        <div class="sm-setup-panel" id="smSetupPanel">
+
+          <!-- State A: info / prompt to set up -->
+          <div id="smSetupInfo">
+            <div class="sm-setup-icon">🔐</div>
+            <h3 class="sm-setup-heading">No password set yet</h3>
+            <p class="sm-setup-body">
+              This student ID hasn't been given a student view password.
+              You'll need to set one up before you can access the alumni directory.
+            </p>
+            <div class="sm-setup-divider"></div>
+            <p class="sm-setup-body" style="margin-bottom:16px;">
+              It only takes a moment. You'll be asked to create a password
+              linked to this ID — no email required.
+            </p>
+            <button type="button" id="smSetupStartBtn" class="sm-setup-btn">
+              Set up my password →
+            </button>
+          </div>
+
+          <!-- State B: inline password-setup form (hidden until smSetupStartBtn clicked) -->
+          <div id="smSetupForm" style="display:none;">
+            <p class="sm-setup-eyebrow">Student View · First-time setup</p>
+            <h3 class="sm-setup-heading" style="margin-bottom:4px;">Set Your Password</h3>
+            <p class="sm-setup-body" style="margin-bottom:12px;">
+              Create a password to access the alumni directory in read-only student view.
+            </p>
+
+            <div class="sm-setup-form-error" id="smSetupFormErr"></div>
+
+            <div class="sm-setup-field">
+              <label for="su-pw1">Password</label>
+              <div class="sm-setup-pw-wrap">
+                <input type="password" id="su-pw1" placeholder="At least 8 characters" autocomplete="new-password" />
+                <button type="button" class="sm-setup-toggle" aria-label="Toggle" id="su-toggle1">👁</button>
+              </div>
+              <div class="sm-setup-strength-bar"><div class="sm-setup-strength-fill" id="suStrengthFill"></div></div>
+              <div class="sm-setup-strength-label" id="suStrengthLabel"></div>
+              <p class="sm-setup-field-error" id="su-pw1-err"></p>
+            </div>
+
+            <ul class="sm-setup-reqs">
+              <li class="su-req" id="su-req-len">At least 8 characters</li>
+              <li class="su-req" id="su-req-upper">One uppercase letter</li>
+              <li class="su-req" id="su-req-digit">One number</li>
+            </ul>
+
+            <div class="sm-setup-field">
+              <label for="su-pw2">Confirm Password</label>
+              <div class="sm-setup-pw-wrap">
+                <input type="password" id="su-pw2" placeholder="Repeat your password" autocomplete="new-password" />
+                <button type="button" class="sm-setup-toggle" aria-label="Toggle" id="su-toggle2">👁</button>
+              </div>
+              <p class="sm-setup-field-error" id="su-pw2-err"></p>
+            </div>
+
+            <div class="sm-setup-form-actions">
+              <button type="button" id="smSetupCancelBtn" class="sm-setup-cancel">Cancel</button>
+              <button type="button" id="smSetupSubmitBtn" class="sm-setup-submit">
+                <span class="sm-setup-spinner" id="suSpinner"></span>
+                Confirm &amp; Sign In
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
     <script>
+      /* ── Navbar scroll ── */
       const navbar = document.getElementById("navbar");
       window.addEventListener("scroll", () => {
         navbar.classList.toggle("scrolled", window.scrollY > 40);
       });
 
+      /* ── Reveal on scroll ── */
       const reveals = document.querySelectorAll(".reveal");
       const observer = new IntersectionObserver(
         (entries) => {
@@ -283,6 +424,7 @@
       );
       reveals.forEach((el) => observer.observe(el));
 
+      /* ── Discover modal ── */
       const modal = document.getElementById("discoverModal");
       document.getElementById("discoverBtn").addEventListener("click", () => {
         modal.classList.add("open");
@@ -293,6 +435,422 @@
       modal.addEventListener("click", (e) => {
         if (e.target === modal) modal.classList.remove("open");
       });
+
+      /* ══════════════════════════════════════════════════════════
+         STUDENT MODAL — two-step flow
+         Step 1: Enter ID → check via student_check.php (AJAX)
+           • ID not found        → error, stay on step 1
+           • needs_password      → redirect to student_setup.php
+           • has_password        → reveal password field (step 2)
+         Step 2: Enter password → POST to student_login.php (AJAX)
+           • ok: true            → redirect to pv_main.php
+           • wrong_password      → error on password field
+           • rate_limited        → lockout message
+         ══════════════════════════════════════════════════════════ */
+      const studentModal    = document.getElementById("studentModal");
+      const studentModalBox = document.getElementById("studentModalBox");
+      const smSetupPanel    = document.getElementById("smSetupPanel");
+      const smSetupInfo     = document.getElementById("smSetupInfo");
+      const smSetupForm     = document.getElementById("smSetupForm");
+      const smSetupStartBtn = document.getElementById("smSetupStartBtn");
+      const smSetupCancelBtn= document.getElementById("smSetupCancelBtn");
+      const smSetupSubmitBtn= document.getElementById("smSetupSubmitBtn");
+      const smSetupFormErr  = document.getElementById("smSetupFormErr");
+      const suPw1           = document.getElementById("su-pw1");
+      const suPw2           = document.getElementById("su-pw2");
+      const suSpinner       = document.getElementById("suSpinner");
+      const suStrengthFill  = document.getElementById("suStrengthFill");
+      const suStrengthLabel = document.getElementById("suStrengthLabel");
+      const smIdInput       = document.getElementById("sm-id-input");
+      const smPwWrap       = document.getElementById("sm-pw-wrap");
+      const smPwInput      = document.getElementById("sm-pw-input");
+      const smPwToggle     = document.getElementById("sm-pw-toggle");
+      const smMsg          = document.getElementById("sm-msg");
+      const smIdSpinner    = document.getElementById("sm-id-spinner");
+      const smIdCheck      = document.getElementById("sm-id-check");
+      const smChangeId     = document.getElementById("sm-change-id");
+      const smBtnLabel     = document.getElementById("sm-btn-label");
+      const smBtnSpinner   = document.getElementById("sm-btn-spinner");
+      const smSubmitBtn    = document.getElementById("studentModalSubmit");
+
+      // "step" tracks which stage we're on: 'id' | 'password'
+      let smStep = 'id';
+
+      /* ── helpers ── */
+      function smSetMsg(text, type /* 'error'|'info'|'warn'|'' */) {
+        smMsg.textContent = text;
+        smMsg.className   = 'sm-msg' + (type ? ' ' + type : '');
+      }
+
+      function smSetLoading(on) {
+        smSubmitBtn.disabled = on;
+        smBtnSpinner.style.display = on ? 'inline-block' : 'none';
+      }
+
+      function smShowPasswordStep() {
+        smStep = 'password';
+        smIdInput.classList.add('locked');
+        smIdInput.readOnly = true;
+        smIdCheck.style.display  = 'inline';
+        smIdSpinner.style.display = 'none';
+        smPwWrap.classList.add('visible');
+        smChangeId.style.display = 'inline';
+        smBtnLabel.textContent   = 'Sign In';
+        smSetMsg('', '');
+        setTimeout(() => smPwInput.focus(), 320);
+      }
+
+      function smResetToIdStep(prefill) {
+        smStep = 'id';
+        smIdInput.value    = prefill || '';
+        smIdInput.classList.remove('locked', 'field-error');
+        smIdInput.readOnly = false;
+        smIdCheck.style.display   = 'none';
+        smIdSpinner.style.display = 'none';
+        smPwWrap.classList.remove('visible');
+        smPwInput.value = '';
+        smPwInput.classList.remove('field-error');
+        smChangeId.style.display = 'none';
+        smBtnLabel.textContent   = 'Continue';
+        smSetMsg('', '');
+        smSubmitBtn.disabled = false;
+        // hide setup panel
+        smSetupPanel.classList.remove('visible');
+        studentModalBox.classList.remove('has-setup-panel');
+      }
+
+      function openStudentModal(prefill) {
+        smResetToIdStep(prefill);
+        studentModal.classList.add("open");
+        setTimeout(() => smIdInput.focus(), 180);
+      }
+
+      function closeStudentModal() {
+        studentModal.classList.remove("open");
+      }
+
+      /* ── show/hide password toggle ── */
+      smPwToggle.addEventListener('click', () => {
+        const showing = smPwInput.type === 'text';
+        smPwInput.type = showing ? 'password' : 'text';
+        smPwToggle.textContent = showing ? '👁' : '🙈';
+      });
+
+      /* ── "Use a different ID" resets back to step 1 ── */
+      smChangeId.addEventListener('click', () => smResetToIdStep());
+
+      /* ── Clear error styling on ID input ── */
+      smIdInput.addEventListener('input', () => {
+        smIdInput.classList.remove('field-error');
+        smSetMsg('', '');
+      });
+
+      /* ── Clear error styling on password input ── */
+      smPwInput.addEventListener('input', () => {
+        smPwInput.classList.remove('field-error');
+        smSetMsg('', '');
+      });
+
+      /* ── Enter key submits current step ── */
+      [smIdInput, smPwInput].forEach(el =>
+        el.addEventListener('keydown', e => { if (e.key === 'Enter') handleSubmit(); })
+      );
+
+      /* ── Main submit handler ── */
+      async function handleSubmit() {
+        if (smStep === 'id') {
+          await doCheckId();
+        } else {
+          await doLogin();
+        }
+      }
+
+      smSubmitBtn.addEventListener('click', handleSubmit);
+
+      /* ── Step 1: check if ID exists + whether password is set ── */
+      async function doCheckId() {
+        const id = smIdInput.value.trim();
+        if (!id) {
+          smIdInput.classList.add('field-error');
+          smSetMsg('⚠ Please enter your student ID number.', 'error');
+          smIdInput.focus();
+          return;
+        }
+
+        smIdSpinner.style.display = 'inline-block';
+        smSetLoading(true);
+        smSetMsg('', '');
+
+        try {
+          const res  = await fetch('../api/student_check.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ student_id: id }),
+          });
+          const data = await res.json();
+
+          if (res.status === 429) {
+            const mins = Math.ceil((data.retry_after || 300) / 60);
+            smIdSpinner.style.display = 'none';
+            smSetMsg(
+              `⚠ Too many attempts. Try again in ${mins} minute${mins > 1 ? 's' : ''}.`,
+              'warn'
+            );
+            smSetLoading(false);
+            return;
+          }
+
+          if (!res.ok || data.error) {
+            smIdSpinner.style.display = 'none';
+            smIdInput.classList.add('field-error');
+            smSetMsg('⚠ Student ID not found. Please check and try again.', 'error');
+            smSetLoading(false);
+            smIdInput.focus();
+            return;
+          }
+
+          if (data.status === 'needs_password') {
+            // No password set yet — show the setup panel inline
+            smIdSpinner.style.display = 'none';
+            smSetLoading(false);
+            // Reset setup panel to info state (in case it was previously on the form)
+            smSetupInfo.style.display = '';
+            smSetupForm.style.display = 'none';
+            smSetupPanel.classList.add('visible');
+            studentModalBox.classList.add('has-setup-panel');
+            smSetMsg('ℹ No password found for this ID.', 'warn');
+            return;
+          }
+
+          // has_password — reveal password field
+          smIdSpinner.style.display = 'none';
+          smSetLoading(false);
+          smShowPasswordStep();
+
+        } catch {
+          smIdSpinner.style.display = 'none';
+          smSetMsg('⚠ Network error. Please try again.', 'error');
+          smSetLoading(false);
+        }
+      }
+
+      /* ── Step 2: verify password ── */
+      async function doLogin() {
+        const id  = smIdInput.value.trim();
+        const pw  = smPwInput.value;
+
+        if (!pw) {
+          smPwInput.classList.add('field-error');
+          smSetMsg('⚠ Please enter your password.', 'error');
+          smPwInput.focus();
+          return;
+        }
+
+        smSetLoading(true);
+        smSetMsg('', '');
+
+        try {
+          const res  = await fetch('../api/student_login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ student_id: id, password: pw }),
+          });
+          const data = await res.json();
+
+          if (res.ok && data.ok) {
+            window.location.href = '../pages/pv_main.php';
+            return;
+          }
+
+          smSetLoading(false);
+
+          if (res.status === 429) {
+            const mins = Math.ceil((data.retry_after || 900) / 60);
+            smSetMsg(
+              `⚠ Too many failed attempts. Try again in ${mins} minute${mins > 1 ? 's' : ''}.`,
+              'warn'
+            );
+            return;
+          }
+
+          if (data.error === 'wrong_password') {
+            smPwInput.classList.add('field-error');
+            smPwInput.value = '';
+            smSetMsg('⚠ Incorrect password. Please try again.', 'error');
+            smPwInput.focus();
+            return;
+          }
+
+          smSetMsg('⚠ Something went wrong. Please try again.', 'error');
+
+        } catch {
+          smSetLoading(false);
+          smSetMsg('⚠ Network error. Please try again.', 'error');
+        }
+      }
+
+      /* ══════════════════════════════════════════════════════════
+         INLINE SETUP FORM — runs inside the setup panel
+         ══════════════════════════════════════════════════════════ */
+
+      /* Switch panel to form view */
+      smSetupStartBtn.addEventListener('click', () => {
+        smSetupInfo.style.display = 'none';
+        smSetupForm.style.display = '';
+        suPw1.value = '';
+        suPw2.value = '';
+        suStrengthFill.style.width = '0';
+        suStrengthLabel.textContent = '';
+        smSetupFormErr.textContent = '';
+        smSetupFormErr.classList.remove('visible');
+        ['su-req-len','su-req-upper','su-req-digit'].forEach(id =>
+          document.getElementById(id).classList.remove('met')
+        );
+        setTimeout(() => suPw1.focus(), 80);
+      });
+
+      /* Cancel — go back to info panel */
+      smSetupCancelBtn.addEventListener('click', () => {
+        smSetupInfo.style.display = '';
+        smSetupForm.style.display = 'none';
+      });
+
+      /* Password-toggle buttons */
+      document.getElementById('su-toggle1').addEventListener('click', () => {
+        const s = suPw1.type === 'text';
+        suPw1.type = s ? 'password' : 'text';
+        document.getElementById('su-toggle1').textContent = s ? '👁' : '🙈';
+      });
+      document.getElementById('su-toggle2').addEventListener('click', () => {
+        const s = suPw2.type === 'text';
+        suPw2.type = s ? 'password' : 'text';
+        document.getElementById('su-toggle2').textContent = s ? '👁' : '🙈';
+      });
+
+      /* Strength meter */
+      function suCheckStrength(v) {
+        const len   = v.length >= 8;
+        const upper = /[A-Z]/.test(v);
+        const digit = /\d/.test(v);
+        document.getElementById('su-req-len').classList.toggle('met', len);
+        document.getElementById('su-req-upper').classList.toggle('met', upper);
+        document.getElementById('su-req-digit').classList.toggle('met', digit);
+        const score = [len, upper, digit, v.length >= 12, /[^A-Za-z0-9]/.test(v)].filter(Boolean).length;
+        const colors = ['#ef4444','#f97316','#eab308','#22c55e','#16a34a'];
+        const labels = ['Too short','Weak','Fair','Good','Strong'];
+        suStrengthFill.style.width      = `${score * 20}%`;
+        suStrengthFill.style.background = colors[score - 1] || '#e5e7eb';
+        suStrengthLabel.textContent     = v.length ? (labels[score - 1] || '') : '';
+        return { len, upper, digit };
+      }
+
+      suPw1.addEventListener('input', () => {
+        suCheckStrength(suPw1.value);
+        document.getElementById('su-pw1-err').textContent = '';
+        suPw1.classList.remove('su-err');
+        suCheckMatch();
+      });
+      suPw2.addEventListener('input', suCheckMatch);
+
+      function suCheckMatch() {
+        const err = document.getElementById('su-pw2-err');
+        if (suPw2.value && suPw2.value !== suPw1.value) {
+          err.textContent = '⚠ Passwords do not match.';
+          suPw2.classList.add('su-err');
+        } else {
+          err.textContent = '';
+          suPw2.classList.remove('su-err');
+        }
+      }
+
+      [suPw1, suPw2].forEach(el =>
+        el.addEventListener('keydown', e => { if (e.key === 'Enter') suDoSubmit(); })
+      );
+
+      smSetupSubmitBtn.addEventListener('click', suDoSubmit);
+
+      async function suDoSubmit() {
+        const id = smIdInput.value.trim();
+        smSetupFormErr.classList.remove('visible');
+        document.getElementById('su-pw1-err').textContent = '';
+        document.getElementById('su-pw2-err').textContent = '';
+
+        const { len } = suCheckStrength(suPw1.value);
+        if (!len) {
+          suPw1.classList.add('su-err');
+          document.getElementById('su-pw1-err').textContent = '⚠ Password must be at least 8 characters.';
+          suPw1.focus();
+          return;
+        }
+        if (suPw1.value !== suPw2.value) {
+          suPw2.classList.add('su-err');
+          document.getElementById('su-pw2-err').textContent = '⚠ Passwords do not match.';
+          suPw2.focus();
+          return;
+        }
+
+        smSetupSubmitBtn.disabled = true;
+        suSpinner.style.display = 'inline-block';
+
+        try {
+          const res  = await fetch('../api/student_setup.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ student_id: id, password: suPw1.value, confirm: suPw2.value }),
+          });
+          const data = await res.json();
+
+          if (res.ok && data.ok) {
+            window.location.href = '../pages/pv_main.php';
+            return;
+          }
+
+          let msg = '⚠ Something went wrong. Please try again.';
+          if (res.status === 429) {
+            const mins = Math.ceil((data.retry_after || 60) / 60);
+            msg = `⚠ Too many attempts. Please wait ${mins} minute${mins > 1 ? 's' : ''} and try again.`;
+          } else if (data.error === 'passwords_mismatch') {
+            suPw2.classList.add('su-err');
+            document.getElementById('su-pw2-err').textContent = '⚠ Passwords do not match.';
+          } else if (data.error === 'password_too_short') {
+            suPw1.classList.add('su-err');
+            document.getElementById('su-pw1-err').textContent = '⚠ Password must be at least 8 characters.';
+          } else if (data.error === 'already_set') {
+            msg = '⚠ A password is already set for this ID. Please sign in instead.';
+            setTimeout(() => smResetToIdStep(id), 2000);
+          }
+          smSetupFormErr.textContent = msg;
+          smSetupFormErr.classList.add('visible');
+
+        } catch {
+          smSetupFormErr.textContent = '⚠ Network error. Please try again.';
+          smSetupFormErr.classList.add('visible');
+        } finally {
+          smSetupSubmitBtn.disabled = false;
+          suSpinner.style.display = 'none';
+        }
+      }
+
+      /* ── Open / close bindings ── */
+      document.getElementById("studentViewBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        openStudentModal();
+      });
+
+      document.getElementById("studentModalDismiss").addEventListener("click", closeStudentModal);
+
+      studentModal.addEventListener("click", (e) => {
+        if (e.target === studentModal) closeStudentModal();
+      });
+
+      /* ── Handle ?student_return=<id> after setup cancel / already_set ── */
+      (function checkStudentReturn() {
+        const params = new URLSearchParams(window.location.search);
+        const ret    = params.get("student_return");
+        if (!ret) return;
+        openStudentModal(ret);
+        history.replaceState(null, "", window.location.pathname + window.location.hash);
+      })();
     </script>
   </body>
 </html>

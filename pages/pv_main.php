@@ -15,7 +15,14 @@
 
 session_start();
 
-if (empty($_SESSION['account_ID'])) {
+// Allow two kinds of sessions:
+//   1. Alumni session  — $_SESSION['account_ID'] is set (normal login)
+//   2. Student session — $_SESSION['student_mode'] is true (View as Student)
+// Anything else gets bounced to the login page.
+$isAlumni      = !empty($_SESSION['account_ID']);
+$isStudentMode = !empty($_SESSION['student_mode']);
+
+if (!$isAlumni && !$isStudentMode) {
     header('Location: pb_login.html?error=session');
     exit;
 }
@@ -27,6 +34,12 @@ if (empty($_SESSION['account_ID'])) {
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 header('Expires: 0');
+
+// Make the session type available to JavaScript without any extra fetch.
+// All student-mode restrictions live on the client; the PHP APIs already
+// enforce auth independently (get_account.php / update_account.php both
+// require account_ID, so a student calling them will get a 401 anyway).
+$studentMode = $isStudentMode ? 'true' : 'false';
 ?>
 <!doctype html>
 <html lang="en">
@@ -88,15 +101,41 @@ header('Expires: 0');
         <li>
           <a id="nav-alumni" onclick="goTo('alumni')">Alumni Profiles</a>
         </li>
+        <?php if (!$isStudentMode): ?>
         <li>
           <a id="nav-account" onclick="goTo('account')">My Account</a>
         </li>
+        <?php endif; ?>
         <li><span class="nav-divider">|</span></li>
         <li>
-          <a onclick="requestSignOut()" class="nav-logout">Sign Out</a>
+          <a onclick="requestSignOut()" class="nav-logout">
+            <?= $isStudentMode ? 'Exit Student View' : 'Sign Out' ?>
+          </a>
         </li>
       </ul>
     </nav>
+
+    <!-- ══ STUDENT MODE BANNER ════════════════════════════ -->
+    <?php if ($isStudentMode): ?>
+    <div style="
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      background: #b8962e;
+      color: #1a1a00;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 6px 12px;
+      letter-spacing: 0.04em;
+    ">
+      👁 Student View - You can browse profiles but cannot make any changes.
+    </div>
+    <style>
+      /* Push nav down to sit below the student banner */
+      .nav { top: 28px !important; }
+    </style>
+    <?php endif; ?>
 
     <!-- ══ PAGE: HOME ══════════════════════════════════════ -->
     <div class="page active" id="page-home">
@@ -679,7 +718,9 @@ header('Expires: 0');
         <div class="footer-col">
           <h4>Explore</h4>
           <a onclick="goTo('alumni')">Profiles</a>
+          <?php if (!$isStudentMode): ?>
           <a onclick="goTo('account')">My Account</a>
+          <?php endif; ?>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -773,6 +814,11 @@ header('Expires: 0');
     </div>
 
     <script>
+      /* ── SESSION MODE ────────────────────────────────────────
+         Injected by PHP. True when the visitor logged in via
+         "View as Student" — no editing, no My Account page.      */
+      const STUDENT_MODE = <?= $studentMode ?>;
+
       /* ── DATA ─────────────────────────────────────────────── */
       const BANNERS = [
         "linear-gradient(160deg,#1A4A2E 0%,#0F3320 100%)",
@@ -796,6 +842,13 @@ header('Expires: 0');
 
       function goTo(page, id, opts) {
         opts = opts || {};
+
+        // Students can browse profiles but cannot access the account editor.
+        if (STUDENT_MODE && page === "account") {
+          showToast("error", "⚠", "You're in read-only mode. Sign in as an alumnus to edit profiles.");
+          return;
+        }
+
         document
           .querySelectorAll(".page")
           .forEach((p) => p.classList.remove("active"));
@@ -1564,7 +1617,11 @@ header('Expires: 0');
       }
 
       function confirmSignOut() {
-        window.location.href = API_BASE + "logout.php";
+        // Students don't have a full session to destroy — just send them back.
+        // Alumni go through logout.php which calls session_destroy().
+        window.location.href = STUDENT_MODE
+          ? API_BASE + "student_logout.php"
+          : API_BASE + "logout.php";
       }
 
       document

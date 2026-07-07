@@ -84,3 +84,17 @@ INSERT INTO awards (account_ID, award_Title, award_Description, year_received) V
 (9004, 'Public Service Excellence Award', 'Recognized by the city government for policy work in youth education.', 2023),
 (9007, 'Rising Tech Leader Award', 'Recognized by a national tech association for contributions to applied AI.', 2023),
 (9009, 'Healthcare Leadership Award', 'Awarded for improving patient care standards across regional hospital operations.', 2020);
+
+-- ── ID NUMBERS FOR STUDENTS ─────────────────────────────────────────────────
+
+INSERT INTO student (school_id, email, password) VALUES
+('24-1001', 'juan.delacruz@usc.edu.ph',    NULL),
+('24-1002', 'maria.santos@usc.edu.ph',      NULL),
+('24-1003', 'jose.reyes@usc.edu.ph',        NULL),
+('24-1004', 'ana.garcia@usc.edu.ph',        NULL),
+('24-1005', 'carlos.mendoza@usc.edu.ph',    NULL),
+('23-2011', 'pia.fernandez@usc.edu.ph',     NULL),
+('23-2012', 'marco.villanueva@usc.edu.ph',  NULL),
+('23-2013', 'sofia.aquino@usc.edu.ph',      NULL),
+('22-3021', 'luis.bautista@usc.edu.ph',     NULL),
+('22-3022', 'clara.ramos@usc.edu.ph',       NULL);
