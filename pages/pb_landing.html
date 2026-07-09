@@ -336,16 +336,16 @@
 
           <!-- State A: info / prompt to set up -->
           <div id="smSetupInfo">
-            <div class="sm-setup-icon">🔐</div>
+            <div class="sm-setup-icon"><span class="material-symbols--lock"></span></div>
             <h3 class="sm-setup-heading">No password set yet</h3>
             <p class="sm-setup-body">
               This student ID hasn't been given a student view password.
               You'll need to set one up before you can access the alumni directory.
             </p>
-            <div class="sm-setup-divider"></div>
+            <br>
             <p class="sm-setup-body" style="margin-bottom:16px;">
               It only takes a moment. You'll be asked to create a password
-              linked to this ID — no email required.
+              linked to this ID, no email required.
             </p>
             <button type="button" id="smSetupStartBtn" class="sm-setup-btn">
               Set up my password →
@@ -603,7 +603,7 @@
           if (!res.ok || data.error) {
             smIdSpinner.style.display = 'none';
             smIdInput.classList.add('field-error');
-            smSetMsg('⚠ Student ID not found. Please check and try again.', 'error');
+            smSetMsg('Student ID not found. Please check and try again.', 'error');
             smSetLoading(false);
             smIdInput.focus();
             return;
@@ -618,7 +618,7 @@
             smSetupForm.style.display = 'none';
             smSetupPanel.classList.add('visible');
             studentModalBox.classList.add('has-setup-panel');
-            smSetMsg('ℹ No password found for this ID.', 'warn');
+            smSetMsg('No password found for this ID.', 'warn');
             return;
           }
 
