@@ -73,8 +73,8 @@ Entirety of About is now Removed in pv_main or in the AlumniProfile.html ✔-->
 Button to go back for Login Page is added as a USC Logo on the Top Right Navigation, and Register Sh ✔-->
 
 < STUDENT UI >
-- Enter school ID 
-- can only view cannot edit at all
+<!-- Enter school ID  -->
+<!-- can only view cannot edit at all -->
 
 < STAFF UI >
 - Manual edit profile 
