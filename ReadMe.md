@@ -45,14 +45,15 @@
 Done above the University of San Carlos Landing Page Logo ✔-->
 
 < ALUMNI PROFILE >
-- Have an option to only show descriptions and names without profile
-- Have schools as buttons, have program as a dropbox
+- Staff UI 
+<!-- Have schools as buttons, have program as a dropbox -->
+<!-- remove stats in home page and increase the height of the home page background -->
 <!--remove about in AlumniProfile.html
 Entirety of About is now Removed in pv_main or in the AlumniProfile.html ✔-->
-- sticky nav for search bar 
-- Staff UI 
-- session key lock 
-
+<!-- sticky nav for search bar (ts is done) ✔ -->
+<!-- session key lock (kind of done) ✔ --> 
+<!-- Contact information UI -->
+<!-- remove request modification -->
 <!--LANDING PAGE >
 - use iconify for landing page, register and log in
 <This is now added and finished ✔-->
@@ -61,14 +62,15 @@ Entirety of About is now Removed in pv_main or in the AlumniProfile.html ✔-->
 <!--logout button on the right of the nav
  Log out button successfully Working ✔
 <(Extra Add) Footer now should only be fixed at the bottom when deleting a content ✔-->
-- biography should be fixed size but readable (still scrollable)
-- remove phone number in edit
+<!-- biography should be fixed size but readable (still scrollable) -->
+- have an indicator that changes need to be verified, and an are you sure message
+
 
 < LOGIN & REGISTER PAGE >
+- (Added Extra by Anthony) Update Password with an Eye Icon to check password Input and Misinputs.
+- change to symbol x when closing
 <!--add a back button to go back to the landing page 
 Button to go back for Login Page is added as a USC Logo on the Top Right Navigation, and Register Sh ✔-->
-- (Added Extra by Anthony) Update Password with an Eye Icon to check password Input and Misinputs.
-
 
 < STUDENT UI >
 - Enter school ID 

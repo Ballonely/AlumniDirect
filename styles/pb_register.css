@@ -79,8 +79,6 @@
   100% { opacity: 0; transform: scale(1.08); }
 }
 
-
-  
     .green-overlay {
       position: absolute;
       inset: 0;
@@ -118,6 +116,7 @@
 
     .left-content h1 {
       font-family: var(--secFont);
+      font-weight: 400;
       font-size: var(--xlargeFont);
       line-height: 1.2;
       color: #ffffff;
@@ -130,11 +129,42 @@
       color: var(--secColor);
     }
 
+    .hero-stats {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin: 10px 0 30px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;     
+      text-align: center;
+    }
+        
+    .stat-num {
+        font-family: var(--secFont);
+        font-size: 30px;
+        color: var(--secColor);
+        font-weight: 600;
+    }
+        
+    .stat-label {
+        font-size: 12px;
+        font-weight: 400;
+        color: white;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-top: 2px;
+    }
+
     .left-content p {
       font-size: 1em;
       color: rgba(255,255,255,0.88);
       line-height: 1.7;
-      max-width: 380px;
+      max-width: 600px;
       text-shadow: 0 1px 4px rgba(0,0,0,0.25);
     }
 
@@ -320,20 +350,6 @@
       text-decoration: underline;
     }
 
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      padding: 10px;
-      background: rgba(0,0,0,0.35);
-      color: rgba(255,255,255,0.7);
-      font-size: 0.75em;
-      z-index: 100;
-      backdrop-filter: blur(6px);
-    }
-
     /* ── HOME BUTTON (top-right, logo as icon) ── */
     .home-btn {
       position: fixed;
@@ -505,7 +521,8 @@
       color: rgba(255,255,255,0.6);
     }
   
-    .suffix-chevron {
+    .suffix-select-wrap::after {
+      content: '\25BE';
       position: absolute;
       right: 8px;
       top: 50%;
@@ -514,9 +531,10 @@
       color: rgba(255,255,255,0.7);
       pointer-events: none;
       line-height: 1;
+      transition: color 0.2s;
     }
-  
-    .suffix-select-wrap:focus-within .suffix-chevron {
+
+    .suffix-select-wrap:focus-within::after {
       color: var(--secColor);
     }
     
@@ -597,3 +615,33 @@
       color: #ffffff;
       border-color: gold;
     }
+
+
+/* ── CUSTOM SCROLLBAR ── */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secColor) var(--priColor);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--priColor);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secColor);
+  border-radius: 10px;
+  border: 2px solid var(--priColor);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fourthColor);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--priColor);
+}

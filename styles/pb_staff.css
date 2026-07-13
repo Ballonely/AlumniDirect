@@ -1,0 +1,159 @@
+/* ── STAFF PORTAL SPECIFIC STYLES ── */
+
+/* Sidebar Navigation */
+.staff-tab-btn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: var(--priFont);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.staff-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.staff-tab-btn.active {
+    background: var(--secColor);
+    color: var(--priColor);
+    font-weight: 700;
+}
+
+.badge {
+    background: #d32f2f;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.staff-tab-btn.active .badge {
+    background: var(--priColor);
+    color: white;
+}
+
+/* Tabs Visibility */
+.staff-tab-content {
+    display: none;
+    animation: fadeUp 0.4s ease forwards;
+}
+
+.staff-tab-content.active {
+    display: block;
+}
+
+/* Data Tables */
+.staff-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(26,74,46,.04);
+}
+
+.staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--priFont);
+}
+
+.staff-table th {
+    background: var(--cream);
+    color: var(--priColor);
+    font-family: var(--thirdFont);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.staff-table td {
+    padding: 18px 20px;
+    font-size: 13.5px;
+    color: var(--dark);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+.staff-table tr:last-child td {
+    border-bottom: none;
+}
+
+.staff-table tr:hover {
+    background: #fafaf7;
+}
+
+/* Action Badges for Modifications */
+.action-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.action-badge.insert { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+.action-badge.update { background: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; }
+.action-badge.delete { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+/* Buttons inside tables */
+.btn-sm {
+    padding: 7px 14px;
+    font-size: 12px;
+    font-family: var(--thirdFont);
+    font-weight: 600;
+    border-radius: 6px;
+    margin-left: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-outline-red {
+    background: transparent;
+    color: #d32f2f;
+    border: 1.5px solid rgba(211, 47, 47, 0.4);
+}
+
+.btn-outline-red:hover {
+    background: #ffebee;
+    border-color: #d32f2f;
+}
+
+/* Modals */
+.staff-modal-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-family: var(--priFont);
+    font-size: 14px;
+    background: var(--cream);
+    color: var(--dark);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.staff-modal-input:focus {
+    border-color: var(--gold);
+    background: white;
+    outline: none;
+}

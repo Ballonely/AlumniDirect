@@ -111,6 +111,7 @@
     .left-content h1 {
       font-family: var(--secFont);
       font-size: var(--xlargeFont);
+      font-weight: 400;
       line-height: 1.2;
       color: #ffffff;
       margin-bottom: 18px;
@@ -126,7 +127,7 @@
       font-size: 1em;
       color: rgba(255,255,255,0.88);
       line-height: 1.7;
-      max-width: 380px;
+      max-width: 600px;
       text-shadow: 0 1px 4px rgba(0,0,0,0.25);
     }
 
@@ -327,20 +328,6 @@
       text-decoration: underline;
     }
 
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      padding: 10px;
-      background: rgba(0,0,0,0.35);
-      color: rgba(255,255,255,0.7);
-      font-size: 0.75em;
-      z-index: 100;
-      backdrop-filter: blur(6px);
-    }
-
     /* ── HOME BUTTON (top-right, logo as icon) ── */
     .home-btn {
       position: fixed;
@@ -373,3 +360,33 @@
       object-fit: contain;
       filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
     }
+
+
+/* ── CUSTOM SCROLLBAR ── */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secColor) var(--priColor);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--priColor);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secColor);
+  border-radius: 10px;
+  border: 2px solid var(--priColor);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fourthColor);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--priColor);
+}

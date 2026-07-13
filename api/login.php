@@ -28,7 +28,7 @@ $user = $stmt->fetch();
 if ($user && password_verify($password, $user['password'])) {
     // Login successful
     $_SESSION['account_ID'] = $user['account_ID'];
-    header('Location: ../pages/pv_main.html');
+    header('Location: ../pages/pv_main.php');
     exit;
 } else {
     header('Location: ../pages/pb_login.html?error=invalid');

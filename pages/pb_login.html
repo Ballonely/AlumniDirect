@@ -19,7 +19,6 @@
       <div class="bg-slide"></div>
       <div class="bg-slide"></div>
 
-
       <div class="green-overlay"></div>
       <div class="left-content">
         <span class="usc-label">
@@ -28,14 +27,15 @@
           San Carlos
         </span>
         <h1>
-          Alumni
-          <span>Network</span>
+          Dugtong
+          <span>Carolinian</span>
           <br />
         </h1>
         <div class="left-divider"></div>
         <p>
           Welcome back, Carolinian. Connect with your alma mater and fellow
-          alumni through the USC Academic Alumni Journal Directory.
+          alumni through the official alumni directory of the Univeristy of San
+          Carlos.
         </p>
       </div>
     </div>
@@ -122,12 +122,9 @@
         msgEl.textContent = "Incorrect email or password.";
       } else if (params.get("error") === "missing") {
         msgEl.textContent = "Please fill in both fields.";
+      } else if (params.get("error") === "session") {
+        msgEl.textContent = "Please sign in to continue.";
       }
     </script>
-
-    <footer>
-      &copy; 2026 University of San Carlos Alumni Directory. All rights
-      reserved.
-    </footer>
   </body>
 </html>
