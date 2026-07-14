@@ -121,16 +121,26 @@ $studentMode = $isStudentMode ? 'true' : 'false';
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 900;
-      background: #b8962e;
+      background: #fcbf16;
       color: #1a1a00;
       font-size: 0.78rem;
       font-weight: 600;
-      text-align: center;
-      padding: 6px 12px;
       letter-spacing: 0.04em;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 7px 12px 6px 12px;
     ">
-      👁 Student View - You can browse profiles but cannot make any changes.
+      <!-- Cleaned up fill attribute to use current text color -->
+      <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" style="display: block;">
+        <path fill-rule="evenodd" d="M0 8l3.079-3.695C4.296 2.844 6.099 2 8 2s3.704.844 4.921 2.305L16 8l-3.079 3.695C11.704 13.156 9.901 14 8 14s-3.704-.844-4.921-2.305L0 8zm8 3c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z"/>
+      </svg>
+
+      <span>Student View - You can browse profiles but cannot make any changes.</span>
     </div>
+
     <style>
       /* Push nav down to sit below the student banner */
       .nav { top: 28px !important; }
