@@ -1,5 +1,4 @@
 /*
-  Run this AFTER migration_add_photo_columns.sql.
   All sample accounts use the password: Password123!
 */
 
