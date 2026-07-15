@@ -22,6 +22,7 @@ CREATE TABLE account (
     show_Phone tinyint(1) NOT NULL DEFAULT 0,
     show_Employment tinyint(1) NOT NULL DEFAULT 1,
     UNIQUE KEY uq_account_email (email)
+    
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE awards (

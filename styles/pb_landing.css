@@ -701,9 +701,9 @@ footer {
     
 .footer-bottom p {
     font-size: 11px;
-    color: black(255, 255, 255, 0.28);
+    color: black !important;
 }
- 
+  
       /* ── SCROLL REVEAL ── */
       .reveal {
         opacity: 0;
