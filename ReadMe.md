@@ -63,10 +63,12 @@ Entirety of About is now Removed in pv_main or in the AlumniProfile.html ✔-->
  Log out button successfully Working ✔
 <(Extra Add) Footer now should only be fixed at the bottom when deleting a content ✔-->
 <!-- biography should be fixed size but readable (still scrollable) -->
-<!-- - have an indicator that changes need to be verified, and an are you sure message -->
+- have an indicator that changes need to be verified, and an are you sure message
 
 
 < LOGIN & REGISTER PAGE >
+- (Added Extra by Anthony) Update Password with an Eye Icon to check password Input and Misinputs.
+- change to symbol x when closing
 <!--add a back button to go back to the landing page 
 Button to go back for Login Page is added as a USC Logo on the Top Right Navigation, and Register Sh ✔-->
 
@@ -75,17 +77,9 @@ Button to go back for Login Page is added as a USC Logo on the Top Right Navigat
 <!-- can only view cannot edit at all -->
 
 < STAFF UI >
-<!-- - Manual edit profile 
+- Manual edit profile 
 - Approve or deny modifications
-- blob for verification -->
-
-
-<!-- Use the Following
-
-Sign in with:
-
-Email or Staff ID: Firstadmin123@gmail.com (or 00-1001)
-Password: Admin123! -->
+- blob for verification
 
 MOCK DEFENSE AT JULY 13 - 17
 ACTUAL DEFENSE AT JULY 20 - 24

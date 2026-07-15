@@ -72,7 +72,6 @@
               <span class="step-dot" id="dot2"></span>
             </div>
 
-            <!-- STEP 1: Personal Info -->
             <div class="form-step" id="step1">
               <div class="input-box" id="firstnameBox">
                 <input
@@ -147,7 +146,6 @@
               <button type="button" id="nextBtn" class="step-btn">Next</button>
             </div>
 
-            <!-- STEP 2: Account Info -->
             <div class="form-step" id="step2" style="display: none">
               <div class="input-box" id="emailBox">
                 <input
@@ -188,9 +186,10 @@
                   required
                 />
                 <label for="password">Password</label>
-                <span class="icon">
-                  <ion-icon name="lock-closed-outline"></ion-icon>
-                </span>
+                <button type="button" class="toggle-lock" tabindex="-1">
+                  <ion-icon name="lock-closed-outline" class="lock-closed"></ion-icon>
+                  <ion-icon name="lock-open-outline" class="lock-open"></ion-icon>
+                </button>
               </div>
               <span class="field-hint" id="passwordHint"></span>
 
@@ -203,9 +202,10 @@
                   required
                 />
                 <label for="confirmpassword">Confirm Password</label>
-                <span class="icon">
-                  <ion-icon name="lock-closed-outline"></ion-icon>
-                </span>
+                <button type="button" class="toggle-lock" tabindex="-1">
+                  <ion-icon name="lock-closed-outline" class="lock-closed"></ion-icon>
+                  <ion-icon name="lock-open-outline" class="lock-open"></ion-icon>
+                </button>
               </div>
               <span class="field-hint" id="confirmHint"></span>
 
@@ -430,6 +430,17 @@
           }
           // If everything is valid, the form submits normally to register.php no preventDefault.
         });
+
+      // EDITED: Script to toggle lock/unlock view
+      document.querySelectorAll('.toggle-lock').forEach(button => {
+        button.addEventListener('click', function() {
+          this.classList.toggle('is-visible');
+          const input = this.parentElement.querySelector('input');
+          if (input) {
+            input.type = input.type === 'password' ? 'text' : 'password';
+          }
+        });
+      });
     </script>
   </body>
 </html>

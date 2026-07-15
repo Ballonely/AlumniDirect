@@ -431,6 +431,47 @@
       display: block;
     }
 
+    /* ── PASSWORD SHOW/HIDE TOGGLE (lock-closed <-> lock-open) ── */
+    .toggle-lock {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.7);
+      transition: color 0.2s;
+    }
+
+    .toggle-lock:hover {
+      color: var(--secColor);
+    }
+
+    .toggle-lock ion-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      pointer-events: none;
+    }
+
+    .toggle-lock .lock-open {
+      display: none;
+    }
+
+    .toggle-lock.is-visible .lock-closed {
+      display: none;
+    }
+
+    .toggle-lock.is-visible .lock-open {
+      display: block;
+    }
+
     .input-box.invalid {
       border-bottom: 2px solid #ff6b6b;
     }
@@ -644,4 +685,42 @@ html {
 
 ::-webkit-scrollbar-corner {
   background: var(--priColor);
+}
+
+.input-box button.toggle-lock {
+  position: absolute ;
+  right: 8px ;             /* Aligns exactly on the same side as the mail/other icons */
+  top: 0 ;                 /* Align to top of input box */
+  transform: none ;        /* Strip the 50% shift */
+  width: auto ;            /* Kill the global 100% button width */
+  height: 50px ;           /* Match the input box height */
+  line-height: 57px ;      /* Match the exact vertical alignment of your other icons */
+  font-size: 1.2em ;       /* Match your standard icon size */
+  color: rgba(255,255,255,0.7) ; /* Match default icon color */
+  background: transparent ; /* Kill the yellow background */
+  border: none;
+  outline: none;
+  border-radius:0;       /* Kill the border-radius */
+  margin: 0 ;              /* Kill global button margins */
+  padding: 0 ;             /* Only make the icon itself clickable */
+  cursor: pointer ;
+  z-index: 10;
+  display: inline-block ;
+  box-shadow: none ;
+  transition: color 0.2s 
+}
+
+/* Match the exact hover color behavior without any vertical shifting or scaling */
+.input-box button.toggle-lock:hover {
+  background: transparent; 
+  color: var(--secColor); /* Changes color to gold on hover */
+  transform: none;  /* Prevents jumping/scaling */
+  box-shadow: none ;
+}
+
+/* Ensure the ion-icon itself renders inside the inline-block space */
+.input-box button.toggle-lock ion-icon {
+  display: inline-block 
+  vertical-align middle ;
+  pointer-events: none ;   /* Clicks pass straight through to the button */
 }

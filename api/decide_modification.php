@@ -12,11 +12,15 @@
 require_once __DIR__ . '/require_staff.php';
 require_once __DIR__ . '/db.php';
 
-// Whitelist: only these account columns may be written by an approval.
+// Whitelist: only these columns may be written by an approval.
 // Prevents a tampered field_Name from writing to an arbitrary column.
-const ALLOWED_FIELDS = [
+// Split by table, since employer/occupation live on `employment`, not `account`.
+const ALLOWED_ACCOUNT_FIELDS = [
     'first_Name', 'last_Name', 'middle_Name', 'suffix', 'email', 'phone',
-    'nickname', 'bio', 'profile_Quote', 'employer', 'occupation',
+    'nickname', 'bio', 'profile_Quote',
+];
+const ALLOWED_EMPLOYMENT_FIELDS = [
+    'employer', 'occupation',
 ];
 
 $body = json_decode(file_get_contents('php://input'), true) ?? [];
@@ -54,12 +58,23 @@ try {
         $details = $detailStmt->fetchAll();
 
         foreach ($details as $d) {
-            if (!in_array($d['field_Name'], ALLOWED_FIELDS, true)) {
-                continue; // silently skip anything not whitelisted
+            $col = $d['field_Name'];
+
+            if (in_array($col, ALLOWED_ACCOUNT_FIELDS, true)) {
+                // safe: checked against ALLOWED_ACCOUNT_FIELDS above
+                $upd = $pdo->prepare("UPDATE account SET `$col` = :val WHERE account_ID = :aid");
+                $upd->execute(['val' => $d['new_Value'], 'aid' => $mod['account_ID']]);
+            } elseif (in_array($col, ALLOWED_EMPLOYMENT_FIELDS, true)) {
+                // safe: checked against ALLOWED_EMPLOYMENT_FIELDS above
+                // Assumes an employment row already exists for this account
+                // (true for all seeded accounts). If none exists, this
+                // UPDATE affects 0 rows and the change is silently lost --
+                // flagging that edge case rather than guessing at INSERT
+                // defaults for sector_ID/description.
+                $upd = $pdo->prepare("UPDATE employment SET `$col` = :val WHERE account_ID = :aid");
+                $upd->execute(['val' => $d['new_Value'], 'aid' => $mod['account_ID']]);
             }
-            $col = $d['field_Name']; // safe: checked against ALLOWED_FIELDS above
-            $upd = $pdo->prepare("UPDATE account SET `$col` = :val WHERE account_ID = :aid");
-            $upd->execute(['val' => $d['new_Value'], 'aid' => $mod['account_ID']]);
+            // else: not whitelisted on either table, silently skip
         }
     }
 
