@@ -144,6 +144,8 @@ $studentMode = $isStudentMode ? 'true' : 'false';
     <style>
       /* Push nav down to sit below the student banner */
       .nav { top: 28px !important; }
+      /* Filter bar must also account for banner (28px) + nav (100px) */
+      .filter-bar { top: 128px !important; }
     </style>
     <?php endif; ?>
 
@@ -321,7 +323,7 @@ $studentMode = $isStudentMode ? 'true' : 'false';
           <p>
             Keep your alumni record up to date.
             <br />
-            Changes are saved securely to your record.
+            Changes are submitted for staff review before appearing publicly.
           </p>
         </div>
       </div>
@@ -1592,13 +1594,32 @@ $studentMode = $isStudentMode ? 'true' : 'false';
             body: JSON.stringify(payload),
           });
           const result = await res.json();
+
+          // 409 = already has a pending request in the queue
+          if (res.status === 409) {
+            showToast("error", "⏳", result.error || "A modification request is already pending review.");
+            return;
+          }
+
           if (!res.ok || result.error)
             throw new Error(result.error || "Save failed");
 
           pendingPhotoBase64 = null;
           pendingPhotoType = null;
           snapshotOriginals();
-          showToast("success", "✓", "Profile updated successfully.");
+
+          if (result.pending) {
+            // Changes were queued for verification — reset dirty state so
+            // the unsaved-changes banner hides, but tell the user what happened.
+            showToast(
+              "success",
+              "⏳",
+              "Changes submitted for staff review. They'll go live once approved.",
+            );
+          } else {
+            // Only visibility/photo changed — applied immediately.
+            showToast("success", "✓", result.message || "Preferences saved.");
+          }
         } catch (err) {
           console.error("Failed to save account:", err);
           showToast(

@@ -100,6 +100,35 @@ CREATE TABLE student (
     password   varchar(255) DEFAULT NULL
 );
 
+CREATE TABLE IF NOT EXISTS modification_detail (
+    detail_ID int(11) PRIMARY KEY AUTO_INCREMENT,
+    modification_ID int(11) NOT NULL,
+    field_Label varchar(100) NOT NULL,   -- e.g. "Current Company" (shown to staff)
+    field_Name varchar(100) NOT NULL,    -- e.g. "employer" (used to apply the change)
+    old_Value text DEFAULT NULL,
+    new_Value text DEFAULT NULL,
+    KEY fk_moddetail_modification (modification_ID),
+    CONSTRAINT fk_moddetail_modification FOREIGN KEY (modification_ID)
+        REFERENCES modifications (modification_ID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Uploaded proof documents ("verification blobs") for a modification request
+CREATE TABLE IF NOT EXISTS modification_attachment (
+    attachment_ID int(11) PRIMARY KEY AUTO_INCREMENT,
+    modification_ID int(11) NOT NULL,
+    file_Name varchar(255) NOT NULL,
+    file_Type varchar(100) DEFAULT NULL,
+    file_Blob MEDIUMBLOB NOT NULL,
+    KEY fk_modattach_modification (modification_ID),
+    CONSTRAINT fk_modattach_modification FOREIGN KEY (modification_ID)
+        REFERENCES modifications (modification_ID) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Explicit status so a denied request isn't indistinguishable from pending
+ALTER TABLE modifications
+    ADD COLUMN status enum('Pending','Approved','Denied') NOT NULL DEFAULT 'Pending' AFTER is_Verified,
+    ADD COLUMN admin_Comment text DEFAULT NULL AFTER status;
+
 ALTER TABLE awards
   ADD CONSTRAINT fk_awards_account FOREIGN KEY (account_ID) REFERENCES account (account_ID);
 
@@ -118,3 +147,5 @@ ALTER TABLE modifications
 
 ALTER TABLE staff
   ADD CONSTRAINT fk_staff_account FOREIGN KEY (account_ID) REFERENCES account (account_ID);
+
+ALTER TABLE modifications MODIFY COLUMN staff_ID INT NULL;

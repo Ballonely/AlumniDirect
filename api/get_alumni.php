@@ -23,11 +23,15 @@ $sql = "
         s.sector_Name,
         (a.photo IS NOT NULL) AS has_photo
     FROM account a
+    -- Exclude any account that has a matching staff row (covers the one
+    -- staff account now and any added later without code changes).
+    LEFT JOIN staff st ON st.account_ID = a.account_ID
     LEFT JOIN graduation g ON g.account_ID = a.account_ID
     LEFT JOIN program p ON p.program_ID = g.program_ID
     LEFT JOIN college c ON c.college_ID = g.college_ID
     LEFT JOIN employment e ON e.account_ID = a.account_ID
     LEFT JOIN industry_sector s ON s.sector_ID = e.sector_ID
+    WHERE st.account_ID IS NULL
     GROUP BY a.account_ID
     ORDER BY a.account_ID
 ";
