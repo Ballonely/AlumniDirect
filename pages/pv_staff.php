@@ -38,7 +38,7 @@ $programOptions = $pdo->query(
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Alumni Network Manager | USC Alumni Admin Portal</title>
+<title>Staff | Dugtong Carolinian</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
@@ -116,9 +116,9 @@ $programOptions = $pdo->query(
                         "label-md": ["Inter"],
                         "headline-sm": ["Libre Baskerville"],
                         "body-lg": ["Inter"],
-                        "display-lg": ["Libre Baskerville"],
-                        "headline-md": ["Libre Baskerville"],
-                        "headline-lg-mobile": ["Libre Baskerville"],
+                        "display-lg": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
                         "title-lg": ["Inter"]
                     },
                     "fontSize": {
@@ -137,6 +137,7 @@ $programOptions = $pdo->query(
     </script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Libre+Baskerville:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../styles/pv_staff.css">
 <style>
   nav .nav-link,

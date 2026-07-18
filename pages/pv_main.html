@@ -1,0 +1,1737 @@
+<?php
+/**
+ * pv_main.php
+ *
+ * This page used to be pv_main.html — a static file with no server-side
+ * protection. Anyone could load it directly regardless of login state,
+ * and hitting the browser back button after logout would show a cached
+ * copy instead of re-checking anything. Converting to .php lets us:
+ *   1. Reject the request server-side before any HTML is sent, if there
+ *      is no valid session.
+ *   2. Send no-cache headers so the browser cannot serve a stale,
+ *      already-rendered copy of this page from history/back-forward
+ *      cache after logout.
+ */
+
+session_start();
+
+// Allow two kinds of sessions:
+//   1. Alumni session  — $_SESSION['account_ID'] is set (normal login)
+//   2. Student session — $_SESSION['student_mode'] is true (View as Student)
+// Anything else gets bounced to the login page.
+$isAlumni      = !empty($_SESSION['account_ID']);
+$isStudentMode = !empty($_SESSION['student_mode']);
+
+if (!$isAlumni && !$isStudentMode) {
+    header('Location: pb_login.html?error=session');
+    exit;
+}
+
+// Prevent the browser (and any intermediate cache) from storing or
+// reusing this response. Without this, pressing back after logout can
+// still render the last-loaded copy of this page from bfcache/history,
+// even though the session is gone.
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+
+// Make the session type available to JavaScript without any extra fetch.
+// All student-mode restrictions live on the client; the PHP APIs already
+// enforce auth independently (get_account.php / update_account.php both
+// require account_ID, so a student calling them will get a 401 anyway).
+$studentMode = $isStudentMode ? 'true' : 'false';
+?>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main | Dugtong Carolinian</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/pv_main.css" />
+    <style>
+      /* ── Expanded hero to contain featured profiles ── */
+      .hero--expanded {
+        padding-bottom: 60px;
+        min-height: unset;
+      }
+
+      .hero-featured {
+        width: 100%;
+        max-width: 1100px;
+        margin: 56px auto 0;
+        padding: 0 24px;
+        box-sizing: border-box;
+      }
+
+      .hero-featured-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+
+      /* Cards inside hero inherit cards-row layout but need no extra bg */
+      .hero-featured .cards-row {
+        transition: opacity 1s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══ NAV ════════════════════════════════════════════ -->
+    <nav class="nav">
+      <div class="nav-brand" onclick="goTo('home')">
+        <img src="../images/usc_logo.png" alt="USC Logo" class="nav-logo" />
+        <div>
+          <div class="nav-name">
+            University
+            <i>of</i>
+            San Carlos
+          </div>
+          <div class="nav-sub">Dugtong Carolinian</div>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a id="nav-home" onclick="goTo('home')">About USC</a></li>
+        <li>
+          <a id="nav-alumni" onclick="goTo('alumni')">Alumni Profiles</a>
+        </li>
+        <?php if (!$isStudentMode): ?>
+        <li>
+          <a id="nav-account" onclick="goTo('account')">My Account</a>
+        </li>
+        <?php endif; ?>
+        <li><span class="nav-divider">|</span></li>
+        <li>
+          <a onclick="requestSignOut()" class="nav-logout">
+            <?= $isStudentMode ? 'Exit Student View' : 'Sign Out' ?>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ══ STUDENT MODE BANNER ════════════════════════════ -->
+    <?php if ($isStudentMode): ?>
+    <div
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        background: var(--secColor);
+        color: #1a1a00;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-align: center;
+        padding: 6px 12px;
+        letter-spacing: 0.04em;
+      "
+    >
+      👁 Student View - You can browse profiles but cannot make any changes.
+    </div>
+    <style>
+      /* Push nav down to sit below the student banner */
+      .nav {
+        top: 28px !important;
+      }
+    </style>
+    <?php endif; ?>
+
+    <!-- ══ PAGE: HOME ══════════════════════════════════════ -->
+    <div class="page active" id="page-home">
+      <div class="hero hero--expanded">
+        <div class="hero-eyebrow">Class of Every Year</div>
+        <h1 class="hero-main">
+          University
+          <i>of</i>
+          San Carlos
+          <br />
+          <span>Dugtong Carolinian</span>
+        </h1>
+        <h1 class="hero-main-sub">
+          Lives shaped here.
+          <br />
+          <em>Stories told everywhere.</em>
+        </h1>
+        <div class="hero-btns">
+          <button class="btn-gold" onclick="goTo('alumni')">
+            Browse Profiles
+          </button>
+        </div>
+
+        <div class="hero-featured">
+          <div class="hero-featured-header">
+            <div>
+              <div class="section-eyebrow">Featured</div>
+              <div class="section-title">Alumni Profiles</div>
+              <div class="gold-bar"></div>
+            </div>
+            <div class="our-alumni" onclick="goTo('alumni')">
+              Our Alumni
+              <a href="#" class="our-alumni" onclick="goTo('alumni')">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div class="cards-row" id="home-cards"></div>
+        </div>
+      </div>
+    </div>
+    <!-- /home -->
+
+    <!-- ══ PAGE: ALUMNI DIRECTORY ══════════════════════════ -->
+    <div class="page" id="page-alumni">
+      <div class="dir-header">
+        <div class="dir-eyebrow">Directory</div>
+        <h1>Alumni Profiles</h1>
+        <p>
+          Connect with fellow alumni, expand your network, and build meaningful
+          professional relationships within our growing community.
+        </p>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-search">
+          <span class="filter-search-icon">&#128269;</span>
+          <input
+            type="text"
+            id="dir-search"
+            class="filter-search-input"
+            placeholder="Search by name or course..."
+            oninput="setSearch(this.value)"
+          />
+        </div>
+
+        <div class="filter-row">
+          <select
+            class="filter-select"
+            onchange="setFilter('college', this.value, this)"
+          >
+            <option value="all">All Schools</option>
+            <option value="Business">Business</option>
+            <option value="Engineering">Engineering</option>
+            <option value="Arts &amp; Sciences">Arts &amp; Sciences</option>
+            <option value="Law and Governance">Law and Governance</option>
+            <option value="Health Care Professions">
+              Health Care Professions
+            </option>
+          </select>
+          <select
+            class="filter-select"
+            onchange="setFilter('year', this.value, this)"
+          >
+            <option value="all">All Years</option>
+            <option>2020s</option>
+            <option>2010s</option>
+            <option>2000s</option>
+            <option>1990s</option>
+            <option>Earlier</option>
+          </select>
+          <select
+            class="filter-select"
+            onchange="setFilter('industry', this.value, this)"
+          >
+            <option value="all">All Industries</option>
+            <option>Technology</option>
+            <option>Finance</option>
+            <option>Healthcare</option>
+            <option>Public Service</option>
+            <option>Arts &amp; Media</option>
+            <option>Education</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="dir-grid" id="dir-cards"></div>
+
+      <div class="pagination" id="dir-pagination"></div>
+    </div>
+    <!-- /alumni -->
+
+    <!-- ══ PAGE: PROFILE DETAIL ════════════════════════════ -->
+    <div class="page" id="page-profile">
+      <div class="profile-page">
+        <div class="our-alumni back-link" onclick="goTo('alumni')">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            transform="rotate(180)"
+          >
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+
+          Back to profiles
+        </div>
+        <div class="profile-shell" id="profile-shell"></div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: MY ACCOUNT (Edit Profile) ══════════════════ -->
+    <div class="page" id="page-account">
+      <div class="unsaved-banner" id="unsaved-banner">
+        <span>
+          <span class="unsaved-pulse"></span>
+          You have unsaved changes.
+        </span>
+        <button class="unsaved-btn save-now" id="save-btn" onclick="doSave()">
+          Save Now
+          <span
+            id="save-spinner"
+            class="save-spinner"
+            style="display: none"
+          ></span>
+        </button>
+        <button class="unsaved-btn discard-btn" onclick="doDiscard()">
+          Discard
+        </button>
+      </div>
+
+      <div class="page-header">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="header-inner">
+          <div class="dir-eyebrow">My Account</div>
+          <h1>Edit Your Profile</h1>
+          <p>
+            Keep your alumni record up to date.
+            <br />
+            Changes are saved securely to your record.
+          </p>
+        </div>
+      </div>
+
+      <div class="edit-wrapper">
+        <div class="edit-shell">
+          <aside class="edit-sidebar">
+            <div class="sidebar-content">
+              <div
+                class="avatar-wrap"
+                onclick="document.getElementById('avatar-file-input').click()"
+              >
+                <div class="avatar-ring"></div>
+                <div class="avatar-ring-inner"></div>
+                <div class="avatar-circle" id="avatar-circle">
+                  <span id="avatar-initials">AB</span>
+                </div>
+                <div class="avatar-overlay">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                    />
+                    <circle cx="12" cy="13" r="4" />
+                  </svg>
+                  Upload Photo
+                </div>
+              </div>
+              <input type="file" id="avatar-file-input" accept="image/*" />
+
+              <div class="sidebar-name" id="sidebar-name-preview">
+                [Alumnus Name]
+              </div>
+              <div class="sidebar-class" id="sidebar-class-preview">
+                Class of [Year]
+              </div>
+              <div class="badge-college" id="sidebar-badge-preview">
+                [College]
+              </div>
+
+              <div class="sidebar-divider"></div>
+              <div class="sidebar-toggle-heading">Visibility Settings</div>
+
+              <div class="toggle-row">
+                <span class="toggle-label">Show email publicly</span>
+                <label class="switch">
+                  <input type="checkbox" id="toggle-email" checked />
+                  <span class="switch-track"></span>
+                </label>
+              </div>
+              <div class="toggle-row">
+                <span class="toggle-label">Show phone publicly</span>
+                <label class="switch">
+                  <input type="checkbox" id="toggle-phone" />
+                  <span class="switch-track"></span>
+                </label>
+              </div>
+              <div class="toggle-row">
+                <span class="toggle-label">Show employment publicly</span>
+                <label class="switch">
+                  <input type="checkbox" id="toggle-employment" checked />
+                  <span class="switch-track"></span>
+                </label>
+              </div>
+            </div>
+          </aside>
+
+          <div class="edit-body">
+            <div class="edit-section revealed" id="acc-sec-1">
+              <div class="section-header-row">
+                <div class="section-num">1</div>
+                <h3>Personal Information</h3>
+              </div>
+
+              <div class="field-grid-3">
+                <div>
+                  <label class="form-label" for="first-name">First Name</label>
+                  <input
+                    type="text"
+                    id="first-name"
+                    placeholder="First name"
+                    data-original=""
+                  />
+                </div>
+                <div>
+                  <label class="form-label" for="middle-name">
+                    Middle Name
+                  </label>
+                  <input
+                    type="text"
+                    id="middle-name"
+                    placeholder="Middle name"
+                    data-original=""
+                  />
+                </div>
+                <div>
+                  <label class="form-label" for="last-name">Last Name</label>
+                  <input
+                    type="text"
+                    id="last-name"
+                    placeholder="Last name"
+                    data-original=""
+                  />
+                </div>
+              </div>
+
+              <div class="field-grid-2">
+                <div>
+                  <label class="form-label" for="suffix">Suffix</label>
+                  <div class="select-wrap">
+                    <select id="suffix" data-original="">
+                      <option value="">— None —</option>
+                      <option>Jr.</option>
+                      <option>Sr.</option>
+                      <option>II</option>
+                      <option>III</option>
+                      <option>IV</option>
+                      <option>V</option>
+                      <option>PhD</option>
+                      <option>MD</option>
+                      <option>DDS</option>
+                      <option>Esq.</option>
+                      <option>CPA</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label" for="nickname">
+                    Nickname / Preferred Name
+                  </label>
+                  <input
+                    type="text"
+                    id="nickname"
+                    placeholder="Preferred name"
+                    data-original=""
+                  />
+                </div>
+              </div>
+
+              <div class="field-grid-2">
+                <div>
+                  <label class="form-label" for="dob">Date of Birth</label>
+                  <input type="date" id="dob" data-original="" />
+                </div>
+                <div>
+                  <label class="form-label" for="gender">Gender</label>
+                  <div class="select-wrap">
+                    <select id="gender" data-original="">
+                      <option value="">— Select —</option>
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Non-binary</option>
+                      <option>Prefer not to say</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-2">
+              <div class="section-header-row">
+                <div class="section-num">2</div>
+                <h3>Academic Background</h3>
+              </div>
+
+              <div class="field-grid-3">
+                <div>
+                  <label class="form-label" for="college">College</label>
+                  <div class="select-wrap">
+                    <select id="college" data-original="">
+                      <option value="">— Select college —</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="form-label" for="program">
+                    Program / Degree
+                  </label>
+                  <input
+                    type="text"
+                    id="program"
+                    placeholder="e.g. BS Computer Science"
+                    data-original=""
+                  />
+                </div>
+                <div>
+                  <label class="form-label" for="grad-year">
+                    Graduation Year
+                  </label>
+                  <input
+                    type="number"
+                    id="grad-year"
+                    placeholder="e.g. 2019"
+                    min="1900"
+                    max="2100"
+                    data-original=""
+                  />
+                </div>
+              </div>
+
+              <div class="field-grid-2">
+                <div>
+                  <label class="form-label" for="student-id">Student ID</label>
+                  <div class="readonly-wrap">
+                    <input
+                      type="text"
+                      id="student-id"
+                      value=""
+                      readonly
+                      data-original=""
+                    />
+                    <span class="lock-icon">🔒</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-3">
+              <div class="section-header-row">
+                <div class="section-num">3</div>
+                <h3>Contact Information</h3>
+              </div>
+
+              <div class="field-grid-2">
+                <div>
+                  <label class="form-label" for="email">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="your@email.com"
+                    data-original=""
+                  />
+                </div>
+                <div>
+                  <label class="form-label" for="phone">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    placeholder="+63 900 000 0000"
+                    data-original=""
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-4">
+              <div class="section-header-row">
+                <div class="section-num">4</div>
+                <h3>Professional Profile</h3>
+              </div>
+
+              <div class="field-grid-2">
+                <div>
+                  <label class="form-label" for="job-title">
+                    Current Job Title
+                  </label>
+                  <input
+                    type="text"
+                    id="job-title"
+                    placeholder="e.g. Senior Software Engineer"
+                    data-original=""
+                  />
+                </div>
+                <div>
+                  <label class="form-label" for="employer">
+                    Current Organization / Employer
+                  </label>
+                  <input
+                    type="text"
+                    id="employer"
+                    placeholder="Organization name"
+                    data-original=""
+                  />
+                </div>
+              </div>
+              <div class="field-grid-2">
+                <div>
+                  <label class="form-label" for="industry">Industry</label>
+                  <div class="select-wrap">
+                    <select id="industry" data-original="">
+                      <option value="">— Select industry —</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-5">
+              <div class="section-header-row">
+                <div class="section-num">5</div>
+                <h3>Career Story (Biography)</h3>
+              </div>
+              <div class="field-single">
+                <label class="form-label" for="bio">Biography</label>
+                <textarea
+                  id="bio"
+                  rows="5"
+                  maxlength="800"
+                  placeholder="Tell us about your career journey, notable achievements, and how USC shaped you..."
+                  data-original=""
+                  style="resize: none; overflow: hidden"
+                  oninput="
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                  "
+                ></textarea>
+                <div class="char-counter" id="bio-counter">
+                  0 / 800 characters
+                </div>
+              </div>
+            </div>
+
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-6">
+              <div class="section-header-row">
+                <div class="section-num">6</div>
+                <h3>Awards &amp; Recognition</h3>
+              </div>
+              <div class="awards-list" id="awards-list"></div>
+              <button
+                class="btn-add-award"
+                type="button"
+                onclick="addAwardRow()"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Add Award
+              </button>
+            </div>
+
+            <div class="edit-section sec-extra sec-hidden" id="acc-sec-7">
+              <div class="section-header-row">
+                <div class="section-num">7</div>
+                <h3>Profile Tagline / Quote</h3>
+              </div>
+              <div class="tagline-input-wrap">
+                <input
+                  type="text"
+                  id="profile-quote"
+                  placeholder='"Your inspiring quote or professional philosophy..."'
+                  data-original=""
+                />
+              </div>
+            </div>
+
+            <div class="section-controls" id="section-controls">
+              <button
+                class="btn-section-hide"
+                id="btn-hide-section"
+                type="button"
+                onclick="hideSectionStep()"
+                style="display: none"
+              >
+                Hide additional details
+              </button>
+              <button
+                class="btn-section-add"
+                id="btn-add-section"
+                type="button"
+                onclick="addSectionStep()"
+              >
+                Add more details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /account -->
+
+    <!-- ══ FOOTER (shared) ════════════════════════════════ -->
+    <footer>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-school-name">
+            University
+            <i>of</i>
+            San Carlos
+          </div>
+          <div class="footer-brand-name">Dugtong Carolinian</div>
+          <p>
+            The official Carolinian alumni directory of all college schools from
+            the University of San Carlos.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a onclick="goTo('alumni')">Profiles</a>
+          <?php if (!$isStudentMode): ?>
+          <a onclick="goTo('account')">My Account</a>
+          <?php endif; ?>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="footer-contact">
+            Address:
+            <a
+              href="https://maps.app.goo.gl/u1eZzMsrr9EZYghT8"
+              target="_blank"
+              class="footer-info"
+            >
+              P. del Rosario St., Cebu City, 6000, Philippines
+            </a>
+            Landline:
+            <a href="tel:+63324012300" class="footer-info">+63-32-401-2300</a>
+            Email:
+            <a href="mailto:info@usc.edu.ph" class="footer-info">
+              info@usc.edu.ph
+            </a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Follow</h4>
+          <a href="https://www.facebook.com/usccebu" target="_blank">
+            Facebook
+          </a>
+          <a href="https://www.instagram.com/uscphilippines" target="_blank">
+            Instagram
+          </a>
+          <a
+            href="https://www.linkedin.com/school/university-of-san-carlos"
+            target="_blank"
+          >
+            LinkedIn
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>
+          © 2026 University of San Carlos - Dugtong Carolinian. All rights
+          reserved.
+        </p>
+        <p>Privacy Policy</p>
+      </div>
+    </footer>
+
+    <div class="confirm-overlay" id="confirm-overlay">
+      <div class="confirm-box">
+        <h4>Discard unsaved changes?</h4>
+        <p>
+          This action cannot be undone. Any edits you've made will be lost
+          permanently.
+        </p>
+        <div class="confirm-btns">
+          <button class="btn-outline-green" onclick="closeConfirm()">
+            Keep Editing
+          </button>
+          <button class="btn-green" onclick="confirmDiscard()">Discard</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-overlay" id="signout-overlay">
+      <div class="confirm-box">
+        <h4>Sign out?</h4>
+        <p>
+          You'll need to sign in again to access your account and the alumni
+          directory.
+        </p>
+        <div class="confirm-btns">
+          <button class="btn-outline-green" onclick="closeSignOutConfirm()">
+            Cancel
+          </button>
+          <button class="btn-green" onclick="confirmSignOut()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-overlay" id="contact-overlay">
+      <div class="confirm-box">
+        <h4>Contact Information</h4>
+        <div id="contact-modal-body"></div>
+        <div class="confirm-btns">
+          <button class="btn-green" onclick="closeContactModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">
+      <span class="toast-icon" id="toast-icon"></span>
+      <span id="toast-msg"></span>
+    </div>
+
+    <script>
+        /* ── SESSION MODE ────────────────────────────────────────
+           Injected by PHP. True when the visitor logged in via
+           "View as Student" — no editing, no My Account page.      */
+        const STUDENT_MODE = <?= $studentMode ?>;
+
+        /* ── DATA ─────────────────────────────────────────────── */
+        const BANNERS = [
+          "linear-gradient(160deg,#1A4A2E 0%,#0F3320 100%)",
+          "linear-gradient(160deg,#1A3A5C 0%,#0D2240 100%)",
+          "linear-gradient(160deg,#5C3A1A 0%,#402010 100%)",
+          "linear-gradient(160deg,#3A1A5C 0%,#250D40 100%)",
+          "linear-gradient(160deg,#1A4A45 0%,#0D302D 100%)",
+          "linear-gradient(160deg,#4A3A1A 0%,#2D2410 100%)",
+          "linear-gradient(160deg,#2A4A1A 0%,#182D0E 100%)",
+          "linear-gradient(160deg,#4A1A3A 0%,#2D0E24 100%)",
+          "linear-gradient(160deg,#1A2A4A 0%,#0E1A2D 100%)",
+        ];
+
+        // Alumni data now comes from the PHP/MySQL API instead of being
+        // hardcoded here. See loadAlumni() below — it fetches api/get_alumni.php
+        // and fills this array once the page loads.
+        let ALUMNI = [];
+
+        /* ── ROUTING ─────────────────────────────────────────── */
+        let currentPage = "home";
+
+        function goTo(page, id, opts) {
+          opts = opts || {};
+
+          // Students can browse profiles but cannot access the account editor.
+          if (STUDENT_MODE && page === "account") {
+            showToast("error", "⚠", "You're in read-only mode. Sign in as an alumnus to edit profiles.");
+            return;
+          }
+
+          document
+            .querySelectorAll(".page")
+            .forEach((p) => p.classList.remove("active"));
+          document
+            .querySelectorAll(".nav-links a")
+            .forEach((a) => a.classList.remove("active"));
+
+          if (page === "profile" && id) {
+            renderProfile(id);
+            document.getElementById("page-profile").classList.add("active");
+            document.getElementById("nav-alumni").classList.add("active");
+          } else if (page === "account") {
+            document.getElementById("page-account").classList.add("active");
+            document.getElementById("nav-account").classList.add("active");
+            loadAccount();
+            observeEditSections();
+          } else {
+            document.getElementById("page-" + page).classList.add("active");
+            const navEl = document.getElementById("nav-" + page);
+            if (navEl) navEl.classList.add("active");
+          }
+
+          // Record this navigation in browser history so the Back/Forward
+          // buttons move between in-app pages instead of leaving the SPA
+          // entirely (which felt like being signed out, even though the
+          // PHP session was untouched). Skip this when we're the ones
+          // responding to a popstate event, to avoid pushing duplicate entries.
+          if (!opts.fromPopState) {
+            const url = "#" + page + (id ? "/" + id : "");
+            history.pushState({ page, id }, "", url);
+          }
+
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          currentPage = page;
+          observeReveal();
+        }
+
+        // Initialize the first history entry so popstate always has a
+        // well-formed state object to read from.
+        history.replaceState({ page: "home" }, "", "#home");
+
+        window.addEventListener("popstate", (e) => {
+          const state = e.state || { page: "home" };
+          goTo(state.page, state.id, { fromPopState: true });
+        });
+
+        /* ── CARD BUILDER ────────────────────────────────────── */
+        function buildCard(a, i) {
+          const avatarInner = a.image_url
+            ? `<img src="${a.image_url}" alt="${a.name}">`
+            : a.initials;
+          return `
+      <div class="card reveal s${(i % 3) + 1}" onclick="goTo('profile',${a.id})">
+        <div class="card-initials">${avatarInner}</div>
+        <div class="card-caption">
+          <div class="name">${a.name}</div>
+
+          <div class="meta">
+            <div class="program">${a.program} · ${a.grad}</div>
+            <div class="tagline">${a.tagline}</div>
+          </div>
+        </div>
+      </div>`;
+        }
+
+        /* ── LOAD ALUMNI FROM API ────────────────────────────── */
+        const API_BASE = "../api/";
+
+        async function loadAlumni() {
+          try {
+            const res = await fetch(API_BASE + "get_alumni.php");
+            if (!res.ok) throw new Error("API returned status " + res.status);
+            ALUMNI = await res.json();
+          } catch (err) {
+            console.error("Failed to load alumni from API:", err);
+            document.getElementById("home-cards").innerHTML =
+              '<p style="color:var(--muted);">Could not load alumni data. Is the PHP API running and is the database reachable?</p>';
+            document.getElementById("dir-cards").innerHTML =
+              '<p style="color:var(--muted);">Could not load alumni data. Is the PHP API running and is the database reachable?</p>';
+            return;
+          }
+
+          renderHomeCards();
+          renderDir();
+          startHomeRotation();
+        }
+
+        /* ── HOME CARD ROTATION ──────────────────────────────── */
+        // Pick 3 unique alumni at random; no two of the current three
+        // will be the same. Previous alumni can re-appear in later rounds
+        // but never twice simultaneously.
+        let _homeRotationTimer = null;
+        let _homeCurrentIds = [];
+
+        function pickThreeRandom() {
+          if (ALUMNI.length === 0) return [];
+          const pool = ALUMNI.filter((a) => !_homeCurrentIds.includes(a.id));
+          // If the pool is too small (≤3 alumni total), just pick from all
+          const source = pool.length >= 3 ? pool : ALUMNI;
+          const shuffled = [...source].sort(() => Math.random() - 0.5);
+          return shuffled.slice(0, 3);
+        }
+
+        function renderHomeCards() {
+          const three = pickThreeRandom();
+          _homeCurrentIds = three.map((a) => a.id);
+          const container = document.getElementById("home-cards");
+          // Fade out slowly
+          container.style.transition = "opacity 1s ease";
+          container.style.opacity = "0";
+          setTimeout(() => {
+            container.innerHTML = three.map(buildCard).join("");
+            observeReveal();
+            // Fade in at the same pace
+            container.style.transition = "opacity 1s ease";
+            container.style.opacity = "1";
+          }, 1000);
+        }
+
+        function startHomeRotation() {
+          clearInterval(_homeRotationTimer);
+          _homeRotationTimer = setInterval(() => {
+            // Only rotate when the home page is visible
+            if (
+              document.getElementById("page-home").classList.contains("active")
+            ) {
+              renderHomeCards();
+            }
+          }, 6000);
+        }
+
+        loadAlumni();
+        let activeFilters = { college: "all", year: "all", industry: "all" };
+        let searchQuery = "";
+        const DIR_PAGE_SIZE = 9;
+        let dirPage = 1;
+
+        function normalizeCollegeText(s) {
+          return (s || "")
+            .toLowerCase()
+            .replace(/&/g, "and")
+            .replace(/[^a-z0-9]+/g, " ")
+            .trim();
+        }
+
+        function gradDecadeLabel(grad) {
+          const year = parseInt(grad, 10);
+          if (!year || isNaN(year)) return null;
+          if (year >= 2020) return "2020s";
+          if (year >= 2010) return "2010s";
+          if (year >= 2000) return "2000s";
+          if (year >= 1990) return "1990s";
+          return "Earlier";
+        }
+
+        function renderDir() {
+          const q = searchQuery.trim().toLowerCase();
+          const list = ALUMNI.filter((a) => {
+            if (activeFilters.industry !== "all") {
+              const industry = (a.industry || "").trim().toLowerCase();
+              if (industry !== activeFilters.industry.trim().toLowerCase())
+                return false;
+            }
+
+            if (activeFilters.year !== "all") {
+              if (gradDecadeLabel(a.grad) !== activeFilters.year) return false;
+            }
+
+            if (activeFilters.college !== "all") {
+              const college = normalizeCollegeText(a.college);
+              const filterVal = normalizeCollegeText(activeFilters.college);
+              if (!college.includes(filterVal)) return false;
+            }
+
+            if (q) {
+              const name = (a.name || "").toLowerCase();
+              const program = (a.program || "").toLowerCase();
+              if (!name.includes(q) && !program.includes(q)) return false;
+            }
+
+            return true;
+          });
+          const totalPages = Math.max(1, Math.ceil(list.length / DIR_PAGE_SIZE));
+          if (dirPage > totalPages) dirPage = totalPages;
+          if (dirPage < 1) dirPage = 1;
+          const start = (dirPage - 1) * DIR_PAGE_SIZE;
+          const pageItems = list.slice(start, start + DIR_PAGE_SIZE);
+
+          document.getElementById("dir-cards").innerHTML = list.length
+            ? pageItems.map(buildCard).join("")
+            : '<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 0;">No profiles match the selected filters.</p>';
+          renderDirPagination(totalPages);
+          observeReveal();
+        }
+
+        function goToDirPage(n) {
+          dirPage = n;
+          renderDir();
+          const dirGrid = document.getElementById("dir-cards");
+          if (dirGrid)
+            dirGrid.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function renderDirPagination(totalPages) {
+          const el = document.getElementById("dir-pagination");
+          if (!el) return;
+          if (totalPages <= 1) {
+            el.innerHTML = "";
+            return;
+          }
+          let html = `<button class="page-btn" ${dirPage === 1 ? "disabled" : ""} onclick="goToDirPage(${dirPage - 1})">‹</button>`;
+          for (let i = 1; i <= totalPages; i++) {
+            html += `<button class="page-btn${i === dirPage ? " on" : ""}" onclick="goToDirPage(${i})">${i}</button>`;
+          }
+          html += `<button class="page-btn" ${dirPage === totalPages ? "disabled" : ""} onclick="goToDirPage(${dirPage + 1})">›</button>`;
+          el.innerHTML = html;
+        }
+
+        function setFilter(type, val, el) {
+          activeFilters[type] = val;
+          dirPage = 1;
+          if (el && el.classList && el.classList.contains("filter-btn")) {
+            el.closest(".filter-bar")
+              .querySelectorAll(".filter-btn")
+              .forEach((b) => b.classList.remove("on"));
+            el.classList.add("on");
+          }
+          renderDir();
+        }
+
+        let searchDebounce = null;
+        function setSearch(val) {
+          clearTimeout(searchDebounce);
+          searchDebounce = setTimeout(() => {
+            searchQuery = val;
+            dirPage = 1;
+            renderDir();
+          }, 150);
+        }
+
+        // Initial renderDir() is now triggered by loadAlumni() above, once
+        // alumni data has actually arrived from the API.
+        async function renderProfile(id) {
+          const a = ALUMNI.find((x) => x.id === id);
+          if (!a) return;
+
+          // Show a lightweight loading state immediately using the data we
+          // already have from the list endpoint, then fill in employment and
+          // awards once the detail call comes back.
+          const avatarInner = a.image_url
+            ? `<img src="${a.image_url}" alt="${a.name}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`
+            : a.initials;
+
+          document.getElementById("profile-shell").innerHTML = `
+      <div class="profile-sidebar">
+        <div class="sidebar-avatar">${avatarInner}</div>
+        <div class="sidebar-name">${a.name}</div>
+        <div class="sidebar-class">Class of ${a.grad}</div>
+        <div class="sidebar-row">
+          <div class="sidebar-row-label">Program</div>
+          <div class="sidebar-row-val">${a.program}</div>
+        </div>
+        <div class="sidebar-row">
+          <div class="sidebar-row-label">College</div>
+          <div class="sidebar-row-val">${a.college}</div>
+        </div>
+        <div class="sidebar-row">
+          <div class="sidebar-row-label">Graduation Year</div>
+          <div class="sidebar-row-val">${a.grad}</div>
+        </div>
+        <div class="sidebar-row">
+          <div class="sidebar-row-label">Current Role</div>
+          <div class="sidebar-row-val">${a.role || "—"}</div>
+        </div>
+        <div class="sidebar-row">
+          <div class="sidebar-row-label">Industry</div>
+          <div class="sidebar-row-val">${a.industry || "—"}</div>
+        </div>
+      </div>
+      <div class="profile-body" id="profile-body-detail">
+        <span class="badge-college">${a.college}</span>
+        <div class="detail-quote">"${a.tagline || ""}"</div>
+        <p style="color:var(--muted);font-size:13px;">Loading profile details…</p>
+      </div>`;
+
+          let detail;
+          try {
+            const res = await fetch(API_BASE + "get_alumni_detail.php?id=" + id);
+            if (!res.ok) throw new Error("API returned status " + res.status);
+            detail = await res.json();
+          } catch (err) {
+            console.error("Failed to load alumni detail:", err);
+            document.getElementById("profile-body-detail").innerHTML +=
+              '<p style="color:var(--muted);">Could not load full profile details from the API.</p>';
+            return;
+          }
+
+          _currentContactInfo = {
+            name: detail.name,
+            email: detail.show_email ? detail.email : null,
+            phone: detail.show_phone ? detail.phone : null,
+          };
+
+          const employmentHtml = (detail.employment || []).length
+            ? detail.employment
+                .map(
+                  (e) =>
+                    `<p style="font-size:13px;color:var(--muted);margin-bottom:8px;">
+                      <strong>${e.occupation || ""}</strong>${e.sector_Name ? " · " + e.sector_Name : ""}
+                      ${e.description ? "<br>" + e.description : ""}
+                    </p>`,
+                )
+                .join("")
+            : '<p style="font-size:13px;color:var(--muted);">No employment on record.</p>';
+
+          const awardsHtml = (detail.awards || []).length
+            ? detail.awards
+                .map(
+                  (aw) =>
+                    `<div class="award-item"><div class="award-dot"></div><span>${aw.award_Title}</span><span class="award-year">${aw.year_received}</span></div>`,
+                )
+                .join("")
+            : '<p style="font-size:13px;color:var(--muted);">No awards on record.</p>';
+
+          document.getElementById("profile-body-detail").innerHTML = `
+        <span class="badge-college">${a.college}</span>
+        <div class="detail-quote">"${a.tagline || ""}"</div>
+        <div class="detail-section">
+          <h3>Career Story</h3>
+          ${
+            detail.career_story
+              ? `<p style="font-size:13px;color:var(--dark);line-height:1.7;white-space:pre-line;">${detail.career_story}</p>`
+              : '<p style="font-size:13px;color:var(--muted);">This alumnus hasn\'t shared their career story yet.</p>'
+          }
+        </div>
+        <div class="detail-section">
+          <h3>Employment</h3>
+          ${employmentHtml}
+        </div>
+        <div class="detail-section">
+          <h3>Awards &amp; Recognition</h3>
+          ${awardsHtml}
+        </div>
+        <div class="detail-section">
+          <h3>Academic Background</h3>
+          <p style="font-size:13px;color:var(--muted);">${a.program} — ${a.college}, ${a.grad}</p>
+        </div>
+        <div class="btn-row">
+          <button class="btn-outline-green" onclick="openContactModal()">Contact Alumni</button>
+        </div>`;
+        }
+
+        /* ── SCROLL REVEAL ───────────────────────────────────── */
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) e.target.classList.add("visible");
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+        );
+
+        function observeReveal() {
+          setTimeout(() => {
+            document
+              .querySelectorAll(".reveal:not(.visible)")
+              .forEach((el) => revealObserver.observe(el));
+          }, 50);
+        }
+
+        observeReveal();
+
+        /* ══════════════════════════════════════════════════════
+           MY ACCOUNT — EDIT PROFILE
+           Loads/saves the logged-in alumnus's record via
+           api/get_account.php and api/update_account.php.
+           ════════════════════════════════════════════════════ */
+
+        let _currentContactInfo = null;
+
+        function openContactModal() {
+          const info = _currentContactInfo;
+          let bodyHtml = "";
+
+          if (!info || (!info.email && !info.phone)) {
+            bodyHtml = `<p style="font-size:14px;color:var(--muted);margin:0;">
+              This alumnus has chosen not to share contact information publicly.
+            </p>`;
+          } else {
+            if (info.email) {
+              bodyHtml += `<div style="margin-bottom:12px;">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Email</div>
+                <a href="mailto:${info.email}" style="font-size:14px;color:var(--gold);text-decoration:none;">${info.email}</a>
+              </div>`;
+            }
+            if (info.phone) {
+              bodyHtml += `<div style="margin-bottom:4px;">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;">Phone</div>
+                <a href="tel:${info.phone}" style="font-size:14px;color:var(--gold);text-decoration:none;">${info.phone}</a>
+              </div>`;
+            }
+          }
+
+          document.getElementById("contact-modal-body").innerHTML = bodyHtml;
+          document.getElementById("contact-overlay").classList.add("visible");
+        }
+
+        function closeContactModal() {
+          document.getElementById("contact-overlay").classList.remove("visible");
+        }
+
+        document
+          .getElementById("contact-overlay")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeContactModal();
+          });
+
+        let isDirty = false;
+        let accountLoaded = false;
+        let awardCount = 0;
+        let pendingPhotoBase64 = null;
+        let pendingPhotoType = null;
+
+        const editSectionObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e, i) => {
+              if (e.isIntersecting) {
+                setTimeout(() => e.target.classList.add("revealed"), i * 60);
+                editSectionObserver.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.08 },
+        );
+        function observeEditSections() {
+          // Only observe sections that are visible (not hidden by the accordion)
+          setTimeout(() => {
+            document
+              .querySelectorAll(
+                "#page-account .edit-section:not(.revealed):not(.sec-hidden)",
+              )
+              .forEach((s) => editSectionObserver.observe(s));
+          }, 50);
+        }
+
+        function markDirty() {
+          isDirty = true;
+          document.getElementById("unsaved-banner").classList.add("visible");
+        }
+        function clearDirty() {
+          isDirty = false;
+          document.getElementById("unsaved-banner").classList.remove("visible");
+        }
+
+        function checkDirty() {
+          const dirty = [
+            ...document.querySelectorAll("#page-account [data-original]"),
+          ].some((el) => el.value !== (el.dataset.original || ""));
+          dirty ? markDirty() : clearDirty();
+        }
+
+        function attachDirtyListeners() {
+          document
+            .querySelectorAll("#page-account [data-original]")
+            .forEach((el) => {
+              el.addEventListener("input", checkDirty);
+              el.addEventListener("change", checkDirty);
+            });
+          document
+            .querySelectorAll("#page-account .switch input")
+            .forEach((sw) => sw.addEventListener("change", markDirty));
+        }
+
+        function updateSidebarPreview() {
+          const fn = document.getElementById("first-name").value.trim();
+          const ln = document.getElementById("last-name").value.trim();
+          const yr = document.getElementById("grad-year").value.trim();
+          const collegeSel = document.getElementById("college");
+          const col = collegeSel.options[collegeSel.selectedIndex]
+            ? collegeSel.options[collegeSel.selectedIndex].text
+            : "";
+          document.getElementById("sidebar-name-preview").textContent =
+            fn || ln ? `${fn} ${ln}`.trim() : "[Alumnus Name]";
+          document.getElementById("sidebar-class-preview").textContent = yr
+            ? `Class of ${yr}`
+            : "Class of [Year]";
+          document.getElementById("sidebar-badge-preview").textContent =
+            col && collegeSel.value ? col : "[College]";
+
+          const initialsEl = document.getElementById("avatar-initials");
+          if (initialsEl) {
+            const initials = ((fn[0] || "") + (ln[0] || "")).toUpperCase();
+            initialsEl.textContent = initials || "AB";
+          }
+        }
+        ["first-name", "last-name", "grad-year", "college"].forEach((id) => {
+          const el = document.getElementById(id);
+          el.addEventListener("input", updateSidebarPreview);
+          el.addEventListener("change", updateSidebarPreview);
+        });
+
+        function setupCounter(inputId, counterId, max) {
+          const input = document.getElementById(inputId);
+          const counter = document.getElementById(counterId);
+          function update() {
+            const len = input.value.length;
+            counter.textContent = `${len} / ${max} characters`;
+            counter.className =
+              "char-counter" +
+              (len > max * 0.9 ? " warn" : "") +
+              (len >= max ? " full" : "");
+          }
+          input.addEventListener("input", update);
+          update();
+        }
+        setupCounter("bio", "bio-counter", 800);
+
+        document
+          .getElementById("avatar-file-input")
+          .addEventListener("change", function () {
+            const file = this.files[0];
+            if (!file) return;
+            pendingPhotoType = file.type;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const dataUrl = e.target.result;
+              pendingPhotoBase64 = dataUrl.split(",")[1];
+              const circle = document.getElementById("avatar-circle");
+              const initials = document.getElementById("avatar-initials");
+              if (initials) initials.remove();
+              let img = circle.querySelector("img");
+              if (!img) {
+                img = document.createElement("img");
+                circle.appendChild(img);
+              }
+              img.src = dataUrl;
+            };
+            reader.readAsDataURL(file);
+            markDirty();
+          });
+
+        function addAwardRow(title, year) {
+          awardCount++;
+          const id = `award-${awardCount}`;
+          const row = document.createElement("div");
+          row.className = "award-row";
+          row.id = id;
+          row.innerHTML = `
+      <input type="text"   placeholder="Award title"
+             value="${title || ""}" data-original="${title || ""}" oninput="checkDirty()"/>
+      <input type="number" placeholder="Year" min="1900" max="2100"
+             value="${year || ""}"  data-original="${year || ""}"  oninput="checkDirty()" style="text-align:center"/>
+      <button class="award-remove-btn" onclick="removeAwardRow('${id}')" type="button" title="Remove">✕</button>`;
+          document.getElementById("awards-list").appendChild(row);
+          row.querySelectorAll("[data-original]").forEach((el) => {
+            el.addEventListener("input", checkDirty);
+            el.addEventListener("change", checkDirty);
+          });
+        }
+
+        function removeAwardRow(id) {
+          const row = document.getElementById(id);
+          if (row) row.remove();
+          markDirty();
+        }
+
+        function populateLookupSelect(
+          selectEl,
+          items,
+          idKey,
+          nameKey,
+          currentId,
+        ) {
+          selectEl.innerHTML = selectEl.options[0].outerHTML; // keep the placeholder option
+          items.forEach((item) => {
+            const opt = document.createElement("option");
+            opt.value = item[idKey];
+            opt.textContent = item[nameKey];
+            selectEl.appendChild(opt);
+          });
+          selectEl.value = currentId || "";
+        }
+
+        function snapshotOriginals() {
+          document
+            .querySelectorAll("#page-account [data-original]")
+            .forEach((el) => (el.dataset.original = el.value));
+          clearDirty();
+        }
+
+        async function loadAccount() {
+          if (accountLoaded) return;
+          try {
+            const res = await fetch(API_BASE + "get_account.php");
+            if (res.status === 401) {
+              window.location.href = "pb_login.html?error=session";
+              return;
+            }
+            if (!res.ok) throw new Error("API returned status " + res.status);
+            const data = await res.json();
+            if (data.error) throw new Error(data.error);
+
+            const acc = data.account;
+            document.getElementById("first-name").value = acc.first_Name || "";
+            document.getElementById("middle-name").value = acc.middle_Name || "";
+            document.getElementById("last-name").value = acc.last_Name || "";
+            document.getElementById("suffix").value = acc.suffix || "";
+            document.getElementById("nickname").value = acc.nickname || "";
+            document.getElementById("dob").value = acc.date_Of_Birth || "";
+            document.getElementById("gender").value = acc.gender || "";
+            document.getElementById("email").value = acc.email || "";
+            document.getElementById("phone").value = acc.phone || "";
+            document.getElementById("bio").value = acc.bio || "";
+            document.getElementById("profile-quote").value =
+              acc.profile_Quote || "";
+            document.getElementById("student-id").value = acc.school_ID || "";
+            document.getElementById("student-id").dataset.original =
+              acc.school_ID || "";
+            document.getElementById("toggle-email").checked = !!acc.show_Email;
+            document.getElementById("toggle-phone").checked = !!acc.show_Phone;
+            document.getElementById("toggle-employment").checked =
+              !!acc.show_Employment;
+
+            if (acc.photo) {
+              const circle = document.getElementById("avatar-circle");
+              const initials = document.getElementById("avatar-initials");
+              if (initials) initials.remove();
+              let img = circle.querySelector("img");
+              if (!img) {
+                img = document.createElement("img");
+                circle.appendChild(img);
+              }
+              img.src = `data:${acc.photo_Type || "image/jpeg"};base64,${acc.photo}`;
+            }
+
+            populateLookupSelect(
+              document.getElementById("college"),
+              data.colleges,
+              "college_ID",
+              "college_Name",
+              data.academic.college_ID,
+            );
+            populateLookupSelect(
+              document.getElementById("industry"),
+              data.industries,
+              "sector_ID",
+              "sector_Name",
+              data.employment.sector_ID,
+            );
+
+            document.getElementById("program").value =
+              data.academic.program_Name || "";
+            document.getElementById("grad-year").value =
+              data.academic.graduation_Year || "";
+            document.getElementById("job-title").value =
+              data.employment.occupation || "";
+            document.getElementById("employer").value =
+              data.employment.employer || "";
+
+            document.getElementById("awards-list").innerHTML = "";
+            awardCount = 0;
+            (data.awards || []).forEach((a) =>
+              addAwardRow(a.award_Title, a.year_received),
+            );
+            if (!data.awards || !data.awards.length) addAwardRow("", "");
+
+            snapshotOriginals();
+            updateSidebarPreview();
+            document.getElementById("bio-counter").textContent =
+              `${document.getElementById("bio").value.length} / 800 characters`;
+
+            accountLoaded = true;
+          } catch (err) {
+            console.error("Failed to load account:", err);
+            showToast(
+              "error",
+              "⚠",
+              "Could not load your profile. Is the API running?",
+            );
+          }
+        }
+
+        async function doSave() {
+          const btn = document.getElementById("save-btn");
+          const spinner = document.getElementById("save-spinner");
+          btn.disabled = true;
+          spinner.style.display = "inline-block";
+
+          const awards = [...document.querySelectorAll("#awards-list .award-row")]
+            .map((row) => {
+              const inputs = row.querySelectorAll("input");
+              return {
+                title: inputs[0].value.trim(),
+                year: inputs[1].value.trim(),
+              };
+            })
+            .filter((a) => a.title && a.year);
+
+          const payload = {
+            firstName: document.getElementById("first-name").value.trim(),
+            lastName: document.getElementById("last-name").value.trim(),
+            middleName: document.getElementById("middle-name").value.trim(),
+            suffix: document.getElementById("suffix").value,
+            nickname: document.getElementById("nickname").value.trim(),
+            dob: document.getElementById("dob").value,
+            gender: document.getElementById("gender").value,
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            bio: document.getElementById("bio").value.trim(),
+            profileQuote: document.getElementById("profile-quote").value.trim(),
+            showEmail: document.getElementById("toggle-email").checked ? 1 : 0,
+            showPhone: document.getElementById("toggle-phone").checked ? 1 : 0,
+            showEmployment: document.getElementById("toggle-employment").checked
+              ? 1
+              : 0,
+            collegeId: document.getElementById("college").value || null,
+            programName: document.getElementById("program").value.trim(),
+            gradYear: document.getElementById("grad-year").value || null,
+            sectorId: document.getElementById("industry").value || null,
+            jobTitle: document.getElementById("job-title").value.trim(),
+            employer: document.getElementById("employer").value.trim(),
+            awards: awards,
+            photoBase64: pendingPhotoBase64,
+            photoType: pendingPhotoType,
+          };
+
+          try {
+            const res = await fetch(API_BASE + "update_account.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const result = await res.json();
+            if (!res.ok || result.error)
+              throw new Error(result.error || "Save failed");
+
+            pendingPhotoBase64 = null;
+            pendingPhotoType = null;
+            snapshotOriginals();
+            showToast("success", "✓", "Profile updated successfully.");
+          } catch (err) {
+            console.error("Failed to save account:", err);
+            showToast(
+              "error",
+              "⚠",
+              "Could not save your changes. Please try again.",
+            );
+          } finally {
+            btn.disabled = false;
+            spinner.style.display = "none";
+          }
+        }
+
+        function doCancel() {
+          if (isDirty)
+            document.getElementById("confirm-overlay").classList.add("visible");
+          else goTo("home");
+        }
+
+        function requestSignOut() {
+          document.getElementById("signout-overlay").classList.add("visible");
+        }
+
+        function closeSignOutConfirm() {
+          document.getElementById("signout-overlay").classList.remove("visible");
+        }
+
+        function confirmSignOut() {
+          // Students don't have a full session to destroy — just send them back.
+          // Alumni go through logout.php which calls session_destroy().
+          window.location.href = STUDENT_MODE
+            ? API_BASE + "student_logout.php"
+            : API_BASE + "logout.php";
+        }
+
+        document
+          .getElementById("signout-overlay")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeSignOutConfirm();
+          });
+
+        function closeConfirm() {
+          document.getElementById("confirm-overlay").classList.remove("visible");
+        }
+
+        function confirmDiscard() {
+          closeConfirm();
+          accountLoaded = false;
+          loadAccount();
+        }
+
+        function doDiscard() {
+          if (isDirty)
+            document.getElementById("confirm-overlay").classList.add("visible");
+        }
+
+        let toastTimer = null;
+        function showToast(type, icon, msg) {
+          const t = document.getElementById("toast");
+          document.getElementById("toast-icon").textContent = icon;
+          document.getElementById("toast-msg").textContent = msg;
+          t.className = `toast ${type}`;
+          void t.offsetWidth;
+          t.classList.add("visible");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => t.classList.remove("visible"), 3400);
+        }
+
+        document
+          .getElementById("confirm-overlay")
+          .addEventListener("click", function (e) {
+            if (e.target === this) closeConfirm();
+          });
+
+        /* ── SECTION ACCORDION ───────────────────────────────── */
+        // Sections 2–7 are hidden on load. Each click of "Add more details"
+        // reveals the next hidden section. "Hide additional details" collapses
+        // the last revealed extra section.
+        const EXTRA_SECTIONS = [
+          "acc-sec-2",
+          "acc-sec-3",
+          "acc-sec-4",
+          "acc-sec-5",
+          "acc-sec-6",
+          "acc-sec-7",
+        ];
+        let visibleCount = 0; // how many extra sections are currently showing
+
+        function updateSectionButtons() {
+          const addBtn = document.getElementById("btn-add-section");
+          const hideBtn = document.getElementById("btn-hide-section");
+          addBtn.style.display =
+            visibleCount < EXTRA_SECTIONS.length ? "" : "none";
+          hideBtn.style.display = visibleCount > 0 ? "" : "none";
+        }
+
+        function addSectionStep() {
+          if (visibleCount >= EXTRA_SECTIONS.length) return;
+          const sec = document.getElementById(EXTRA_SECTIONS[visibleCount]);
+          sec.classList.remove("sec-hidden");
+          // Trigger the reveal animation
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => sec.classList.add("revealed"));
+          });
+          // Re-init auto-height for any textarea in this section
+          sec
+            .querySelectorAll('textarea[style*="overflow:hidden"]')
+            .forEach((ta) => {
+              ta.style.height = "auto";
+              ta.style.height = ta.scrollHeight + "px";
+            });
+          visibleCount++;
+          updateSectionButtons();
+        }
+
+        function hideSectionStep() {
+          if (visibleCount <= 0) return;
+          visibleCount--;
+          const sec = document.getElementById(EXTRA_SECTIONS[visibleCount]);
+          sec.classList.remove("revealed");
+          updateSectionButtons();
+          // Wait for the fade+slide-out transition to finish, then hide
+          sec.addEventListener("transitionend", function handler() {
+            sec.classList.add("sec-hidden");
+            sec.removeEventListener("transitionend", handler);
+          });
+        }
+
+        updateSectionButtons();
+
+        attachDirtyListeners();
+    </script>
+  </body>
+</html>
