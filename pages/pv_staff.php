@@ -115,6 +115,8 @@ $programOptions = $pdo->query(
 
     --color-warning-gold:             #F9BC15;
     --color-success-green:            #2E7D32;
+    --priColor:                       #015e2f;
+    --secColor:                       #fcbf16;
 
     --color-background-alt:           #FFFFFF;
 
@@ -469,15 +471,16 @@ $programOptions = $pdo->query(
     .profile-text { display: block; }
   }
   .profile-text .name {
-    font-family: var(--font-sans);
-    font-size: var(--text-label-md-size);
+    font-family: var(--font-accent);
+    font-size: 13;
     letter-spacing: var(--text-label-md-ls);
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     display: block;
   }
   .profile-text .role {
-    font-size: 11px;
+    font-size: 12px;
+    font-family: var(--font-sans);
     color: var(--color-on-surface-variant);
     font-weight: 400;
     text-transform: none;
@@ -1762,6 +1765,34 @@ $programOptions = $pdo->query(
 
   .hidden { display: none !important; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+  html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secColor) var(--priColor);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--priColor);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--secColor);
+    border-radius: 10px;
+    border: 2px solid var(--priColor);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--fourthColor);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: var(--priColor);
+  }
 </style>
 </head>
 <body>
