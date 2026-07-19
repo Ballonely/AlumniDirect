@@ -40,7 +40,7 @@ if (!$body) {
     exit;
 }
 
-// ── Human-readable labels for the review card in pv_staff ────────────
+//  Human-readable labels for the review card in pv_staff 
 const FIELD_LABELS = [
     'first_Name'    => 'First Name',
     'last_Name'     => 'Last Name',
@@ -62,7 +62,7 @@ const FIELD_LABELS = [
 try {
     $pdo->beginTransaction();
 
-    // ── 1. Apply low-risk preference changes immediately ─────────────
+    //  1. Apply low-risk preference changes immediately 
     $stmt = $pdo->prepare(
         'UPDATE account
          SET show_Email = :showEmail, show_Phone = :showPhone,
@@ -90,7 +90,7 @@ try {
         $stmt->execute();
     }
 
-    // ── 2. Fetch the current account values to build the diff ────────
+    //  2. Fetch the current account values to build the diff 
     $cur = $pdo->prepare(
         'SELECT first_Name, last_Name, middle_Name, suffix, nickname,
                 email, phone, bio, profile_Quote
@@ -119,7 +119,7 @@ try {
     $curEmp->execute([':id' => $accountId]);
     $currentEmp = $curEmp->fetch() ?: ['occupation' => '', 'employer' => '', 'sector_Name' => ''];
 
-    // ── 3. Build the diff — only fields that actually changed ─────────
+    //  3. Build the diff — only fields that actually changed 
     // Map incoming payload keys → db column names and current values.
     $comparisons = [
         'first_Name'      => [$currentAccount['first_Name'],      $body['firstName']   ?? ''],
@@ -187,7 +187,7 @@ try {
         ];
     }
 
-    // ── 4. Nothing changed — nothing to queue ─────────────────────────
+    //  4. Nothing changed — nothing to queue 
     if (empty($changedFields)) {
         $pdo->commit();
         echo json_encode([
@@ -198,7 +198,7 @@ try {
         exit;
     }
 
-    // ── 5. Check for an already-pending request from this account ─────
+    //  5. Check for an already-pending request from this account 
     $existingPending = $pdo->prepare(
         "SELECT modification_ID FROM modifications
          WHERE account_ID = :id AND status = 'Pending' LIMIT 1"
@@ -216,7 +216,7 @@ try {
         exit;
     }
 
-    // ── 6. Insert the modification request header ─────────────────────
+    //  6. Insert the modification request header 
     $modStmt = $pdo->prepare(
         "INSERT INTO modifications (account_ID, staff_ID, status, is_Verified, time_Modified)
          VALUES (:aid, NULL, 'Pending', 0, NOW())"
@@ -224,7 +224,7 @@ try {
     $modStmt->execute([':aid' => $accountId]);
     $modId = (int) $pdo->lastInsertId();
 
-    // ── 7. Insert one detail row per changed field ────────────────────
+    //  7. Insert one detail row per changed field 
     $detStmt = $pdo->prepare(
         'INSERT INTO modification_detail
              (modification_ID, field_Name, field_Label, old_Value, new_Value)

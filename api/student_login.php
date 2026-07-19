@@ -23,7 +23,7 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/db.php';
 
-/* ── Rate limiting ────────────────────────────────────────────────────────── */
+/*  Rate limiting  */
 const LOGIN_MAX    = 5;
 const LOGIN_WINDOW = 900; // 15 minutes
 
@@ -46,7 +46,7 @@ if (count($_SESSION['student_login_fails']) >= LOGIN_MAX) {
     exit;
 }
 
-/* ── Parse input ──────────────────────────────────────────────────────────── */
+/*  Parse input  */
 $body     = json_decode(file_get_contents('php://input'), true);
 $id       = trim($body['student_id'] ?? '');
 $password = $body['password'] ?? '';
@@ -57,7 +57,7 @@ if ($id === '' || $password === '') {
     exit;
 }
 
-/* ── DB lookup ────────────────────────────────────────────────────────────── */
+/*  DB lookup  */
 $stmt = $pdo->prepare('SELECT password FROM student WHERE school_id = ? LIMIT 1');
 $stmt->execute([$id]);
 $row  = $stmt->fetch();
@@ -76,7 +76,7 @@ if (!password_verify($password, $row['password'] ?? '')) {
     exit;
 }
 
-/* ── Start session ────────────────────────────────────────────────────────── */
+/*  Start session  */
 // Regenerate ID to prevent session fixation on privilege escalation.
 session_regenerate_id(true);
 

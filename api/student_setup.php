@@ -384,7 +384,7 @@ $safeId = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
       btn.textContent = showing ? '👁' : '🙈';
     }
 
-    /* ── Strength meter ── */
+    /*  Strength meter  */
     const pw1    = document.getElementById('pw1');
     const sfill  = document.getElementById('strength-fill');
     const slabel = document.getElementById('strength-label');
@@ -431,7 +431,7 @@ $safeId = htmlspecialchars($id, ENT_QUOTES, 'UTF-8');
       }
     }
 
-    /* ── Submit ── */
+    /*  Submit  */
     async function doSubmit() {
       const btn     = document.getElementById('submit-btn');
       const spinner = document.getElementById('spinner');

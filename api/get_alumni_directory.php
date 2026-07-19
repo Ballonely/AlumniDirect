@@ -37,7 +37,7 @@ $whereSql = implode(' AND ', $where);
 
 $sql = "
     SELECT a.account_ID, a.first_Name, a.last_Name, a.school_ID,
-           g.graduation_Year, p.program_Name,
+           a.is_archived, g.graduation_Year, p.program_Name,
            EXISTS (
              SELECT 1 FROM modifications m
              WHERE m.account_ID = a.account_ID AND m.status = 'Pending'
@@ -80,8 +80,9 @@ $alumni = array_map(function ($r) {
         'name'      => trim($r['first_Name'] . ' ' . $r['last_Name']),
         'batch'     => $r['graduation_Year'] ?: '—',
         'program'   => $r['program_Name'] ?: '—',
-        'status'    => $r['has_pending'] ? 'Pending Update' : 'Verified',
-        'accountId' => (int) $r['account_ID'],
+        'status'      => $r['has_pending'] ? 'Pending Update' : 'Verified',
+        'accountId'   => (int) $r['account_ID'],
+        'is_archived' => (int) $r['is_archived'],
     ];
 }, $rows);
 

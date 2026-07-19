@@ -149,3 +149,11 @@ ALTER TABLE staff
   ADD CONSTRAINT fk_staff_account FOREIGN KEY (account_ID) REFERENCES account (account_ID);
 
 ALTER TABLE modifications MODIFY COLUMN staff_ID INT NULL;
+
+ALTER TABLE account
+  ADD COLUMN is_archived TINYINT(1) NOT NULL DEFAULT 0
+    COMMENT '0 = active, 1 = archived/disabled'
+  AFTER show_Employment;
+
+-- Optional index so filtering on is_archived stays fast as the table grows
+CREATE INDEX idx_account_archived ON account (is_archived);

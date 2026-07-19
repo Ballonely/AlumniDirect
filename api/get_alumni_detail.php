@@ -20,7 +20,7 @@ if ($id <= 0) {
     exit;
 }
 
-// ── Basic account + graduation info ──────────────────────────
+//  Basic account + graduation info 
 $stmt = $pdo->prepare("
     SELECT
         a.account_ID, a.first_Name, a.last_Name, a.middle_Name, a.suffix,
@@ -43,7 +43,7 @@ if (!$account) {
     exit;
 }
 
-// ── All employment rows for this account ─────────────────────
+//  All employment rows for this account 
 $stmt = $pdo->prepare("
     SELECT e.occupation, e.description, s.sector_Name
     FROM employment e
@@ -53,7 +53,7 @@ $stmt = $pdo->prepare("
 $stmt->execute(['id' => $id]);
 $employment = $stmt->fetchAll();
 
-// ── All awards for this account ───────────────────────────────
+//  All awards for this account 
 $stmt = $pdo->prepare("
     SELECT award_Title, award_Description, year_received
     FROM awards

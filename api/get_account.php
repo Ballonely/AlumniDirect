@@ -22,7 +22,7 @@ if (empty($_SESSION['account_ID'])) {
 }
 $accountId = (int) $_SESSION['account_ID'];
 
-// ── ACCOUNT ──────────────────────────────────────────────────
+//  ACCOUNT 
 $stmt = $pdo->prepare('SELECT account_ID, first_Name, last_Name, middle_Name, suffix,
     school_ID, email, phone, nickname, date_Of_Birth, gender, bio, profile_Quote,
     show_Email, show_Phone, show_Employment, photo, photo_Type
@@ -40,7 +40,7 @@ if (!$account) {
 // transport as JSON.
 $account['photo'] = $account['photo'] !== null ? base64_encode($account['photo']) : null;
 
-// ── ACADEMIC (program + graduation + college) ───────────────
+//  ACADEMIC (program + graduation + college) 
 $stmt = $pdo->prepare('SELECT p.program_ID, p.program_Name, g.college_ID, g.graduation_Year
     FROM program p
     LEFT JOIN graduation g ON g.program_ID = p.program_ID AND g.account_ID = p.account_ID
@@ -50,7 +50,7 @@ $academic = $stmt->fetch() ?: [
     'program_ID' => null, 'program_Name' => '', 'college_ID' => null, 'graduation_Year' => ''
 ];
 
-// ── EMPLOYMENT (one primary record) ─────────────────────────
+//  EMPLOYMENT (one primary record) 
 $stmt = $pdo->prepare('SELECT employment_ID, sector_ID, occupation, employer, description
     FROM employment WHERE account_ID = ? LIMIT 1');
 $stmt->execute([$accountId]);
@@ -58,13 +58,13 @@ $employment = $stmt->fetch() ?: [
     'employment_ID' => null, 'sector_ID' => null, 'occupation' => '', 'employer' => '', 'description' => ''
 ];
 
-// ── AWARDS ───────────────────────────────────────────────────
+//  AWARDS 
 $stmt = $pdo->prepare('SELECT award_ID, award_Title, award_Description, year_received
     FROM awards WHERE account_ID = ? ORDER BY year_received DESC');
 $stmt->execute([$accountId]);
 $awards = $stmt->fetchAll();
 
-// ── LOOKUP LISTS ─────────────────────────────────────────────
+//  LOOKUP LISTS 
 $colleges   = $pdo->query('SELECT college_ID, college_Name FROM college ORDER BY college_Name')->fetchAll();
 $industries = $pdo->query('SELECT sector_ID, sector_Name FROM industry_sector ORDER BY sector_Name')->fetchAll();
 

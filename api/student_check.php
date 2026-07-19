@@ -27,7 +27,7 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/db.php';   // provides $pdo
 
-/* ── Rate limiting ────────────────────────────────────────────────────────── */
+/*  Rate limiting  */
 // 10 check attempts per IP per 5-minute rolling window, tracked in session.
 const CHECK_MAX     = 10;
 const CHECK_WINDOW  = 300; // seconds
@@ -52,7 +52,7 @@ if (count($_SESSION['student_check_attempts']) >= CHECK_MAX) {
     exit;
 }
 
-/* ── Parse input ──────────────────────────────────────────────────────────── */
+/*  Parse input  */
 $body = json_decode(file_get_contents('php://input'), true);
 $raw  = trim($body['student_id'] ?? '');
 
@@ -65,7 +65,7 @@ if ($raw === '') {
 // Record this attempt now (after the missing-id guard so blank submits don't count)
 $_SESSION['student_check_attempts'][] = $now;
 
-/* ── DB lookup ────────────────────────────────────────────────────────────── */
+/*  DB lookup  */
 $stmt = $pdo->prepare('SELECT password FROM student WHERE school_id = ? LIMIT 1');
 $stmt->execute([$raw]);
 $row  = $stmt->fetch();

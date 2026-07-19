@@ -62,7 +62,7 @@ try {
             $changes[$d['field_Name']] = $d['new_Value'];
         }
 
-        // ── Direct account-column writes ──────────────────────────────
+        //  Direct account-column writes 
         foreach ($changes as $fieldName => $newVal) {
             if (!in_array($fieldName, ALLOWED_FIELDS, true)) {
                 continue;
@@ -71,7 +71,7 @@ try {
             $upd->execute(['val' => $newVal, 'aid' => $mod['account_ID']]);
         }
 
-        // ── Program / Graduation writes ───────────────────────────────
+        //  Program / Graduation writes 
         $hasAcadChange = array_key_exists('program_Name', $changes)
                       || array_key_exists('college_Name', $changes)
                       || array_key_exists('graduation_Year', $changes);
@@ -137,7 +137,7 @@ try {
             }
         }
 
-        // ── Employment writes ─────────────────────────────────────────
+        //  Employment writes 
         $hasEmpChange = array_key_exists('occupation', $changes)
                      || array_key_exists('employer', $changes)
                      || array_key_exists('sector_Name', $changes);
@@ -182,7 +182,7 @@ try {
             }
         }
 
-        // ── Awards write (replace full set) ──────────────────────────
+        //  Awards write (replace full set) 
         if (array_key_exists('awards', $changes)) {
             $pdo->prepare('DELETE FROM awards WHERE account_ID = :id')
                 ->execute(['id' => $mod['account_ID']]);

@@ -70,7 +70,7 @@
                 <ion-icon name="mail-outline"></ion-icon>
               </span>
             </div>
-
+            
             <div class="input-box">
               <input
                 type="password"
@@ -81,10 +81,7 @@
               />
               <label>Password</label>
               <button type="button" class="toggle-lock" tabindex="-1">
-                <ion-icon
-                  name="lock-closed-outline"
-                  class="lock-closed"
-                ></ion-icon>
+                <ion-icon name="lock-closed-outline" class="lock-closed"></ion-icon>
                 <ion-icon name="lock-open-outline" class="lock-open"></ion-icon>
               </button>
             </div>
@@ -131,12 +128,12 @@
       }
 
       // EDITED: Script to toggle lock/unlock view
-      document.querySelectorAll(".toggle-lock").forEach((button) => {
-        button.addEventListener("click", function () {
-          this.classList.toggle("is-visible");
-          const input = this.parentElement.querySelector("input");
+      document.querySelectorAll('.toggle-lock').forEach(button => {
+        button.addEventListener('click', function() {
+          this.classList.toggle('is-visible');
+          const input = this.parentElement.querySelector('input');
           if (input) {
-            input.type = input.type === "password" ? "text" : "password";
+            input.type = input.type === 'password' ? 'text' : 'password';
           }
         });
       });
