@@ -9,10 +9,17 @@
  * can't show a stale copy).
  */
 
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path'     => '/',
+    'secure'   => true,
+    'httponly' => true,
+    'samesite' => 'Strict',
+]);
 session_start();
 
 if (empty($_SESSION['staff_ID'])) {
-    header('Location: pb_login.html?error=session');
+    header('Location: pb_login.php?error=session');
     exit;
 }
 
@@ -41,14 +48,19 @@ $programOptions = $pdo->query(
 <title>Staff | Dugtong Carolinian</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="../styles/pv_staff.css">
+<link rel="icon" type="image/png" href="../images/usc_logo.png" />
 <style>
   /* ============================================================
      CSS CUSTOM PROPERTIES (design tokens)
      ============================================================ */
   :root {
-    --color-primary:                  #002b12;
-    --color-primary-container:        #004320;
+    /* Brought in line with the public landing page's brand tokens
+       (--priColor / --secColor / --terColor in pb_landing.css) so the
+       admin portal reads as the same product, not a different app. */
+    --color-primary:                  #015e2f;
+    --color-primary-container:        #00763a;
     --color-primary-fixed:            #b3f1bf;
     --color-primary-fixed-dim:        #97d5a5;
     --color-on-primary:               #ffffff;
@@ -57,7 +69,7 @@ $programOptions = $pdo->query(
     --color-on-primary-fixed-variant: #15512c;
 
     --color-secondary:                #795900;
-    --color-secondary-container:      #fdc01b;
+    --color-secondary-container:      #fcbf16;
     --color-secondary-fixed:          #ffdf9f;
     --color-secondary-fixed-dim:      #fabd16;
     --color-on-secondary:             #ffffff;
@@ -119,7 +131,8 @@ $programOptions = $pdo->query(
 
     /* Typography */
     --font-sans:    'Inter', sans-serif;
-    --font-serif:   'Montserrat', serif;
+    --font-serif:   'Libre Baskerville', serif;
+    --font-accent:  'Montserrat', sans-serif;
 
     --text-body-md-size:   14px;
     --text-body-md-lh:     20px;
@@ -172,12 +185,12 @@ $programOptions = $pdo->query(
   nav .nav-link.is-active {
     color: #fff !important;
     background-color: rgba(255,255,255,.12) !important;
-    border-left: 3px solid #fabd16;
+    border-left: 3px solid #fcbf16;
     padding-left: calc(1rem - 3px);
     font-weight: 600;
   }
   nav .nav-link.is-active .material-symbols-outlined {
-    color: #fabd16 !important;
+    color: #fcbf16 !important;
   }
 
   /* ============================================================
@@ -194,13 +207,13 @@ $programOptions = $pdo->query(
      SIDEBAR NAV
      ============================================================ */
   #mobile-menu {
-    background-color: var(--color-primary-container);
+    background: linear-gradient(165deg, #0a1a10 0%, #012d16 55%, var(--color-primary) 130%);
     height: 100vh;
-    width: 16rem;
+    width: 18rem;
     position: fixed;
     left: 0;
     top: 0;
-    border-right: 1px solid var(--color-outline-variant);
+    border-right: 1px solid rgba(252, 191, 22, 0.12);
     z-index: 50;
     display: flex;
     flex-direction: column;
@@ -228,32 +241,32 @@ $programOptions = $pdo->query(
     gap: 0.75rem;
   }
   .sidebar-logo-area img {
-    width: 3.5rem;
-    height: 3.5rem;
-    flex-shrink: 0;
-    border-radius: var(--radius-full);
+    width: 60px;
+    height: 60px;
     object-fit: contain;
-    background-color: #fff;
-    border: 1px solid var(--color-outline-variant);
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    transition: transform 0.2s ease;
   }
-  .sidebar-logo-area h1 {
+  .sidebar-logo-area:hover img {
+    transform: scale(1.07);
+  }
+  .sidebar-logo-title {
     font-family: var(--font-serif);
-    font-size: var(--text-headline-sm-size);
-    line-height: var(--text-headline-sm-lh);
-    font-weight: 700;
+    font-weight: 400;
+    font-size: 17px;
     color: #fff;
+    letter-spacing: 0.3px;
+    line-height: 1.25;
     margin: 0;
-    line-height: 1.2;
   }
-  .sidebar-logo-area p {
-    font-family: var(--font-sans);
-    font-size: var(--text-label-md-size);
-    line-height: var(--text-label-md-lh);
-    letter-spacing: var(--text-label-md-ls);
+  .sidebar-logo-caption {
+    font-family: var(--font-accent);
+    font-size: 11px;
+    color: var(--color-secondary-container);
     font-weight: 600;
-    color: var(--color-primary-fixed-dim);
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    margin: 0.25rem 0 0;
+    margin: 3px 0 0;
   }
 
   .sidebar-nav-primary {
@@ -282,10 +295,13 @@ $programOptions = $pdo->query(
     padding: 0.75rem 1rem;
     border-radius: var(--radius);
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-md-size);
+    font-family: var(--font-accent);
+    font-size: 15;
+    font-weight: 600;
     line-height: var(--text-body-md-lh);
+    letter-spacing: 1px;
     text-decoration: none;
+    text-transform: uppercase;
   }
 
   .nav-signout {
@@ -296,9 +312,12 @@ $programOptions = $pdo->query(
     border-radius: var(--radius);
     color: rgba(255,255,255,.60);
     text-decoration: none;
+    text-transform: uppercase;
     transition: color 0.2s, background-color 0.2s;
-    font-family: var(--font-sans);
-    font-size: var(--text-body-md-size);
+    font-family: var(--font-accent);
+    font-size: 15;
+    letter-spacing: 1px;
+    font-weight: 600;
     line-height: var(--text-body-md-lh);
   }
   .nav-signout:hover {
@@ -332,25 +351,23 @@ $programOptions = $pdo->query(
     min-height: 100vh;
   }
   @media (min-width: 768px) {
-    main { margin-left: 16rem; }
+    main { margin-left: 18rem; }
   }
 
   /* ============================================================
      HEADER
      ============================================================ */
   .site-header {
-    background-color: var(--color-surface);
+    background-color: white;
     position: sticky;
     top: 0;
     z-index: 40;
-    border-bottom: 1px solid var(--color-outline-variant);
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 4rem;
     padding-left: var(--spacing-margin-desktop);
     padding-right: var(--spacing-margin-desktop);
-    box-shadow: 0 1px 3px rgba(0,0,0,.08);
   }
 
   .header-left {
@@ -359,7 +376,7 @@ $programOptions = $pdo->query(
     gap: 1rem;
   }
   .header-site-title {
-    font-family: var(--font-serif);
+    font-family: var(--font-accent);
     font-size: var(--text-headline-sm-size);
     line-height: var(--text-headline-sm-lh);
     font-weight: 700;
@@ -535,6 +552,7 @@ $programOptions = $pdo->query(
      PAGE HEADER ROW
      ============================================================ */
   .page-header-row {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -549,11 +567,20 @@ $programOptions = $pdo->query(
   }
   .page-title {
     font-family: var(--font-serif);
-    font-size: var(--text-headline-md-size);
+    font-size: clamp(1.8em, 3.5vw, 2.8em);
     line-height: var(--text-headline-md-lh);
-    font-weight: 700;
-    color: var(--color-primary);
-    margin: 0 0 0.25rem;
+    font-weight: 400;
+    color: black;
+    margin: 0 0 0.6rem;
+  }
+  .page-title::after {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    margin-top: 10px;
+    background: var(--color-secondary-container);
+    border-radius: 2px;
   }
   .page-subtitle {
     font-family: var(--font-sans);
@@ -1743,8 +1770,8 @@ $programOptions = $pdo->query(
   <div class="sidebar-logo-area">
     <img src="../images/usc_logo.png" alt="USC Logo" />
     <div>
-      <h1>USC Alumni</h1>
-      <p>Admin Portal</p>
+      <p class="sidebar-logo-title">University <i>of</i> <br>San Carlos</p>
+      <p class="sidebar-logo-caption">Dugtong Carolinian</p>
     </div>
   </div>
 
@@ -1793,7 +1820,7 @@ $programOptions = $pdo->query(
       <button onclick="document.getElementById('mobile-menu').classList.toggle('is-open')" aria-label="Open menu" class="btn-mobile-menu">
         <span class="material-symbols-outlined" data-icon="menu">menu</span>
       </button>
-      <div class="header-site-title">Alumni Network Manager</div>
+      <div class="header-site-title">Alumni Management Module</div>
     </div>
 
     <div class="header-search-wrap hidden" id="header-search-wrap">
